@@ -1,10 +1,11 @@
 package com.buct.se.museum.FrontendServices.View.Fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.buct.se.museum.R;
 
