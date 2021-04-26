@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_1"
+    tools:context=".RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_vertical"
+        >
+
+        <TextView
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:text="@string/account"
+            android:textSize="25sp" />
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入用户名或手机号"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="5dp"
+            android:inputType="text"
+            android:background="@drawable/edit_text_bg"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_vertical"
+        >
+
+        <TextView
+
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textSize="25sp" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="请输入密码"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="5dp"
+            android:inputType="numberPassword"
+            android:background="@drawable/edit_text_bg"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认密码："
+            android:textSize="25sp" />
+        <EditText
+            android:id="@+id/et_password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="再次输入密码"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="5dp"
+            android:inputType="numberPassword"
+            android:background="@drawable/edit_text_bg"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn1_bg_selector"
+        android:text="@string/register"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:backgroundTint="@color/blue_A700" />
+
+    <CheckBox
+        android:id="@+id/cb_agree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_500"
+        android:text="同意用户协定"
+        android:layout_gravity="left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        />
+</LinearLayout>
