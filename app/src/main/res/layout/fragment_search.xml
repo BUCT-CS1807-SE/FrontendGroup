@@ -24,7 +24,7 @@
             android:text="Name" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

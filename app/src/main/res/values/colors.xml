@@ -17,4 +17,5 @@
     <color name="skin_topbar_bg_color">#344261</color>
     <color name="skin_text_white_night">#000000</color>
     <color name="skin_topbar_bg_color_night">#00bfff</color>
+    <color name="back">#f0f0f0</color>
 </resources>
