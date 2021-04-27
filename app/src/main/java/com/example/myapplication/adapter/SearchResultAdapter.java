@@ -1,18 +1,24 @@
 package com.example.myapplication.adapter;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.activity.MuseumIntroActivity;
 import com.example.myapplication.entity.SearchOutcome;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 黄熠
@@ -88,5 +94,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return localDataSet.size();
     }
 
-
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), MuseumIntroActivity.class);
+            intent.putExtra("museum_name",holder.getMuseumName().getText().toString());
+            holder.itemView.getContext().startActivity(intent);
+        });
+    }
 }

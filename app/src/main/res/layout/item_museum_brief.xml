@@ -9,13 +9,19 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_margin="7dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="7dp"
+        android:focusable="true"
+        android:foreground="@drawable/card_foreground"
+        android:longClickable="false"
         android:paddingTop="15dp"
         android:paddingRight="15dp"
         android:paddingBottom="15dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="15dp"
-        app:cardElevation="3dp"
+        app:cardElevation="4dp"
         app:cardPreventCornerOverlap="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
