@@ -12,6 +12,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.example.myapplication.fragment.SearchFragment;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -31,12 +32,16 @@ public class HomePageActivity extends BaseActivity  {
 
     private static final int REQUEST_PERMISSIONS = 9527;
     private static final String TAG = "HomePageActivity";
-    private String[] mTitles = {"首页", "资讯", "我的"};
+    private String[] mTitles = {"首页","搜索", "资讯", "我的"};
     private int[] mIconUnselectIds = {
-            R.mipmap.home_unselect, R.mipmap.collect_unselect,
+            R.mipmap.home_unselect,
+            R.mipmap.search,
+            R.mipmap.collect_unselect,
             R.mipmap.my_unselect};
     private int[] mIconSelectIds = {
-            R.mipmap.home_selected, R.mipmap.collect_selected,
+            R.mipmap.home_selected,
+            R.mipmap.search_selected,
+            R.mipmap.collect_selected,
             R.mipmap.my_selected};
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
@@ -58,6 +63,7 @@ public class HomePageActivity extends BaseActivity  {
     @Override
     protected void initData() {
         mFragments.add(HomeFragment.newInstance());
+        mFragments.add(SearchFragment.newInstance());
         mFragments.add(NewsFragment.newInstance());
         mFragments.add(MyFragment.newInstance());
         for (int i = 0; i < mTitles.length; i++) {
