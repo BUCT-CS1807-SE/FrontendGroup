@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,10 @@ import okhttp3.Response;
 
 public class SearchFragment extends BaseFragment {
 
+    private TextView searchKey;
+    private ImageButton search;
+    private RecyclerView result;
+
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         return fragment;
@@ -40,6 +45,23 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        //搜索框响应事件
+        searchKey = mRootView.findViewById(R.id.searchKey);
+        search = mRootView.findViewById(R.id.search);
+        search.setOnClickListener(v -> {
+            String key = searchKey.getText().toString();
+            if (key.isEmpty()) {
+                showToast("请输入搜索关键字");
+                return;
+            }
+
+            //@TODO 搜索,网络发起请求并调用adapter展示
+
+            //@TODO 存入搜索历史
+
+        });
+        //--------------------
+
         //@author 黄熠
         //初始化博物馆信息RecyclerView
         ArrayList<SearchOutcome> dataset = new ArrayList<SearchOutcome>(){{
@@ -99,19 +121,12 @@ public class SearchFragment extends BaseFragment {
             ));
         }};//假数据
 
-        RecyclerView result = mRootView.findViewById(R.id.searchResult);
+        result = mRootView.findViewById(R.id.searchResult);
         result.setAdapter(new SearchResultAdapter(dataset));
         result.setLayoutManager(new LinearLayoutManager(this.getContext()));
         //--------------------------
 
 
-        Button search=mRootView.findViewById(R.id.buttonSearch);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HttpRequestGet();
-            }
-        });
     }
     private void HttpRequestGet() {
         OkHttpClient client=new OkHttpClient.Builder()

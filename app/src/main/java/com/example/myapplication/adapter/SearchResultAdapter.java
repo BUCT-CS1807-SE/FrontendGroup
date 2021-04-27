@@ -1,5 +1,6 @@
 package com.example.myapplication.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // contents of the view with that element
         SearchOutcome data = localDataSet.get(position);
 //        暂时没有图片
-//        viewHolder.getMuseumBriefIcon().setImageDrawable();
+        viewHolder.getMuseumBriefIcon().setImageResource(R.drawable.bg_1);
         viewHolder.getMuseumName().setText(data.getName());
         viewHolder.getMuseumIntro().setText(data.getIntroduction());
         viewHolder.getMuseumTime().setText(data.getOpeningHours());
