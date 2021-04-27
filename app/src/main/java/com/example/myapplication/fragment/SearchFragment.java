@@ -10,10 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.SearchResultAdapter;
+import com.example.myapplication.entity.SearchOutcome;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,6 +40,71 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        //@author 黄熠
+        //初始化博物馆信息RecyclerView
+        ArrayList<SearchOutcome> dataset = new ArrayList<SearchOutcome>(){{
+            add(new SearchOutcome(
+                    "故宫博物院",
+                    "不知道啥类型",
+                    "北京市",
+                    "60",
+                    "8:30 - 17:00",
+                    "无",
+                    "很牛",
+                    "这啥参数啊",
+                    "不知道",
+                    "？？？啥参数",
+                    "故宫博物院是一个博物馆",
+                    "好",
+                    "好",
+                    "好",
+                    "好",
+                    "好"
+            ));
+            add(new SearchOutcome(
+                    "国家博物馆",
+                    "不知道啥类型",
+                    "北京市",
+                    "60",
+                    "8:30 - 17:00",
+                    "无",
+                    "很牛",
+                    "这啥参数啊",
+                    "不知道",
+                    "？？？啥参数",
+                    "国家博物馆是一个博物馆",
+                    "好",
+                    "好",
+                    "好",
+                    "好",
+                    "好"
+            ));
+            add(new SearchOutcome(
+                    "北京博物馆",
+                    "不知道啥类型",
+                    "北京市",
+                    "60",
+                    "8:30 - 17:00",
+                    "无",
+                    "很牛",
+                    "这啥参数啊",
+                    "不知道",
+                    "？？？啥参数",
+                    "北京博物馆是一个博物馆",
+                    "好",
+                    "好",
+                    "好",
+                    "好",
+                    "好"
+            ));
+        }};//假数据
+
+        RecyclerView result = mRootView.findViewById(R.id.searchResult);
+        result.setAdapter(new SearchResultAdapter(dataset));
+        result.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        //--------------------------
+
+
         Button search=mRootView.findViewById(R.id.buttonSearch);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
