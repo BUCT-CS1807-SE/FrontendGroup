@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:id="@+id/menu_add"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        android:src="@drawable/material4" />
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="85dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="195dp"
+        android:text="记录者"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_2"
+        android:layout_width="240dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="240dp"
+        android:text="迟迟钟鼓初长夜，耿耿星河欲曙天"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="260dp"
+        android:layout_marginTop="195dp"
+        android:backgroundTint="@color/white"
+        android:text="编辑资料"
+        android:textColor="#AAAAAA" />
+
+    <View
+        android:layout_width="390dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="280dp"
+        android:background="#AAAAAA" />
+
+    <LinearLayout
+        android:id="@+id/bar2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="285dp"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/liulanlishi"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/material10" />
+
+        <ImageButton
+            android:id="@+id/jiangjie"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/material9" />
+
+        <ImageButton
+            android:id="@+id/shoucang"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/material8" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="40dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="360dp"
+        android:text="收藏"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="40dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="185dp"
+        android:layout_marginTop="360dp"
+        android:text="讲解"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="60dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginTop="360dp"
+        android:text="浏览历史"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+    <View
+        android:layout_width="390dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="400dp"
+        android:background="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="430dp"
+        android:background="#AAAAAA" />
+
+    <TextView
+        android:id="@+id/tv_6"
+        android:layout_width="60dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="435dp"
+        android:text="关于"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/guanyu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="360dp"
+        android:layout_marginTop="430dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/material11" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:layout_marginTop="470dp"
+        android:background="#AAAAAA" />
+
+    <TextView
+        android:id="@+id/tv_7"
+        android:layout_width="100dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="476dp"
+        android:text="用户协议"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/xieyi"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="360dp"
+        android:layout_marginTop="470dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/material11" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:layout_marginTop="510dp"
+        android:background="#AAAAAA"></View>
+
+
+</RelativeLayout>

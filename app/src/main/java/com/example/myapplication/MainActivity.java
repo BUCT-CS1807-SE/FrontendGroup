@@ -7,19 +7,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.myapplication.activity.HomePageActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity" ;
-    private Button btn1,btn2;
+    private Button btnLogin,btnregister;
+    private EditText etAccount,etPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn1=findViewById(R.id.btn_1);
-        btn1.setOnClickListener(this);
-        btn2=findViewById(R.id.btn_2);
-        btn2.setOnClickListener(this);
+        etAccount = findViewById(R.id.et_account);
+        etPassword = findViewById(R.id.et_password);
+        btnregister=findViewById(R.id.btn_1);
+        btnregister.setOnClickListener(this);
+        btnLogin=findViewById(R.id.btn_2);
+        btnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -32,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.btn_2:
-                intent=new Intent(MainActivity.this, LoginActivity.class);
+                intent=new Intent(MainActivity.this, HomePageActivity.class);
                 Log.d(TAG, "onClick: Login");
                 startActivity(intent);
                 break;

@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class LoginActivity extends BaseActivity {
 
-    private Button btnLogin;
+    private Button btnLogin,btnregister;
     private EditText etAccount,etPassword;
 
 
@@ -68,7 +68,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        btnLogin = findViewById(R.id.btn_login);
+        btnLogin = findViewById(R.id.btn_2);
+        btnregister=findViewById(R.id.btn_1);
         etAccount = findViewById(R.id.et_account);
         etPassword = findViewById(R.id.et_password);
     }
@@ -82,6 +83,14 @@ public class LoginActivity extends BaseActivity {
                 String password = etPassword.getText().toString();
 //                login(account, password);
                 navigateToWithFlag(HomePageActivity.class,
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                showToast("登录成功");
+            }
+        });
+        btnregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToWithFlag(RegisterActivity.class,
                         Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 showToast("登录成功");
             }
