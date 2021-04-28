@@ -1,28 +1,23 @@
 package com.example.myapplication.fragment;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
+import com.example.myapplication.entity.Museum;
+import com.example.myapplication.util.NetworkUtils;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 
 public class SearchFragment extends BaseFragment {
-
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         return fragment;
@@ -39,31 +34,16 @@ public class SearchFragment extends BaseFragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpRequestGet();
-            }
-        });
-    }
-    private void HttpRequestGet() {
-        OkHttpClient client=new OkHttpClient.Builder()
-                .build();
-        String url="https://dict.youdao.com/";
-        String plus="w/eng/你好/#keyfrom=dict2.index";
-
-        Request request=new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-        Call call=client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.i("EEE",e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String result=response.body().string();
-                Log.e("EEE",result);
+                Handler handler=new Handler(Looper.myLooper()){
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if(msg.what==1){
+                            List<Museum> museums= (List<Museum>) msg.obj;
+                        }
+                    }
+                };
+                HttpRequestGet(NetworkUtils.ResultType.ALL_MUSEUM,handler);
             }
         });
     }
