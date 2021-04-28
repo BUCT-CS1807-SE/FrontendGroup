@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MuseumIntroActivity;
-import com.example.myapplication.entity.SearchOutcome;
+import com.example.myapplication.entity.Museum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,9 @@ import java.util.List;
  */
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> {
 
-    private ArrayList<SearchOutcome> localDataSet;
+    private ArrayList<Museum> localDataSet;
 
-    public SearchResultAdapter(ArrayList<SearchOutcome> localDataSet) {
+    public SearchResultAdapter(ArrayList<Museum> localDataSet) {
         this.localDataSet = localDataSet;
     }
 
@@ -80,7 +80,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        SearchOutcome data = localDataSet.get(position);
+        Museum data = localDataSet.get(position);
 //        暂时没有图片
         viewHolder.getMuseumBriefIcon().setImageResource(R.drawable.bg_1);
         viewHolder.getMuseumName().setText(data.getName());
