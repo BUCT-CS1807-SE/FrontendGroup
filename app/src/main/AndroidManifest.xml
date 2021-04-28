@@ -38,6 +38,7 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".activity.MuseumIntroActivity" />
 
         <service android:name="com.amap.api.location.APSService" />
 
