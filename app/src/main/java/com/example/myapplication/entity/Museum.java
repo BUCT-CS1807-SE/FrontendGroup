@@ -1,6 +1,6 @@
 package com.example.myapplication.entity;
 
-public class SearchOutcome {
+public class Museum {
     private String name;
     private String type;
     private String address;
@@ -18,7 +18,7 @@ public class SearchOutcome {
     private String cover;
     private String note;
 
-    public SearchOutcome(String name, String type, String address, String ticketPrice, String openingHours, String suggestedtraveltime, String museumlevel, String units, String attractionlevel, String number, String introduction, String scenery, String howtogo, String scenicspotsaround, String cover, String note) {
+    public Museum(String name, String type, String address, String ticketPrice, String openingHours, String suggestedtraveltime, String museumlevel, String units, String attractionlevel, String number, String introduction, String scenery, String howtogo, String scenicspotsaround, String cover, String note) {
         this.name = name;
         this.type = type;
         this.address = address;

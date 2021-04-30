@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
-
+    implementation 'com.alibaba:fastjson:1.1.70.android'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-java:3.2.6'
     implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:3.2.6'
     implementation 'com.github.dueeeke.dkplayer:player-exo:3.2.6'
