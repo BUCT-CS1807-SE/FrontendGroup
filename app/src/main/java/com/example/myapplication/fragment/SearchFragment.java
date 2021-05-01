@@ -49,7 +49,7 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        Button search=mRootView.findViewById(R.id.search);
+       // Button search=mRootView.findViewById(R.id.search);
 
         //@author 黄熠
         //初始化博物馆信息RecyclerView

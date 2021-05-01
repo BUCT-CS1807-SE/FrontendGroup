@@ -1,6 +1,9 @@
 package com.example.myapplication.fragment;
 
 import android.Manifest;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,14 +26,23 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.example.myapplication.Cluster.ClusterClickListener;
+import com.example.myapplication.Cluster.ClusterItem;
+import com.example.myapplication.Cluster.ClusterOverlay;
+import com.example.myapplication.Cluster.ClusterRender;
+import com.example.myapplication.Cluster.RegionItem;
 import com.google.gson.Gson;
 
 import com.example.myapplication.R;
@@ -46,18 +60,19 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.content.ContentValues.TAG;
 
-public class NewsFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener,AMap.OnMarkerClickListener{
+
+public class NewsFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
+        AMap.OnMapLoadedListener, ClusterClickListener {
 
 
 //    private NewsAdapter newsAdapter;
     private List<NewsEntity> datas = new ArrayList<>();
-    private LinearLayoutManager linearLayoutManager;
     private int pageNum = 1;
     private MyLocationStyle myLocationStyle;
     private MapView mapView;
     private AMap aMap;
-
     private boolean followMove=true;
     private LocationSource.OnLocationChangedListener mListener;
     //声明AMapLocationClient类对象
@@ -66,6 +81,12 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
     public AMapLocationClientOption mLocationOption = null;
     private List<Marker> markerList = new ArrayList<>();
     public LinearLayout museumInfo;
+    MarkerOptions markerOptions;
+    private ClusterOverlay mClusterOverlay;
+    private int clusterRadius = 120;
+    private ClusterRender clusterRender;
+    private ClusterClickListener clusterClickListener;
+
     public NewsFragment() {
     }
 
@@ -84,6 +105,8 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
                              Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_news, container, false);
+        clusterRender=this;
+        clusterClickListener=this;
         museumInfo=(LinearLayout)view.findViewById(R.id.museumInfo);
         museumInfo.setVisibility(View.GONE);
         initview(savedInstanceState,view);
@@ -107,7 +130,6 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
 
     }
     private void initview( Bundle savedInstanceState,View view){
-
         mapView= view.findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
@@ -119,14 +141,13 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.setOnMapTouchListener(this);
         aMap.setOnMapClickListener(this);
-        aMap.setOnMarkerClickListener(this);
+        aMap.setOnMapLoadedListener(this);
+//        aMap.setOnMarkerClickListener(this);
         aMap.setLocationSource(this);
         aMap.setMyLocationEnabled(true);
         UiSettings uiSettings =  aMap.getUiSettings();
         uiSettings.setLogoBottomMargin(-150);
     }
-
-
 
     /**
      * 激活定位
@@ -189,7 +210,7 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
 
     @Override
     public void onMapClick(LatLng latLng) {
-        addMarker(latLng);
+
     }
     @Override
     public void onTouch(MotionEvent motionEvent) {
@@ -198,20 +219,49 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
             followMove = false;
         }
         museumInfo.setVisibility(View.GONE);
-        showToast("drag");
     }
 
-    private void addMarker(LatLng latLng) {
-        Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).snippet("DefaultMarker"));
-        markerList.add(marker);
-    }
+//    private void addMarker(LatLng latLng) {
+//        Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("标题").snippet("详细信息").icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+//        marker.showInfoWindow();
+//        markerList.add(marker);
+//    }
+//public  void addMarkersToMap(Context context, AMap aMap, LatLng latlng) {
+//    if (aMap != null) {
+//        View view = View.inflate(context, R.layout.marker_view, null);
+//        TextView textView =  view.findViewById(R.id.tv_libName);
+//        Bitmap bitmap = convertViewToBitmap(view);
+//        markerOptions = new MarkerOptions()
+//                .position(latlng)
+//                .draggable(true)
+//               .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+//               ;
+//        Marker marker = aMap.addMarker(markerOptions);
+//        markerList.add(marker);
+//    }
+//}
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        showToast("点击了marker");
-        museumInfo.setVisibility(View.VISIBLE);
-        return true;
-    }
+//    public static Bitmap convertViewToBitmap(View view) {
+//        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+//        view.buildDrawingCache();
+//        Bitmap bitmap = view.getDrawingCache();
+//        return bitmap;
+//    }
+
+
+//    @Override
+//    public boolean onMarkerClick(Marker marker) {
+//        if (!marker.isInfoWindowShown()) {
+//            //显示
+//            marker.showInfoWindow();
+//        } else {
+//            //隐藏
+//            marker.hideInfoWindow();
+//        }
+//        museumInfo.setVisibility(View.VISIBLE);
+//        return true;
+//    }
     /**
      * 必须重写以下方法
      */
@@ -241,4 +291,65 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
     }
 
 
+    @Override
+    public void onMapLoaded() {
+        //添加测试数据
+        new Thread() {
+            public void run() {
+
+                List<ClusterItem> items = new ArrayList<ClusterItem>();
+
+                //随机100个点
+                for (int i = 0; i < 100; i++) {
+
+                    double lat = Math.random()*50 + 39.474923;
+                    double lon = Math.random()*50 + 116.027116;
+
+                    LatLng latLng = new LatLng(lat, lon, false);
+                    RegionItem regionItem = new RegionItem(latLng,
+                            "test" + i);
+                    items.add(regionItem);
+
+                }
+                mClusterOverlay = new ClusterOverlay(aMap, items,
+                        dp2px(getActivity(), clusterRadius),
+                        getActivity());
+                mClusterOverlay.setClusterRenderer(clusterRender);
+                mClusterOverlay.setOnClusterClickListener(clusterClickListener);
+            }
+
+        }
+
+                .start();
+    }
+
+    @Override
+    public void onClick(Marker marker, List<ClusterItem> clusterItems) {
+        if(clusterItems.size()==1)
+        {
+            showToast("单个博物馆");
+            museumInfo.setVisibility(View.VISIBLE);
+            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 10, 0, 0)));
+//            aMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        }
+        else
+        {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (ClusterItem clusterItem : clusterItems) {
+                builder.include(clusterItem.getPosition());
+            }
+            LatLngBounds latLngBounds = builder.build();
+            aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 10)
+            );
+        }
+    }
+
+    @Override
+    public Drawable getDrawAble(int clusterNum) {
+        return null;
+    }
+    public int dp2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
 }

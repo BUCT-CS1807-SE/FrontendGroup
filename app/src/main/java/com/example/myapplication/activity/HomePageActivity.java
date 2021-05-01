@@ -3,6 +3,8 @@ package com.example.myapplication.activity;
 import android.Manifest;
 import android.os.Build;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.example.myapplication.fragment.SearchFragment;
+import com.example.myapplication.util.NoScrollViewPager;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -45,8 +48,10 @@ public class HomePageActivity extends BaseActivity  {
             R.mipmap.my_selected};
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
     private CommonTabLayout commonTabLayout;
+
+
 
 
     @Override
@@ -56,12 +61,13 @@ public class HomePageActivity extends BaseActivity  {
 
     @Override
     protected void initView() {
-        viewPager = findViewById(R.id.viewpager);
+        viewPager =  findViewById(R.id.viewpager);
         commonTabLayout = findViewById(R.id.commonTabLayout);
     }
 
     @Override
     protected void initData() {
+
         mFragments.add(HomeFragment.newInstance());
         mFragments.add(SearchFragment.newInstance());
         mFragments.add(NewsFragment.newInstance());
@@ -98,6 +104,7 @@ public class HomePageActivity extends BaseActivity  {
             }
         });
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), mTitles, mFragments));
+
         checkingAndroidVersion();
     }
     private void checkingAndroidVersion() {
