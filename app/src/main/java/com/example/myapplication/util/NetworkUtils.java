@@ -26,6 +26,10 @@ import okhttp3.Response;
 import static com.amap.api.navi.AmapNaviPage.TAG;
 
 public class NetworkUtils {
+    /***
+     * 评论的实体类我已经建了 ——黄熠
+     */
+
     public enum ResultType{
         ALL_MUSEUM,
         MUSEUM,

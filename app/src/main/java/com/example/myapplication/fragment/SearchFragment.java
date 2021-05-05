@@ -49,12 +49,13 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-       // Button search=mRootView.findViewById(R.id.search);
+        search=mRootView.findViewById(R.id.search);
 
         //@author 黄熠
         //初始化博物馆信息RecyclerView
         ArrayList<Museum> dataset = new ArrayList<Museum>(){{
             add(new Museum(
+                    1,
                     "故宫博物院",
                     "不知道啥类型",
                     "北京市",
@@ -67,12 +68,13 @@ public class SearchFragment extends BaseFragment {
                     "？？？啥参数",
                     "故宫博物院是一个博物馆",
                     "好",
-                    "好",
+                    "坐地铁到二环外线然后转一号线然后出地铁站进长安街",
                     "好",
                     "好",
                     "好"
             ));
             add(new Museum(
+                    2,
                     "国家博物馆",
                     "不知道啥类型",
                     "北京市",
@@ -91,6 +93,7 @@ public class SearchFragment extends BaseFragment {
                     "好"
             ));
             add(new Museum(
+                    3,
                     "北京博物馆",
                     "不知道啥类型",
                     "北京市",

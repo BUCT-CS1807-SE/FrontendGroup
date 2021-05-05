@@ -99,7 +99,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         super.onBindViewHolder(holder, position, payloads);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), MuseumIntroActivity.class);
-            intent.putExtra("museum_name",holder.getMuseumName().getText().toString());
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("museum",localDataSet.get(position));
+            intent.putExtra("museum_data",bundle);
             holder.itemView.getContext().startActivity(intent);
         });
     }

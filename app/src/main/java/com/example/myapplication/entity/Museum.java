@@ -1,6 +1,9 @@
 package com.example.myapplication.entity;
 
-public class Museum {
+import java.io.Serializable;
+
+public class Museum implements Serializable {
+    private Integer id;
     private String name;
     private String type;
     private String address;
@@ -18,7 +21,8 @@ public class Museum {
     private String cover;
     private String note;
 
-    public Museum(String name, String type, String address, String ticketPrice, String openingHours, String suggestedtraveltime, String museumlevel, String units, String attractionlevel, String number, String introduction, String scenery, String howtogo, String scenicspotsaround, String cover, String note) {
+    public Museum(Integer id, String name, String type, String address, String ticketPrice, String openingHours, String suggestedtraveltime, String museumlevel, String units, String attractionlevel, String number, String introduction, String scenery, String howtogo, String scenicspotsaround, String cover, String note) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.address = address;
@@ -35,6 +39,14 @@ public class Museum {
         Scenicspotsaround = scenicspotsaround;
         this.cover = cover;
         this.note = note;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

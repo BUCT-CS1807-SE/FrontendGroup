@@ -1,15 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/museumTitle"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#F8F8F8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+            <com.youth.banner.Banner
+                android:id="@+id/mBanner"
+                android:layout_width="match_parent"
+                android:layout_height="330dp">
+
+            </com.youth.banner.Banner>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="#fff8f8f8"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="10dp">
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/museum_title"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_margin="10dp"-->
+                <!--                    android:text="一个博物馆"-->
+                <!--                    android:textSize="24sp"-->
+                <!--                    android:textStyle="bold" />-->
+            </androidx.cardview.widget.CardView>
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/briefIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="博物馆简介">
+
+            </com.example.myapplication.view.InfoContainerView>
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/arrive"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="到达方式" />
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/news"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="新闻">
+
+            </com.example.myapplication.view.InfoContainerView>
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/show"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="展览">
+
+            </com.example.myapplication.view.InfoContainerView>
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/rate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="评分" />
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="评论" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="博物馆详情页"
-        tools:layout_editor_absoluteX="151dp"
-        tools:layout_editor_absoluteY="262dp" />
+        android:clickable="true"
+        app:backgroundTint="@color/blue_A700"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.95"
+        app:srcCompat="@mipmap/icon_collect" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
