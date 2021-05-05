@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="TextView"
-        android:textSize="24sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/new_content"
@@ -19,7 +19,7 @@
         android:maxLines="3"
         android:padding="3dp"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/new_author"
@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="2dp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/new_time"
@@ -35,7 +36,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:text="TextView"
-        android:textColor="@color/gray_600" />
+        android:textColor="@color/gray_600"
+        android:textSize="10sp" />
 
     <View
         android:id="@+id/view4"
