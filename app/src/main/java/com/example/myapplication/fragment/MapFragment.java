@@ -1,37 +1,29 @@
 package com.example.myapplication.fragment;
 
-import android.Manifest;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.cardview.widget.CardView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
@@ -43,27 +35,18 @@ import com.example.myapplication.Cluster.ClusterItem;
 import com.example.myapplication.Cluster.ClusterOverlay;
 import com.example.myapplication.Cluster.ClusterRender;
 import com.example.myapplication.Cluster.RegionItem;
-import com.google.gson.Gson;
 
 import com.example.myapplication.R;
 
-import com.example.myapplication.api.Api;
-import com.example.myapplication.api.ApiConfig;
-import com.example.myapplication.api.TtitCallback;
+import com.example.myapplication.RegisterActivity;
+import com.example.myapplication.activity.MuseumIntroActivity;
 import com.example.myapplication.entity.NewsEntity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
-import static android.content.ContentValues.TAG;
-
-
-public class NewsFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
+public class MapFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
         AMap.OnMapLoadedListener, ClusterClickListener {
 
 
@@ -80,18 +63,20 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
     private List<Marker> markerList = new ArrayList<>();
-    public LinearLayout museumInfo;
+    public CardView museumInfo;
     MarkerOptions markerOptions;
     private ClusterOverlay mClusterOverlay;
     private int clusterRadius = 120;
     private ClusterRender clusterRender;
     private ClusterClickListener clusterClickListener;
+    private Button MoreInf;
+    private TextView Libname;
 
-    public NewsFragment() {
+    public MapFragment() {
     }
 
-    public static NewsFragment newInstance() {
-        NewsFragment fragment = new NewsFragment();
+    public static MapFragment newInstance() {
+        MapFragment fragment = new MapFragment();
         return fragment;
     }
 
@@ -107,7 +92,9 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         clusterRender=this;
         clusterClickListener=this;
-        museumInfo=(LinearLayout)view.findViewById(R.id.museumInfo);
+        museumInfo=(CardView) view.findViewById(R.id.museumInfo);
+        MoreInf =(Button)view.findViewById(R.id.button4);
+        Libname=(TextView)view.findViewById(R.id.LibName);
         museumInfo.setVisibility(View.GONE);
         initview(savedInstanceState,view);
         return view;
@@ -127,7 +114,14 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
     @Override
     protected void initData()
     {
-
+        MoreInf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MuseumIntroActivity.class);
+                intent.putExtra("museum_name",Libname.getText());
+                startActivity(intent);
+            }
+        });
     }
     private void initview( Bundle savedInstanceState,View view){
         mapView= view.findViewById(R.id.map);
@@ -327,10 +321,9 @@ public class NewsFragment extends BaseFragment implements AMapLocationListener,L
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
         if(clusterItems.size()==1)
         {
-            showToast("单个博物馆");
+            Libname.setText(clusterItems.get(0).getTitle());
             museumInfo.setVisibility(View.VISIBLE);
             aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 10, 0, 0)));
-//            aMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
         }
         else
         {

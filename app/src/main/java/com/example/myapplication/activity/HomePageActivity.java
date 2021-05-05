@@ -3,17 +3,11 @@ package com.example.myapplication.activity;
 import android.Manifest;
 import android.os.Build;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.NoScrollViewPager;
 import com.flyco.tablayout.CommonTabLayout;
@@ -24,7 +18,7 @@ import com.example.myapplication.adapter.MyPagerAdapter;
 import com.example.myapplication.entity.TabEntity;
 import com.example.myapplication.fragment.HomeFragment;
 import com.example.myapplication.fragment.MyFragment;
-import com.example.myapplication.fragment.NewsFragment;
+import com.example.myapplication.fragment.MapFragment;
 
 import java.util.ArrayList;
 
@@ -70,7 +64,7 @@ public class HomePageActivity extends BaseActivity  {
 
         mFragments.add(HomeFragment.newInstance());
         mFragments.add(SearchFragment.newInstance());
-        mFragments.add(NewsFragment.newInstance());
+        mFragments.add(MapFragment.newInstance());
         mFragments.add(MyFragment.newInstance());
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
