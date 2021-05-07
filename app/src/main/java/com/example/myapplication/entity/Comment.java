@@ -11,6 +11,21 @@ public class Comment implements Serializable {
     private String time;
     private String content;
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", userid=" + userid +
+                ", mumid=" + mumid +
+                ", username='" + username + '\'' +
+                ", time='" + time + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
+
+    public Comment() {
+    }
+
     public Comment(Integer id, Integer userid, Integer mumid, String username, String time, String content) {
         this.id = id;
         this.userid = userid;

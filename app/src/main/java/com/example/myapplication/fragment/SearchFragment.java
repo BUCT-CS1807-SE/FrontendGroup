@@ -139,7 +139,7 @@ public class SearchFragment extends BaseFragment {
                     }
                 }
             };
-            HttpRequestGet(NetworkUtils.ResultType.ALL_MUSEUM,handler);
+            HttpRequestGet(NetworkUtils.ResultType.TEST,handler,"2");
             //@TODO 存入搜索历史
 
         });

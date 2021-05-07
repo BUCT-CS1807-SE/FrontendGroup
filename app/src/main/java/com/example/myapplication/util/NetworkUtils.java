@@ -2,17 +2,20 @@ package com.example.myapplication.util;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.JsonReader;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.Museum;
 
 //import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,17 +34,24 @@ public class NetworkUtils {
      */
 
     public enum ResultType{
-        ALL_MUSEUM,
         MUSEUM,
-        COMMENT;
+        COMMENT,
+        TEST;
     }
     private static final HashMap<ResultType,String> m=new HashMap<ResultType,String>(){{
-        put(ResultType.ALL_MUSEUM,"localhost/dev-api/system/museum/select/all/{id}");
-        put(ResultType.MUSEUM,"localhost/dev-api/system/museum/select/all/{id}");
-        put(ResultType.COMMENT,"localhost/dev-api/system/museum/select/all/{id}");
+        put(ResultType.MUSEUM,"http://8.140.136.108:8080/dev-api/system/museum/select/all/%s");
+        put(ResultType.COMMENT,"http://8.140.136.108:8080/dev-api/system/comments/select/all/%s");
+        put(ResultType.TEST,"http://8.140.136.108:8081/sitemap.json");
     }};
-    public static void HttpRequestGet(ResultType resultType, Handler handler) {
+    public static void HttpRequestGet(ResultType resultType, Handler handler,String... args) {
         String url=m.get(resultType);
+        if(args!=null){
+            Formatter formatter=new Formatter();
+            formatter.format(url,args);
+            url=formatter.toString();
+        }else{
+            url.replaceAll("%s","");
+        }
         OkHttpClient client=new OkHttpClient.Builder()
                 .build();
         Request request=new Request.Builder()
@@ -62,11 +72,30 @@ public class NetworkUtils {
                     String result = response.body().string();
                     JSONObject outcome;
                     outcome = JSON.parseObject(result);
-                    JSONArray data = outcome.getJSONArray("data");
-                    List<Museum> museums=JSON.parseArray(data.toJSONString(),Museum.class);
+                    Object send = null;
+                    switch (resultType){
+                        case MUSEUM:{
+                           JSONArray data = outcome.getJSONArray("rows");
+                           List<Museum> museums=JSON.parseArray(data.toJSONString(),Museum.class);
+                           send=museums;
+                           break;}
+                        case COMMENT:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            List<Comment> comments= JSON.parseArray(data.toJSONString(),Comment.class);
+                            send=comments;
+                            break;
+                        }
+                        case TEST:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            List<Comment> comments= JSON.parseArray(data.toJSONString(),Comment.class);
+                            send=comments;
+                            System.out.println(comments.toString());
+                            break;
+                        }
+                    }
                     Message message = new Message();
                     message.what = 1;
-                    message.obj = museums;
+                    message.obj = send;
                     handler.sendMessage(message);
                     Log.e("EEE", result);
                 }else{
