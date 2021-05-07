@@ -70,6 +70,12 @@
             </com.example.myapplication.view.InfoContainerView>
 
             <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="展品" />
+
+            <com.example.myapplication.view.InfoContainerView
                 android:id="@+id/show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -96,14 +102,12 @@
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:backgroundTint="@color/blue_A700"
+        android:src="@mipmap/more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.95"
-        app:srcCompat="@mipmap/icon_collect" />
+        app:layout_constraintVertical_bias="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

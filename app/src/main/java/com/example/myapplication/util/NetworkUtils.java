@@ -31,9 +31,13 @@ public class NetworkUtils {
      */
 
     public enum ResultType{
-        ALL_MUSEUM,
-        MUSEUM,
-        COMMENT;
+        ALL_MUSEUM, //博物馆查询结果
+        MUSEUM,     //单个博物馆查询
+        COMMENT,    //评论查询
+        USER_COMMENT,//用户评论查询
+        ITEMS,      //藏品查询
+        SHOWS,      //展览查询
+        ;
     }
     private static final HashMap<ResultType,String> m=new HashMap<ResultType,String>(){{
         put(ResultType.ALL_MUSEUM,"localhost/dev-api/system/museum/select/all/{id}");
@@ -44,6 +48,7 @@ public class NetworkUtils {
         String url=m.get(resultType);
         OkHttpClient client=new OkHttpClient.Builder()
                 .build();
+        assert url != null;
         Request request=new Request.Builder()
                 .url(url)
                 .get()

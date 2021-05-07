@@ -8,7 +8,7 @@
         android:id="@+id/new_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="3dp"
         android:text="TextView"
         android:textSize="18sp" />
 
@@ -17,7 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="3"
-        android:padding="3dp"
+        android:padding="1dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="TextView"
         android:textSize="14sp" />
 
@@ -27,6 +29,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:padding="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="TextView"
         android:textSize="12sp" />
 
@@ -35,13 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="TextView"
         android:textColor="@color/gray_600"
         android:textSize="10sp" />
 
     <View
-        android:id="@+id/view4"
+        android:id="@+id/museum_newborder"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/skin_topbar_bg_color" />
+        android:layout_height="1dp"
+        android:background="@color/back" />
 </LinearLayout>

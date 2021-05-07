@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,10 +39,14 @@ import java.util.List;
  */
 public class MuseumIntroActivity extends BaseActivity implements OnBannerListener {
 
+    private final static Integer COMMENT_LIKED = 1;
+    private final static Integer COMMENT_UNLIKED = 2;
+
     private InfoContainerView briefIntro;
     private InfoContainerView news;
     private InfoContainerView arrive;
     private InfoContainerView comment;
+    private InfoContainerView items;
     private InfoContainerView show;
 
     private Banner banner;
@@ -91,6 +96,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         briefIntro.setTitle(museum_name);
         TextView briefIntroduction = new TextView(briefIntro.getContainer().getContext());
         briefIntroduction.setText(museum.getIntroduction());
+        briefIntroduction.setPadding(30,0,30,0);
         briefIntro.addElement(briefIntroduction);
 
         //----------新闻----------
@@ -101,11 +107,15 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         arrive = findViewById(R.id.arrive);
         TextView arrive_view = new TextView(arrive.getContainer().getContext());
         arrive_view.setText(museum.getHowtogo());
+        arrive_view.setPadding(30,0,30,0);
         arrive.addElement(arrive_view);
 
         //----------评论----------
         comment = findViewById(R.id.comment);
         comments = new ArrayList<>();//网络接口完成后，初始化方式放入handler中
+
+        //----------藏品----------
+        items = findViewById(R.id.items);
 
         //----------展览----------
         show = findViewById(R.id.show);
@@ -115,9 +125,11 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     /**
      * 添加评论
      * @author 黄熠
-     * @param comment
+     * @param comment 评论
+     * @param isEnd 是否是最后一个条目，如果是则关闭底部边界
+     * @param isLiked 评论是否已经点过赞
      */
-    public void addComment(Comment comment) {
+    public void addComment(Comment comment,boolean isEnd,boolean isLiked) {
         LinearLayout container = this.comment.getContainer();
         View commentView = LayoutInflater.from(container.getContext()).inflate(R.layout.museum_comment,container,false);
         TextView commentById = commentView.findViewById(R.id.comment_content);
@@ -126,21 +138,48 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         username.setText(comment.getUsername());
         TextView date = commentView.findViewById(R.id.comment_date);
         date.setText(comment.getTime());
+        ImageView like = commentView.findViewById(R.id.comment_like);
+        if (isLiked) {
+            like.setImageResource(R.mipmap.like_active);
+            like.setTag(COMMENT_LIKED);
+        }
+        like.setOnClickListener(v -> {
+            Integer state = (Integer)like.getTag();
+            if (state == COMMENT_LIKED) {
+                like.setImageResource(R.mipmap.like);
+                like.setTag(COMMENT_UNLIKED);
+                //已经点过赞了，取消点赞，下一步向后台提供数据
+
+            } else {
+                like.setImageResource(R.mipmap.like_active);
+                like.setTag(COMMENT_LIKED);
+                //点赞成功，向后台提供数据
+
+            }
+        });
+
+        if (isEnd) {
+            commentView.findViewById(R.id.comment_border).setAlpha(0.0f);
+        }
         this.comment.addElement(commentView);
     }
 
     /**
      * 添加新闻
      * @author 黄熠
-     * @param museumNew
+     * @param museumNew 博物馆
+     * @param isEnd 是否是最后一个条目，如果是则关闭底部边界
      */
-    public void addNew(MuseumNew museumNew) {
+    public void addNew(MuseumNew museumNew,boolean isEnd) {
         LinearLayout container = this.news.getContainer();
         View newsView = LayoutInflater.from(container.getContext()).inflate(R.layout.museum_new,container,false);
         TextView newsTitle = newsView.findViewById(R.id.new_title);
         TextView newsBrief = newsView.findViewById(R.id.new_content);
         TextView newsAuthor = newsView.findViewById(R.id.new_author);
         TextView newsTime = newsView.findViewById(R.id.new_time);
+        if (isEnd) {
+            newsView.findViewById(R.id.museum_newborder).setAlpha(0.0f);
+        }
 
         newsTitle.setText(museumNew.getTitle());
         newsBrief.setText(museumNew.getContent());
@@ -174,14 +213,22 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     }
 
     private void initComments() {
-        for (Comment comment1 : comments) {
-            addComment(comment1);
+        for (int i = 0; i < comments.size(); i++) {
+            if (i == comments.size()-1) {
+                addComment(comments.get(i),true,true);
+            } else {
+                addComment(comments.get(i),false,false);
+            }
         }
     }
 
     private void initNews() {
-        for (MuseumNew aNew : museumNews) {
-            addNew(aNew);
+        for (int i = 0; i < museumNews.size(); i++) {
+            if (i == museumNews.size()-1) {
+                addNew(museumNews.get(i),true);
+            } else {
+                addNew(museumNews.get(i),false);
+            }
         }
     }
 
