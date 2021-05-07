@@ -34,9 +34,14 @@ public class NetworkUtils {
      */
 
     public enum ResultType{
-        MUSEUM,
-        COMMENT,
-        TEST;
+        ALL_MUSEUM, //博物馆查询结果
+        MUSEUM,     //单个博物馆查询
+        COMMENT,    //评论查询
+        USER_COMMENT,//用户评论查询
+        ITEMS,      //藏品查询
+        SHOWS,      //展览查询
+        TEST,       //测试
+        ;
     }
     private static final HashMap<ResultType,String> m=new HashMap<ResultType,String>(){{
         put(ResultType.MUSEUM,"http://8.140.136.108:8080/dev-api/system/museum/select/all/%s");
@@ -54,6 +59,7 @@ public class NetworkUtils {
         }
         OkHttpClient client=new OkHttpClient.Builder()
                 .build();
+        assert url != null;
         Request request=new Request.Builder()
                 .url(url)
                 .get()
