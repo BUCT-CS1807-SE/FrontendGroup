@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="n">
-        <activity android:name=".activity.WebViewActivity"></activity>
+        <activity android:name=".activity.RouteActivity"></activity>
+        <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,12 +43,13 @@
 
         <service android:name="com.amap.api.location.APSService" />
 
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="898658e7c87df1d106695afda0477d66" />
+        <!--设置高德Key-->
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="188ab1c7647a420eab4ee213ebec0e75"/>
+
     </application>
 
 </manifest>

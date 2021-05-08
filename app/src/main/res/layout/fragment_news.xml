@@ -218,6 +218,30 @@
 
         </androidx.cardview.widget.CardView>
 
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp">
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/et_bg"
+                android:hint="请输入地址"
+                android:imeOptions="actionSearch"
+                android:paddingStart="12dp"
+                android:singleLine="true"
+                android:textColor="#000"
+                android:textSize="14sp" />
+        </androidx.appcompat.widget.Toolbar>
+
+
         <com.amap.api.maps.MapView
 
             android:id="@+id/map"
@@ -227,6 +251,21 @@
             android:layout_height="match_parent">
 
         </com.amap.api.maps.MapView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/fab_poi"
+            android:clickable="true"
+            android:onClick="jumpRouteActivity"
+            android:src="@drawable/icon_route"
+            app:backgroundTint="#FFF"
+            app:backgroundTintMode="screen"
+            app:fabSize="mini"
+            app:hoveredFocusedTranslationZ="18dp"
+            app:pressedTranslationZ="18dp"
+            tools:ignore="MissingConstraints,OnClick,UnknownId" />
     </RelativeLayout>
 
 </LinearLayout>

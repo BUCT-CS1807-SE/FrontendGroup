@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +33,13 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.example.myapplication.Cluster.ClusterClickListener;
 import com.example.myapplication.Cluster.ClusterItem;
 import com.example.myapplication.Cluster.ClusterOverlay;
@@ -40,6 +50,7 @@ import com.example.myapplication.R;
 
 import com.example.myapplication.RegisterActivity;
 import com.example.myapplication.activity.MuseumIntroActivity;
+import com.example.myapplication.activity.RouteActivity;
 import com.example.myapplication.entity.NewsEntity;
 
 import java.util.ArrayList;
@@ -47,7 +58,7 @@ import java.util.List;
 
 
 public class MapFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
-        AMap.OnMapLoadedListener, ClusterClickListener {
+        AMap.OnMapLoadedListener, ClusterClickListener, View.OnKeyListener , GeocodeSearch.OnGeocodeSearchListener {
 
 
 //    private NewsAdapter newsAdapter;
@@ -71,6 +82,11 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private ClusterClickListener clusterClickListener;
     private Button MoreInf;
     private TextView Libname;
+    private EditText etAddress;//目的地输入框
+    private String city;
+    private static final int PARSE_SUCCESS_CODE = 1000;//解析成功标识码
+    private GeocodeSearch geocodeSearch;//地理编码搜索
+
 
     public MapFragment() {
     }
@@ -124,6 +140,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         });
     }
     private void initview( Bundle savedInstanceState,View view){
+        etAddress=view.findViewById(R.id.et_address);
+        etAddress.setOnKeyListener(this);
         mapView= view.findViewById(R.id.map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
@@ -180,6 +198,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
      *
      * @param aMapLocation
      */
+
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (mListener != null&&aMapLocation != null) {
@@ -191,6 +210,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 StringBuffer stringBuffer = new StringBuffer();
                 stringBuffer.append("纬度"+latidude+"\n");
                 stringBuffer.append("经度"+longitude+"\n");
+                city = aMapLocation.getCity();
                 if (followMove) {
                     aMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(latidude,longitude)));
                 }
@@ -214,6 +234,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         }
         museumInfo.setVisibility(View.GONE);
     }
+
 
 //    private void addMarker(LatLng latLng) {
 //        Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("标题").snippet("详细信息").icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
@@ -345,4 +366,63 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+            //获取输入框的值
+            String address = etAddress.getText().toString().trim();
+            if (address == null || address.isEmpty()) {
+                //showMsg("请输入地址");
+            } else {
+                //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                //隐藏软键盘
+                //imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+
+                // name表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode
+                GeocodeQuery query = new GeocodeQuery(address, city);
+                geocodeSearch.getFromLocationNameAsyn(query);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
+        //解析result获取地址描述信息
+        if (rCode == PARSE_SUCCESS_CODE) {
+            RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+            //显示解析后的地址
+            Log.d("MainActivity", regeocodeAddress.getFormatAddress());
+            //showMsg("地址：" + regeocodeAddress.getFormatAddress());
+
+            LatLonPoint latLonPoint = regeocodeResult.getRegeocodeQuery().getPoint();
+            LatLng latLng = new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
+            //addMarker(latLng);
+        } else {
+            Log.d("fail","获取地址失败");
+        }
+
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int rCode) {
+        if (rCode == PARSE_SUCCESS_CODE) {
+            List<GeocodeAddress> geocodeAddressList = geocodeResult.getGeocodeAddressList();
+            if (geocodeAddressList != null && geocodeAddressList.size() > 0) {
+                LatLonPoint latLonPoint = geocodeAddressList.get(0).getLatLonPoint();
+                //显示解析后的坐标
+                //showMsg("坐标：" + latLonPoint.getLongitude() + "，" + latLonPoint.getLatitude());
+            }
+
+        } else {
+            //showMsg("获取坐标失败");
+        }
+
+
+    }
+
+
 }
