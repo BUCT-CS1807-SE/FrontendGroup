@@ -7,21 +7,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumNew;
-import com.example.myapplication.entity.NewsEntity;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.view.InfoContainerView;
 import com.youth.banner.Banner;
@@ -31,7 +30,6 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 博物馆详情页
@@ -48,12 +46,16 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private InfoContainerView comment;
     private InfoContainerView items;
     private InfoContainerView show;
+    private InfoContainerView grade;
 
     private Banner banner;
     private ArrayList<String> list_path;
 
     private ArrayList<Comment> comments;
     private ArrayList<MuseumNew> museumNews;
+    private float score_environment=2;
+    private float score_service=2;
+    private float score_show=2;
 
     private Museum museum;
 
@@ -110,6 +112,12 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         arrive_view.setPadding(30,0,30,0);
         arrive.addElement(arrive_view);
 
+        //----------评分----------
+        grade = findViewById(R.id.grade);
+        View grade_view = LayoutInflater.from(grade.getContainer().getContext()).inflate(R.layout.museum_grade,grade.getContainer(),false);
+        addGrade(grade_view);
+        grade.addElement(grade_view);
+
         //----------评论----------
         comment = findViewById(R.id.comment);
         comments = new ArrayList<>();//网络接口完成后，初始化方式放入handler中
@@ -165,11 +173,58 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     }
 
     /**
+     * @author Zhy
+     * @param grade_view
+     */
+    public void addGrade(View grade_view){
+
+        RatingBar grade_environment = grade_view.findViewById(R.id.ratingBar_environment);
+        grade_environment.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                score_environment=rating;
+                Log.d("Score_Environment", "onRatingChanged: "+String.valueOf(rating));
+
+            }
+        });
+
+        RatingBar grade_service = grade_view.findViewById(R.id.ratingBar_service);
+        grade_service.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                score_service=rating;
+                Log.d("Score_Service", "onRatingChanged: "+String.valueOf(rating));
+
+            }
+        });
+
+        RatingBar grade_show = grade_view.findViewById(R.id.ratingBar_show);
+        grade_show.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+               score_show=rating;
+                Log.d("Score_Show", "onRatingChanged: "+String.valueOf(rating));
+            }
+        });
+
+        Button button = grade_view.findViewById(R.id.grade_commit);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MuseumIntroActivity.this,"score_environment:"+String.valueOf(score_environment)+" score_service:"+String.valueOf(score_service)+" score_show:"+String.valueOf(score_show),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    /**
      * 添加新闻
      * @author 黄熠
      * @param museumNew 博物馆
      * @param isEnd 是否是最后一个条目，如果是则关闭底部边界
      */
+
     public void addNew(MuseumNew museumNew,boolean isEnd) {
         LinearLayout container = this.news.getContainer();
         View newsView = LayoutInflater.from(container.getContext()).inflate(R.layout.museum_new,container,false);
