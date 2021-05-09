@@ -21,6 +21,9 @@ public class Museum implements Serializable {
     private String cover;
     private String note;
 
+    public Museum() {
+    }
+
     public Museum(Integer id, String name, String type, String address, String ticketPrice, String openingHours, String suggestedtraveltime, String museumlevel, String units, String attractionlevel, String number, String introduction, String scenery, String howtogo, String scenicspotsaround, String cover, String note) {
         this.id = id;
         this.name = name;

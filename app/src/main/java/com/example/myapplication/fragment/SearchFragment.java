@@ -53,69 +53,9 @@ public class SearchFragment extends BaseFragment {
 
         //@author 黄熠
         //初始化博物馆信息RecyclerView
-        ArrayList<Museum> dataset = new ArrayList<Museum>(){{
-            add(new Museum(
-                    1,
-                    "故宫博物院",
-                    "不知道啥类型",
-                    "北京市",
-                    "60",
-                    "8:30 - 17:00",
-                    "无",
-                    "很牛",
-                    "这啥参数啊",
-                    "不知道",
-                    "？？？啥参数",
-                    "故宫博物院是一个博物馆",
-                    "好",
-                    "坐地铁到二环外线然后转一号线然后出地铁站进长安街",
-                    "好",
-                    "好",
-                    "好"
-            ));
-            add(new Museum(
-                    2,
-                    "国家博物馆",
-                    "不知道啥类型",
-                    "北京市",
-                    "60",
-                    "8:30 - 17:00",
-                    "无",
-                    "很牛",
-                    "这啥参数啊",
-                    "不知道",
-                    "？？？啥参数",
-                    "国家博物馆是一个博物馆",
-                    "好",
-                    "好",
-                    "好",
-                    "好",
-                    "好"
-            ));
-            add(new Museum(
-                    3,
-                    "北京博物馆",
-                    "不知道啥类型",
-                    "北京市",
-                    "60",
-                    "8:30 - 17:00",
-                    "无",
-                    "很牛",
-                    "这啥参数啊",
-                    "不知道",
-                    "？？？啥参数",
-                    "北京博物馆是一个博物馆",
-                    "好",
-                    "好",
-                    "好",
-                    "好",
-                    "好"
-            ));
-        }};//假数据
 
-        result = mRootView.findViewById(R.id.searchResult);
-        result.setAdapter(new SearchResultAdapter(dataset));
-        result.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+
         //--------------------------
 
 
@@ -128,7 +68,6 @@ public class SearchFragment extends BaseFragment {
                 showToast("请输入搜索关键字");
                 return;
             }
-
             //@TODO 搜索,网络发起请求并调用adapter展示
             Handler handler=new Handler(Looper.myLooper()){
                 @Override
@@ -136,10 +75,14 @@ public class SearchFragment extends BaseFragment {
                     super.handleMessage(msg);
                     if(msg.what==1){
                         List<Museum> museums= (List<Museum>) msg.obj;
+                        System.out.println(museums.toString());
+                        result = mRootView.findViewById(R.id.searchResult);
+                        result.setAdapter(new SearchResultAdapter((ArrayList<Museum>) museums));
+                        result.setLayoutManager(new LinearLayoutManager(SearchFragment.this.getContext()));
                     }
                 }
             };
-            HttpRequestGet(NetworkUtils.ResultType.TEST,handler,"2");
+            HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
             //@TODO 存入搜索历史
 
         });

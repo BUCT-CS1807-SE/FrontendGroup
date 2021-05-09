@@ -44,8 +44,8 @@ public class NetworkUtils {
         ;
     }
     private static final HashMap<ResultType,String> m=new HashMap<ResultType,String>(){{
-        put(ResultType.MUSEUM,"http://8.140.136.108:8080/dev-api/system/museum/select/all/%s");
-        put(ResultType.COMMENT,"http://8.140.136.108:8080/dev-api/system/comments/select/all/%s");
+        put(ResultType.MUSEUM,"http://8.140.136.108:8080/system/museum/select/all/%s");
+        put(ResultType.COMMENT,"http://8.140.136.108:8080/system/comments/select/all/%s");
         put(ResultType.TEST,"http://8.140.136.108:8081/sitemap.json");
     }};
     public static void HttpRequestGet(ResultType resultType, Handler handler,String... args) {
@@ -54,6 +54,7 @@ public class NetworkUtils {
             Formatter formatter=new Formatter();
             formatter.format(url,args);
             url=formatter.toString();
+            System.out.println(url);
         }else{
             url.replaceAll("%s","");
         }
@@ -82,9 +83,12 @@ public class NetworkUtils {
                     switch (resultType){
                         case MUSEUM:{
                            JSONArray data = outcome.getJSONArray("rows");
+
                            List<Museum> museums=JSON.parseArray(data.toJSONString(),Museum.class);
                            send=museums;
-                           break;}
+                           System.out.println(museums.toString());
+                           break;
+                        }
                         case COMMENT:{
                             JSONArray data = outcome.getJSONArray("rows");
                             List<Comment> comments= JSON.parseArray(data.toJSONString(),Comment.class);
