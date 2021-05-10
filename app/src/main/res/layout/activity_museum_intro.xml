@@ -84,7 +84,7 @@
             </com.example.myapplication.view.InfoContainerView>
 
             <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/rate"
+                android:id="@+id/grade"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:title="评分" />

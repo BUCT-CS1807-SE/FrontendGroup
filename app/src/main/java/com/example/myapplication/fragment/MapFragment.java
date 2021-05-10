@@ -41,6 +41,9 @@ import com.example.myapplication.R;
 import com.example.myapplication.RegisterActivity;
 import com.example.myapplication.activity.MuseumIntroActivity;
 import com.example.myapplication.entity.NewsEntity;
+import com.example.myapplication.xpopup.MapBottom;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,8 +207,13 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapClick(LatLng latLng) {
-
+        new XPopup.Builder(getActivity())
+                .popupPosition(PopupPosition.Right)//右边
+                .hasStatusBarShadow(true) //启用状态栏阴影
+                .asCustom(new MapBottom(getActivity()))
+                .show();
     }
+
     @Override
     public void onTouch(MotionEvent motionEvent) {
         if (followMove) {

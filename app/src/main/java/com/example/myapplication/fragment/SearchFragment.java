@@ -68,6 +68,7 @@ public class SearchFragment extends BaseFragment {
                 showToast("请输入搜索关键字");
                 return;
             }
+
             //@TODO 搜索,网络发起请求并调用adapter展示
             Handler handler=new Handler(Looper.myLooper()){
                 @Override

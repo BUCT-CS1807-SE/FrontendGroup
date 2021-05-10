@@ -11,15 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <androidx.constraintlayout.utils.widget.ImageFilterView
-            android:id="@+id/imageFilterView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="top"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            app:roundPercent="50.0"
-            app:srcCompat="@mipmap/header" />
+<!--        <androidx.constraintlayout.utils.widget.ImageFilterView-->
+<!--            android:id="@+id/imageFilterView"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_gravity="top"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            app:roundPercent="50.0"-->
+<!--            app:srcCompat="@mipmap/header"-->
+<!--            />-->
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,8 +1,10 @@
 package com.example.myapplication.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -133,6 +135,13 @@ public class HomePageActivity extends BaseActivity  {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //设置权限请求结果
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+    /**
+     * 进入路线规划
+     * @param view
+     */
+    public void jumpRouteActivity(View view) {
+        startActivity(new Intent(this,RouteActivity.class));
     }
 
 
