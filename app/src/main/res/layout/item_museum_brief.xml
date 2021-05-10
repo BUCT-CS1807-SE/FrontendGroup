@@ -8,32 +8,30 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="7dp"
+        android:layout_height="140dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
         android:focusable="true"
         android:foreground="@drawable/card_foreground"
         android:longClickable="false"
-        android:paddingTop="15dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="15dp"
         app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
         app:cardPreventCornerOverlap="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="8dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.33" />
+                app:layout_constraintGuide_percent="0.3" />
 
             <ImageView
                 android:id="@+id/museum_brief_icon"
@@ -44,7 +42,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/bg_1" />
+                tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -64,10 +62,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:paddingLeft="6dp"
                     android:singleLine="true"
                     android:text="故宫博物院"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:textSize="24sp" />
 
                 <View
                     android:id="@+id/view"
@@ -78,12 +77,13 @@
                 <TextView
                     android:id="@+id/museun_intro"
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:lines="3"
                     android:padding="6dp"
                     android:text="故宫博物馆，又称盛京皇宫，在清代则称盛京宫殿、陪都宫殿或留都宫殿等。其始建于努尔哈赤时期的1625年，建成于皇太极时期的1636年。 后经康熙、乾隆皇帝不断地改建、增建，形成了今日共有宫殿亭台楼阁斋堂等建筑一百余座，屋宇五百余间，占地面积达六万平方米的格局面貌。这是清王朝亲手缔造的第一座大气庄严的帝王宫殿建筑群，其浓郁多姿的满族民族风格和中国东北地方特色，都是北京明清故宫所无法比拟的。"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/museum_time"

@@ -2,37 +2,53 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="@style/Theme.AppCompat.DayNight.NoActionBar"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/searchHistory"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="#808080" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="历史记录" />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="0dp"
         android:background="@color/skin_topbar_bg_color"
         android:elevation="2dp"
         android:gravity="center"
         android:layoutDirection="ltr"
         android:orientation="horizontal"
         android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="39dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:background="@drawable/shape_search_box"
@@ -43,15 +59,13 @@
                 android:id="@+id/searchKey"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:drawableBottom="@color/white"
                 android:ems="10"
                 android:hint="搜索"
                 android:inputType="textPersonName"
+                android:paddingLeft="10dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/skin_topbar_bg_color" />
 
@@ -79,8 +93,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchHistory">
+        app:layout_constraintTop_toTopOf="@+id/guideline3">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18878248" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

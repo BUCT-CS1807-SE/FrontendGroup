@@ -48,6 +48,11 @@ public class NetworkUtils {
         put(ResultType.COMMENT,"http://8.140.136.108:8080/system/comments/select/all/%s");
         put(ResultType.TEST,"http://8.140.136.108:8081/sitemap.json");
     }};
+
+    public static void HttpRequestPost(){
+
+    }
+
     public static void HttpRequestGet(ResultType resultType, Handler handler,String... args) {
         String url=m.get(resultType);
         if(args!=null){
@@ -83,7 +88,6 @@ public class NetworkUtils {
                     switch (resultType){
                         case MUSEUM:{
                            JSONArray data = outcome.getJSONArray("rows");
-
                            List<Museum> museums=JSON.parseArray(data.toJSONString(),Museum.class);
                            send=museums;
                            System.out.println(museums.toString());
@@ -107,7 +111,6 @@ public class NetworkUtils {
                     message.what = 1;
                     message.obj = send;
                     handler.sendMessage(message);
-                    Log.e("EEE", result);
                 }else{
                     Message message = new Message();
                     message.what=0;

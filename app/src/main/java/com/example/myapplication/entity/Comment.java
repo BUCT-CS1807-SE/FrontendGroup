@@ -20,6 +20,9 @@ public class Comment implements Serializable {
         this.content = content;
     }
 
+    public Comment() {
+    }
+
     public Integer getId() {
         return id;
     }

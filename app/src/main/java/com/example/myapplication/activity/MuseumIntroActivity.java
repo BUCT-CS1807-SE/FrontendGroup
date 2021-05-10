@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +17,19 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumNew;
+import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.ImageUtils;
+import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.InfoContainerView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -30,6 +38,9 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 
 /**
  * 博物馆详情页
@@ -120,7 +131,18 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //----------评论----------
         comment = findViewById(R.id.comment);
-        comments = new ArrayList<>();//网络接口完成后，初始化方式放入handler中
+        comments=null;//网络接口完成后，初始化方式放入handler中
+        Handler handler=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    comments= (ArrayList<Comment>) msg.obj;
+                    initComments();
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handler,"1");
 
         //----------藏品----------
         items = findViewById(R.id.items);
@@ -254,12 +276,12 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     @Override
     protected void initData() {
         //------------数   据   造   假-------------
-        comments.add(new Comment(0,1,1,"路人甲","201-5-3","好家伙"));
-        comments.add(new Comment(1,2,1,"路人乙","201-5-3","针不辍"));
-        comments.add(new Comment(2,3,1,"路人丙","201-5-3","zhou，去吃锅"));
-        comments.add(new Comment(3,4,1,"啊这","201-5-3","啊这"));
-        comments.add(new Comment(4,5,1,"这啊","201-5-3","这啊"));
-        initComments();
+//        comments.add(new Comment(0,1,1,"路人甲","201-5-3","好家伙"));
+//        comments.add(new Comment(1,2,1,"路人乙","201-5-3","针不辍"));
+//        comments.add(new Comment(2,3,1,"路人丙","201-5-3","zhou，去吃锅"));
+//        comments.add(new Comment(3,4,1,"啊这","201-5-3","啊这"));
+//        comments.add(new Comment(4,5,1,"这啊","201-5-3","这啊"));
+//        initComments();
 
         museumNews.add(new MuseumNew(0,"这个博物馆出大事了","小编","2021-5-15","www.jd.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName()));
         museumNews.add(new MuseumNew(1,"这个博物馆出大事了","小编","2021-5-15","www.taobao.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName()));
