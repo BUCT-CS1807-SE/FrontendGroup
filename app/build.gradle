@@ -63,4 +63,6 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
     // Glide 图片加载
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 }
