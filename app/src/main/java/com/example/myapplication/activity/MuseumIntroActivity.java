@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
 
 /**
  * 博物馆详情页
@@ -132,7 +133,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         //----------评论----------
         comment = findViewById(R.id.comment);
         comments=null;//网络接口完成后，初始化方式放入handler中
-        Handler handler=new Handler(Looper.myLooper()){
+        Handler handlerGet=new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -142,8 +143,20 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
             }
         };
-        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handler,"1");
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handlerGet,museum.getId().toString());
 
+        Handler handlerPost=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    showToastSync("评论成功");
+                } else {
+                    showToastSync("提交评论失败");
+                }
+            }
+        };
+        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,handlerPost);
         //----------藏品----------
         items = findViewById(R.id.items);
 
