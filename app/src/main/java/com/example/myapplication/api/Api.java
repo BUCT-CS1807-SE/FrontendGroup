@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.myapplication.LoginActivity;
 import com.example.myapplication.util.StringUtils;
 
 import org.json.JSONException;

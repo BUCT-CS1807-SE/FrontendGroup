@@ -38,7 +38,6 @@
         <activity
             android:name=".activity.HomePageActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".activity.MuseumIntroActivity" />
 
