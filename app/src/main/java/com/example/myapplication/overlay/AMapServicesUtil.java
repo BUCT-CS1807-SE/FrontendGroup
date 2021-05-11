@@ -39,7 +39,7 @@ class AMapServicesUtil {
 	public static ArrayList<LatLng> convertArrList(List<LatLonPoint> shapes) {
 		ArrayList<LatLng> lineShapes = new ArrayList<LatLng>();
 		for (LatLonPoint point : shapes) {
-			LatLng latLngTemp = AMapServicesUtil.convertToLatLng(point);
+			LatLng latLngTemp = com.example.myapplication.overlay.AMapServicesUtil.convertToLatLng(point);
 			lineShapes.add(latLngTemp);
 		}
 		return lineShapes;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.myapplication.LoginActivity;
 import com.example.myapplication.util.StringUtils;
 
 import org.json.JSONException;
@@ -98,16 +97,16 @@ public class Api {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String result = response.body().string();
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String code = jsonObject.getString("code");
-                    if (code.equals("401")) {
-                        Intent in = new Intent(context, LoginActivity.class);
-                        context.startActivity(in);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    JSONObject jsonObject = new JSONObject(result);
+//                    String code = jsonObject.getString("code");
+//                    if (code.equals("401")) {
+//                        Intent in = new Intent(context, LoginActivity.class);
+//                        context.startActivity(in);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
                 callback.onSuccess(result);
             }
         });

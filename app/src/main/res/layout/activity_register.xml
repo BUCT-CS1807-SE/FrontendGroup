@@ -3,129 +3,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_1"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="30dp"
-        android:text="注册"
-        android:textColor="@color/black"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_1"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="150dp"
-        android:background="@drawable/edit_text_bg2"
-        android:ems="10"
-        android:hint="请输入手机号"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        tools:ignore="RtlSymmetry" />
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="8dp"
+            android:text="注册"
+            android:textColor="@color/black"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
-    <EditText
-        android:id="@+id/et_2"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="265dp"
-        android:background="@drawable/edit_text_bg2"
-        android:ems="10"
-        android:hint="请输入用户名"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        tools:ignore="RtlSymmetry" />
+        <EditText
+            android:id="@+id/et_1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/edit_text_bg2"
+            android:ems="10"
+            android:hint="请输入手机号"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
 
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:text="手机号"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/et_3"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="380dp"
-        android:background="@drawable/edit_text_bg2"
-        android:ems="10"
-        android:hint="请输入出生日期"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        tools:ignore="RtlSymmetry" />
+        <EditText
+            android:id="@+id/et_2"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg2"
+            android:ems="10"
+            android:hint="请输入用户名"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
 
-    <EditText
-        android:id="@+id/et_4"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="490dp"
-        android:background="@drawable/edit_text_bg2"
-        android:ems="10"
-        android:hint="请输入电子邮箱"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        tools:ignore="RtlSymmetry" />
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:text="用户名"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <EditText
+            android:id="@+id/et_3"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg2"
+            android:ems="10"
+            android:hint="请输入密码"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
 
-    <Button
-        android:id="@+id/btn_1"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="60dp"
-        android:layout_marginTop="600dp"
-        android:background="@drawable/btn1_bg"
-        android:backgroundTint="#A55528"
-        android:text="提交"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:text="密码"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_2"
-        android:layout_width="60dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="215dp"
-        android:text="手机号"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_4"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg2"
+            android:ems="10"
+            android:hint="请输入出生日期"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
 
-    <TextView
-        android:id="@+id/tv_3"
-        android:layout_width="60dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="330dp"
-        android:text="用户名"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_5"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:text="出生日期"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_4"
-        android:layout_width="70dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="445dp"
-        android:text="出生日期"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_5"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg2"
+            android:ems="10"
+            android:hint="请输入电子邮箱"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry" />
 
-    <TextView
-        android:id="@+id/tv_5"
-        android:layout_width="70dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="550dp"
-        android:text="电子邮箱"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_6"
+            android:layout_width="70dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:text="电子邮箱"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_1"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn1_bg"
+            android:backgroundTint="#A55528"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </RelativeLayout>

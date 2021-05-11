@@ -1,6 +1,6 @@
 package com.example.myapplication.overlay;
 
-import java.util.List;
+import android.content.Context;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptor;
@@ -11,7 +11,7 @@ import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkStep;
 
-import android.content.Context;
+import java.util.List;
 
 /**
  * 步行路线图层类。在高德地图API里，如果要显示步行路线规划，可以用此类来创建步行路线图层。如不满足需求，也可以自己创建自定义的步行路线图层。
@@ -34,7 +34,7 @@ public class WalkRouteOverlay extends RouteOverlay {
 	 * @since V2.1.0
 	 */
 	public WalkRouteOverlay(Context context, AMap amap, WalkPath path,
-							LatLonPoint start, LatLonPoint end) {
+                          LatLonPoint start, LatLonPoint end) {
 		super(context);
 		this.mAMap = amap;
 		this.walkPath = path;
@@ -71,7 +71,7 @@ public class WalkRouteOverlay extends RouteOverlay {
 	 * 检查这一步的最后一点和下一步的起始点之间是否存在空隙
 	 */
 	private void checkDistanceToNextStep(WalkStep walkStep,
-										 WalkStep walkStep1) {
+                                       WalkStep walkStep1) {
 		LatLonPoint lastPoint = getLastWalkPoint(walkStep);
 		LatLonPoint nextFirstPoint = getFirstWalkPoint(walkStep1);
 		if (!(lastPoint.equals(nextFirstPoint))) {
