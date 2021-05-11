@@ -113,6 +113,37 @@ public class Api {
         });
     }
 
+    public void getRequest( final TtitCallback callback) {
+        String url = getAppendUrl(requestUrl, mParams);
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure", e.getMessage());
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String result = response.body().string();
+//                try {
+//                    JSONObject jsonObject = new JSONObject(result);
+//                    String code = jsonObject.getString("code");
+//                    if (code.equals("401")) {
+//                        Log.e("onFailure", e.getMessage());
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                callback.onSuccess(result);
+            }
+        });
+    }
+
     private String getAppendUrl(String url, Map<String, Object> map) {
         if (map != null && !map.isEmpty()) {
             StringBuffer buffer = new StringBuffer();

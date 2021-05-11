@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -38,15 +37,23 @@ import com.example.myapplication.Cluster.RegionItem;
 
 import com.example.myapplication.R;
 
-import com.example.myapplication.RegisterActivity;
 import com.example.myapplication.activity.MuseumIntroActivity;
-import com.example.myapplication.entity.NewsEntity;
+import com.example.myapplication.api.Api;
+import com.example.myapplication.api.ApiConfig;
+import com.example.myapplication.api.TtitCallback;
+import com.example.myapplication.entity.MapListResponse;
+import com.example.myapplication.entity.RowsDTO;
+import com.example.myapplication.util.StringUtils;
 import com.example.myapplication.xpopup.MapBottom;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 
 public class MapFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
@@ -54,7 +61,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
 
 //    private NewsAdapter newsAdapter;
-    private List<NewsEntity> datas = new ArrayList<>();
+    List<RowsDTO> datas =new ArrayList<>();
     private int pageNum = 1;
     private MyLocationStyle myLocationStyle;
     private MapView mapView;
@@ -72,8 +79,10 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private int clusterRadius = 120;
     private ClusterRender clusterRender;
     private ClusterClickListener clusterClickListener;
-    private Button MoreInf;
     private TextView Libname;
+    private Boolean FirstLoaded;
+    private FloatingActionButton nearButton;
+    private MapBottom mapBottom =null;
 
     public MapFragment() {
     }
@@ -95,10 +104,11 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         clusterRender=this;
         clusterClickListener=this;
-        museumInfo=(CardView) view.findViewById(R.id.museumInfo);
-        MoreInf =(Button)view.findViewById(R.id.button4);
-        Libname=(TextView)view.findViewById(R.id.LibName);
+        museumInfo=(CardView) view.findViewById(R.id.component1);
+        Libname=(TextView)view.findViewById(R.id.textView2);
+        nearButton=view.findViewById(R.id.fab_poi);
         museumInfo.setVisibility(View.GONE);
+        FirstLoaded=false;
         initview(savedInstanceState,view);
         return view;
     }
@@ -117,7 +127,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     @Override
     protected void initData()
     {
-        MoreInf.setOnClickListener(new View.OnClickListener() {
+        Libname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MuseumIntroActivity.class);
@@ -125,9 +135,23 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 startActivity(intent);
             }
         });
+        nearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mapBottom==null)
+                    mapBottom=new MapBottom(getActivity());
+                new XPopup.Builder(getActivity())
+                        .popupPosition(PopupPosition.Right)//右边
+                        .hasStatusBarShadow(true) //启用状态栏阴影
+                        .asCustom(mapBottom)
+                        .show();
+            }
+        });
+
+
     }
     private void initview( Bundle savedInstanceState,View view){
-        mapView= view.findViewById(R.id.map);
+        mapView= view.findViewById(R.id.map_view);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
         //初始化地图控制器对象
@@ -144,6 +168,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         aMap.setMyLocationEnabled(true);
         UiSettings uiSettings =  aMap.getUiSettings();
         uiSettings.setLogoBottomMargin(-150);
+        uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setScaleControlsEnabled(true);
     }
 
     /**
@@ -207,11 +233,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapClick(LatLng latLng) {
-        new XPopup.Builder(getActivity())
-                .popupPosition(PopupPosition.Right)//右边
-                .hasStatusBarShadow(true) //启用状态栏阴影
-                .asCustom(new MapBottom(getActivity()))
-                .show();
+
     }
 
     @Override
@@ -295,34 +317,108 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
+        getMapMarkerList();
+
         //添加测试数据
-        new Thread() {
-            public void run() {
+//        new Thread() {
+//            public void run() {
+//
+//                List<ClusterItem> items = new ArrayList<ClusterItem>();
+//
+//                //随机100个点
+//                for (int i = 0; i < 100; i++) {
+//
+//                    double lat = Math.random()*50 + 39.474923;
+//                    double lon = Math.random()*50 + 116.027116;
+//
+//                    LatLng latLng = new LatLng(lat, lon, false);
+//                    RegionItem regionItem = new RegionItem(latLng,
+//                            "test" + i);
+//                    items.add(regionItem);
+//
+//                }
+//                mClusterOverlay = new ClusterOverlay(aMap, items,
+//                        dp2px(getActivity(), clusterRadius),
+//                        getActivity());
+//                mClusterOverlay.setClusterRenderer(clusterRender);
+//                mClusterOverlay.setOnClusterClickListener(clusterClickListener);
+//            }
+//
+//        }
+//                .start();
+    }
 
-                List<ClusterItem> items = new ArrayList<ClusterItem>();
+    private void getMapMarkerList()
+    {
+        HashMap<String,Object> params= new HashMap<>();
+        Api.config(ApiConfig.MapMarkerList,params).getRequest(new TtitCallback(){
 
-                //随机100个点
-                for (int i = 0; i < 100; i++) {
+            @Override
+            public void onSuccess(String res) {
+                MapListResponse response = new Gson().fromJson(res,MapListResponse.class);
+                if(response!=null)
+                {
+                    datas =response.getRows();
+                }
+                new Thread() {
+                    public void run() {
 
-                    double lat = Math.random()*50 + 39.474923;
-                    double lon = Math.random()*50 + 116.027116;
+                        List<ClusterItem> items = new ArrayList<ClusterItem>();
 
-                    LatLng latLng = new LatLng(lat, lon, false);
-                    RegionItem regionItem = new RegionItem(latLng,
-                            "test" + i);
-                    items.add(regionItem);
+                        //随机100个点
+//                        for (int i = 0; i < 100; i++) {
+//
+//                            double lat = Math.random()*50 + 39.474923;
+//                            double lon = Math.random()*50 + 116.027116;
+//
+//                            LatLng latLng = new LatLng(lat, lon, false);
+//                            RegionItem regionItem = new RegionItem(latLng,
+//                                    "test" + i);
+//                            items.add(regionItem);
+//
+//                        }
+                        for (int i = 0; i < datas.size()-5; i++) {
+
+                            double lat = datas.get(i).getLatitude();
+                            double lon = datas.get(i).getLongitude();
+
+                            LatLng latLng = new LatLng(lat, lon, false);
+                            RegionItem regionItem = new RegionItem(latLng,
+                                    datas.get(i).getName());
+                            items.add(regionItem);
+                        }
+
+
+                        mClusterOverlay = new ClusterOverlay(aMap, items,
+                                dp2px(getActivity(), clusterRadius),
+                                getActivity());
+                        mClusterOverlay.setClusterRenderer(clusterRender);
+                        mClusterOverlay.setOnClusterClickListener(clusterClickListener);
+                    }
 
                 }
-                mClusterOverlay = new ClusterOverlay(aMap, items,
-                        dp2px(getActivity(), clusterRadius),
-                        getActivity());
-                mClusterOverlay.setClusterRenderer(clusterRender);
-                mClusterOverlay.setOnClusterClickListener(clusterClickListener);
+                        .start();
+//                List<ClusterItem> items = new ArrayList<ClusterItem>();
+//
+//                //随机100个点
+//                for (int i = 0; i < datas.size(); i++) {
+//
+//                    double lat = datas.get(i).getLatitude();
+//                    double lon = datas.get(i).getLongitude();
+//
+//                    LatLng latLng = new LatLng(lat, lon, false);
+//                    RegionItem regionItem = new RegionItem(latLng,
+//                            datas.get(i).getName());
+//                    items.add(regionItem);
+//                }
+
             }
 
-        }
+            @Override
+            public void onFailure(Exception e) {
 
-                .start();
+            }
+        });
     }
 
     @Override

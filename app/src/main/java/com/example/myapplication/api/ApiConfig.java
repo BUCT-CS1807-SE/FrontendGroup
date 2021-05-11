@@ -2,7 +2,8 @@ package com.example.myapplication.api;
 
 public class ApiConfig {
     public static final int PAGE_SIZE = 5;
-    public static final String BASE_URl = "http://47.112.180.188:8080/renren-fast";
+    public static final String BASE_URl = "http://8.140.136.108/prod-api";
+    public static final String MapMarkerList = "/system/museum/list"; //地图标点
     public static final String LOGIN = "/app/login"; //登录
     public static final String REGISTER = "/app/register";//注册
     public static final String VIDEO_LIST_ALL = "/app/videolist/listAll";//所有类型视频列表
