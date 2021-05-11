@@ -110,7 +110,7 @@ public class NetworkUtils {
         String url = m.get(resultType);
         if (args != null) {
             Formatter formatter = new Formatter();
-            formatter.format(url,args);
+//            formatter.format(url,args);
             url = formatter.toString();
             System.out.println(url);
         } else {

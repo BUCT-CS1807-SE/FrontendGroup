@@ -45,14 +45,9 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         String phone = etPhone.getText().toString();
         String password = etPassword.getText().toString();
-        Looper.prepare();
-        Toast.makeText(MainActivity.this, "登录成功！", Toast.LENGTH_LONG).show();
         Intent intent;
         intent = new Intent(MainActivity.this, HomePageActivity.class);
         startActivity(intent);
-        Looper.loop();
-
-
 
 //        switch (v.getId()){
 //            case R.id.btn_1:
