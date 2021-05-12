@@ -73,6 +73,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -89,7 +90,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // contents of the view with that element
         Museum data = localDataSet.get(position);
         Glide.with(viewHolder.itemView).load(ImageUtils.genURL(data.getName())).centerCrop().placeholder(R.mipmap.museum).into(viewHolder.getMuseumBriefIcon());
-        viewHolder.getMuseumBriefIcon().setImageResource(R.drawable.bg_1);
         viewHolder.getMuseumName().setText(data.getName());
         viewHolder.getMuseumIntro().setText(data.getIntroduction());
         viewHolder.getMuseumTime().setText(data.getOpeningHours());
