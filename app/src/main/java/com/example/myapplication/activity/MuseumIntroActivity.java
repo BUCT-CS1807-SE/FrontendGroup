@@ -196,20 +196,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
             }
         };
-        HttpRequestGet(NetworkUtils.ResultType.COMMENT,commentGet,"1");
-        //获取点赞数
-        Handler commentLikeGet=new Handler(Looper.myLooper()){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                if(msg.what==1){
-                    int liked_number=(int)msg.obj;
-                    TextView view = findViewById(R.id.liked_number);
-                    view.setText(String.valueOf(liked_number));
-                }
-            }
-        };
-        HttpRequestGet(NetworkUtils.ResultType.COMMENT_LIKE,commentLikeGet,"1");
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT,commentGet,museum.getId().toString());
         //提交评论
         Handler commentPost=new Handler(Looper.myLooper()){
             @Override
@@ -313,6 +300,20 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             }
         });
 
+        //获取点赞数
+        Handler commentLikeGet=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    int liked_number=(int)msg.obj;
+                    TextView view = commentView.findViewById(R.id.liked_number);
+                    view.setText(String.valueOf(liked_number));
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT_LIKE,commentLikeGet,comment.getId().toString());
+
         if (isEnd) {
             commentView.findViewById(R.id.comment_border).setAlpha(0.0f);
         }
@@ -411,7 +412,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private void initComments() {
         for (int i = 0; i < comments.size(); i++) {
             if (i == comments.size()-1) {
-                addComment(comments.get(i),true,true);
+                addComment(comments.get(i),true,false);
             } else {
                 addComment(comments.get(i),false,false);
             }
