@@ -41,6 +41,7 @@ public class NetworkUtils {
         MUSEUM,     //单个博物馆查询
         COMMENT,    //评论查询
         COMMENT_POST, //提交评论
+        COMMENT_LIKE, //评论点赞数
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
@@ -52,6 +53,7 @@ public class NetworkUtils {
         put(ResultType.MUSEUM, "http://8.140.136.108:8080/system/museum/select/all/%s");
         put(ResultType.COMMENT, "http://8.140.136.108:8080/system/comments/select/all/%s");
         put(ResultType.COMMENT_POST,"http://8.140.136.108:8080/system/comments");
+        put(ResultType.COMMENT_LIKE,"http://8.140.136.108:8080/system/commentlike/select/all/%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder()
@@ -139,9 +141,7 @@ public class NetworkUtils {
                     switch (resultType) {
                         case MUSEUM: {
                             JSONArray data = outcome.getJSONArray("rows");
-                            List<Museum> museums = JSON.parseArray(data.toJSONString(), Museum.class);
-                            send = museums;
-                            System.out.println(museums.toString());
+                            send = JSON.parseArray(data.toJSONString(), Museum.class);
                             break;
                         }
                         case COMMENT: {
@@ -149,11 +149,13 @@ public class NetworkUtils {
                             send = JSON.parseArray(data.toJSONString(), Comment.class);
                             break;
                         }
+                        case COMMENT_LIKE:{
+                            send=outcome.getInteger("total");
+//                            JSONArray data = outcome.getJSONArray("rows");
+//                            send=data.size();
+                        }
                         case TEST: {
-                            JSONArray data = outcome.getJSONArray("rows");
-                            List<Comment> comments = JSON.parseArray(data.toJSONString(), Comment.class);
-                            send = comments;
-                            System.out.println(comments.toString());
+
                             break;
                         }
                     }

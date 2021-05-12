@@ -167,6 +167,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         grade.addElement(grade_view);
 
         //----------评论----------
+        //获取评论
         comment = findViewById(R.id.comment);
         //添加评论框
         View commentView = LayoutInflater.from(comment.getContainer().getContext()).inflate(R.layout.museum_comment_input,grade.getContainer(),false);
@@ -185,7 +186,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         });
 
         comments=null;//网络接口完成后，初始化方式放入handler中
-        Handler handler=new Handler(Looper.myLooper()){
+        Handler commentGet=new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -195,9 +196,22 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
             }
         };
-        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handler,"1");
-
-        Handler handlerPost=new Handler(Looper.myLooper()){
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT,commentGet,"1");
+        //获取点赞数
+        Handler commentLikeGet=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    int liked_number=(int)msg.obj;
+                    TextView view = findViewById(R.id.liked_number);
+                    view.setText(String.valueOf(liked_number));
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT_LIKE,commentLikeGet,"1");
+        //提交评论
+        Handler commentPost=new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -208,7 +222,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
             }
         };
-//        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,handlerPost);
+//        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,commentPost);
         //----------藏品----------
         item = findViewById(R.id.items);
 
