@@ -166,18 +166,17 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         //----------评论----------
         comment = findViewById(R.id.comment);
         comments=null;//网络接口完成后，初始化方式放入handler中
-        Handler handlerGet=new Handler(Looper.myLooper()){
+        Handler handler=new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if(msg.what==1){
                     comments= (ArrayList<Comment>) msg.obj;
                     initComments();
-                    comment.setTitle("评论 ("+comments.size()+")");
                 }
             }
         };
-        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handlerGet,museum.getId().toString());
+        HttpRequestGet(NetworkUtils.ResultType.COMMENT,handler,"1");
 
         Handler handlerPost=new Handler(Looper.myLooper()){
             @Override
@@ -319,7 +318,12 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         });
 
         Button button = grade_view.findViewById(R.id.grade_commit);
-        button.setOnClickListener(v -> Toast.makeText(MuseumIntroActivity.this,"score_environment:"+String.valueOf(score_environment)+" score_service:"+String.valueOf(score_service)+" score_show:"+String.valueOf(score_show),Toast.LENGTH_SHORT).show());
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MuseumIntroActivity.this,"score_environment:"+String.valueOf(score_environment)+" score_service:"+String.valueOf(score_service)+" score_show:"+String.valueOf(score_show),Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
