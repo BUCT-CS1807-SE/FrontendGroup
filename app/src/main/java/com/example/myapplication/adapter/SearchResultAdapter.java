@@ -3,6 +3,7 @@ package com.example.myapplication.adapter;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.ListPreloader;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MuseumIntroActivity;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.util.ImageUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,7 +78,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_museum_brief, viewGroup, false);
-
         return new ViewHolder(view);
     }
 
@@ -81,7 +88,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         Museum data = localDataSet.get(position);
-//        暂时没有图片
+        Glide.with(viewHolder.itemView).load(ImageUtils.genURL(data.getName())).centerCrop().placeholder(R.mipmap.museum).into(viewHolder.getMuseumBriefIcon());
         viewHolder.getMuseumBriefIcon().setImageResource(R.drawable.bg_1);
         viewHolder.getMuseumName().setText(data.getName());
         viewHolder.getMuseumIntro().setText(data.getIntroduction());

@@ -47,7 +47,7 @@
                 android:gravity="center_vertical"
                 android:text="当前所在地"
                 android:textColor="#000"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_start_address"
@@ -57,7 +57,7 @@
                 android:layout_toRightOf="@+id/tv_start"
                 android:background="@null"
                 android:textColor="#000"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                 android:gravity="center_vertical"
                 android:text="前往目的地"
                 android:textColor="#000"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_end_address"

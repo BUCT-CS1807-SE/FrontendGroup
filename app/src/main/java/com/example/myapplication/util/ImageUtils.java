@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class ImageUtils {
 
-    public static final String IMAGE_URL = "http://8.140.136.108:8081/coverpic/";
+    public static final String IMAGE_URL = "http://8.140.136.108/coverpic/";
 
     public static String genURL(String name) {
         return IMAGE_URL+name+".jpg";

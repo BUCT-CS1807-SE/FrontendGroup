@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F8F8">
 
     <com.youth.banner.Banner
         android:id="@+id/mBanner"
@@ -19,14 +20,16 @@
         android:id="@+id/scroller"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#F8F8F8"
+        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/content_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="300dp"
@@ -93,7 +96,7 @@
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scroller"
-        app:sdMainFabClosedSrc="@mipmap/more"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="0.95"
+        app:sdMainFabClosedSrc="@mipmap/more" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

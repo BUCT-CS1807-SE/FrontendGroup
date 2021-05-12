@@ -4,13 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,10 +25,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.MuseumItemAdapter;
 import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.Item;
@@ -56,6 +63,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
     private final static Integer COMMENT_LIKED = 1;
     private final static Integer COMMENT_UNLIKED = 2;
+    private static final String TAG = "MuseumIntro";
 
     private InfoContainerView briefIntro;
     private InfoContainerView news;
@@ -66,6 +74,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private InfoContainerView grade;
 
     private ScrollView scroller;
+    private LinearLayout content_linearlayout;
 
     private SpeedDialView more;
 
@@ -83,6 +92,9 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//设置透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//设置透明导航栏
         super.onCreate(savedInstanceState);
     }
 
@@ -91,6 +103,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         return R.layout.activity_museum_intro;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     protected void initView() {
@@ -103,18 +116,12 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //---------滑动组件---------
         scroller = findViewById(R.id.scroller);
-        scroller.setOnDragListener((v, event) -> {
-            int paddingTop = scroller.getPaddingTop();
-            int scrollY = Math.min(scroller.getScrollY(), paddingTop);
-            float transparent = (paddingTop-scrollY)*1.0f/scrollY;
-            scroller.setAlpha(transparent);
-
-            if (transparent <= 0.01) {
-                scroller.setVisibility(View.INVISIBLE);
-            } else {
-                scroller.setVisibility(View.VISIBLE);
-            }
-            return false;
+        content_linearlayout = findViewById(R.id.content_linearLayout);
+        scroller.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int paddingTop = content_linearlayout.getPaddingTop();
+            int scrollY2 = Math.min(scrollY, paddingTop);
+            float transparent = (paddingTop-scrollY2)*1.0f/paddingTop;
+            banner.setTransitionAlpha(transparent);
         });
 
         //---------轮播图----------
@@ -183,10 +190,23 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
             }
         };
-        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,handlerPost);
+//        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,handlerPost);
         //----------藏品----------
         item = findViewById(R.id.items);
-        items = new ArrayList<>();//初始化，未来转入Handler
+
+            items = new ArrayList<>();//初始化，未来转入Handler
+            //假数据
+            items.add(new Item(1,1,"","","这是一个好藏品","大宝贝1",""));
+            items.add(new Item(2,1,"","","这是一个坏藏品","大宝贝2",""));
+            items.add(new Item(3,1,"","","这是一个很好的藏品","大宝贝3",""));
+            items.add(new Item(4,1,"","","这是一个很坏的藏品","大宝贝4",""));
+
+        RecyclerView itemContainer = new RecyclerView(item.getContainer().getContext());
+        itemContainer.setAdapter(new MuseumItemAdapter(items));
+        LinearLayoutManager manager = new LinearLayoutManager(itemContainer.getContext());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        itemContainer.setLayoutManager(manager);
+        item.addElement(itemContainer);
 
         //----------展览----------
         show = findViewById(R.id.show);
@@ -201,6 +221,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 .setFabBackgroundColor(Color.WHITE)
                 .setLabel("收藏博物馆")
                 .create());
+
         more.setOnActionSelectedListener(actionItem -> {
             int id = actionItem.getId();
             switch (id) {

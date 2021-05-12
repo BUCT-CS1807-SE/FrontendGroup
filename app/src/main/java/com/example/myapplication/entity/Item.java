@@ -1,15 +1,22 @@
 package com.example.myapplication.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 
 public class Item implements Serializable {
 
     private Integer id;
     private Integer museumId;
+    @JSONField(alternateNames = "exhibitname")
     private String showName;
+    @JSONField(alternateNames = "exhibitsummary")
     private String showIntro;
+    @JSONField(alternateNames = "collectionname")
     private String itemIntro;
+    @JSONField(alternateNames = "collectionsummary")
     private String itemName;
+    @JSONField(alternateNames = "collectionimageurl")
     private String imageAddress;
 
     public Item() {
