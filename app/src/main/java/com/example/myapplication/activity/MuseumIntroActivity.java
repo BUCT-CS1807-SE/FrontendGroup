@@ -73,6 +73,9 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private InfoContainerView show;
     private InfoContainerView grade;
 
+    private TextView commentContent;
+    private Button submitComment;
+
     private ScrollView scroller;
     private LinearLayout content_linearlayout;
 
@@ -165,6 +168,22 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //----------评论----------
         comment = findViewById(R.id.comment);
+        //添加评论框
+        View commentView = LayoutInflater.from(comment.getContainer().getContext()).inflate(R.layout.museum_comment_input,grade.getContainer(),false);
+        comment.addElement(commentView);
+        commentContent = commentView.findViewById(R.id.comment_content_input);
+        submitComment = commentView.findViewById(R.id.comment_send);
+        submitComment.setOnClickListener(v -> {
+            String content = commentContent.getText().toString(); //评论字符串
+            if (content.isEmpty()) {
+                showToast("请输入评论");
+                return;
+            }
+
+            //@TODO 提交评论
+            showToast("提交评论:"+content);
+        });
+
         comments=null;//网络接口完成后，初始化方式放入handler中
         Handler handler=new Handler(Looper.myLooper()){
             @Override
@@ -212,13 +231,17 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //----------菜单浮动按钮----------
         more = findViewById(R.id.more);
-        more.addActionItem(new SpeedDialActionItem.Builder(R.id.museum_menu_explain, R.mipmap.explain)
-                .setFabBackgroundColor(Color.WHITE)
+        more.addActionItem(new SpeedDialActionItem.Builder(R.id.museum_menu_explain, R.drawable.ic_museum_explain)
+                .setFabBackgroundColor(Color.parseColor("#87a7d6"))
                 .setLabel("博物馆讲解")
+                .setLabelBackgroundColor(Color.parseColor("#efb336"))
+                .setLabelColor(Color.WHITE)
                 .create());
-        more.addActionItem(new SpeedDialActionItem.Builder(R.id.museum_menu_collect, R.mipmap.icon_collect)
-                .setFabBackgroundColor(Color.WHITE)
+        more.addActionItem(new SpeedDialActionItem.Builder(R.id.museum_menu_collect, R.drawable.ic_collected_museum)
+                .setFabBackgroundColor(Color.parseColor("#7cba59"))
                 .setLabel("收藏博物馆")
+                .setLabelBackgroundColor(Color.parseColor("#efb336"))
+                .setLabelColor(Color.WHITE)
                 .create());
 
         more.setOnActionSelectedListener(actionItem -> {
@@ -414,6 +437,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(context.getApplicationContext())
                     .load((String) path)
+                    .placeholder(R.drawable.ic_museum_explain)
                     .into(imageView);
         }
     }

@@ -120,7 +120,7 @@ public class SearchFragment extends BaseFragment {
                     if(msg.what==1){
                         museums= (List<Museum>) msg.obj;
                         if (museums.size() == 0) {
-                            showToastSync("没有搜索到这个博物馆信息");
+                            showToast("没有搜索到这个博物馆信息");
                             return;
                         }
                         result.addOnScrollListener(preloader);

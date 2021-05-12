@@ -89,7 +89,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         Museum data = localDataSet.get(position);
-        Glide.with(viewHolder.itemView).load(ImageUtils.genURL(data.getName())).centerCrop().placeholder(R.mipmap.museum).into(viewHolder.getMuseumBriefIcon());
+        Glide.with(viewHolder.itemView).load(ImageUtils.genURL(data.getName())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(viewHolder.getMuseumBriefIcon());
         viewHolder.getMuseumName().setText(data.getName());
         viewHolder.getMuseumIntro().setText(data.getIntroduction());
         viewHolder.getMuseumTime().setText(data.getOpeningHours());
