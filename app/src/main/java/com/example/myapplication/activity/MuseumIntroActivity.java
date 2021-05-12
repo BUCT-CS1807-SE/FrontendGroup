@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +30,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.MuseumExhibitionAdapter;
 import com.example.myapplication.adapter.MuseumItemAdapter;
-import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.entity.Comment;
+import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumNew;
-import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.InfoContainerView;
@@ -50,10 +49,8 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
-import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
 
 /**
  * 博物馆详情页
@@ -70,7 +67,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private InfoContainerView arrive;
     private InfoContainerView comment;
     private InfoContainerView item;
-    private InfoContainerView show;
+    private InfoContainerView exhibition;
     private InfoContainerView grade;
 
     private TextView commentContent;
@@ -87,6 +84,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private ArrayList<Comment> comments;
     private ArrayList<MuseumNew> museumNews;
     private ArrayList<Item> items;
+    private ArrayList<Exhibition>exhibitions;
     private float score_environment=2;
     private float score_service=2;
     private float score_show=2;
@@ -228,7 +226,18 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         item.addElement(itemContainer);
 
         //----------展览----------
-        show = findViewById(R.id.show);
+        exhibition = findViewById(R.id.exhibition);
+        exhibitions = new ArrayList<>();
+        exhibitions.add(new Exhibition(1,1,"4856","644"));
+        exhibitions.add(new Exhibition(2,1,"小绿片","你爱看的"));
+        exhibitions.add(new Exhibition(3,1,"馍馍","好吃的"));
+        exhibitions.add(new Exhibition(4,1,"倒装句","属于是"));
+        RecyclerView exhibitionContainer = new RecyclerView(exhibition.getContainer().getContext());
+        exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
+        LinearLayoutManager exhibit_manager = new LinearLayoutManager(exhibitionContainer.getContext());
+        exhibit_manager.setOrientation(LinearLayoutManager.VERTICAL);
+        exhibitionContainer.setLayoutManager(exhibit_manager);
+        exhibition.addElement(exhibitionContainer);
 
         //----------菜单浮动按钮----------
         more = findViewById(R.id.more);
