@@ -12,11 +12,11 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="57dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="-10dp"
             android:layout_marginRight="10dp"
             android:text="展览:"
-            android:textSize="36sp" />
+            android:textSize="20sp" />
 
         <RatingBar
             android:id="@+id/ratingBar_show"
@@ -26,6 +26,8 @@
             android:max="5"
             android:numStars="5"
             android:rating="2"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
             android:stepSize="0.5" />
     </LinearLayout>
 
@@ -40,7 +42,7 @@
             android:layout_marginLeft="-10dp"
             android:layout_marginRight="10dp"
             android:text="服务:"
-            android:textSize="36sp" />
+            android:textSize="20sp" />
 
         <RatingBar
             android:id="@+id/ratingBar_service"
@@ -50,6 +52,8 @@
             android:max="5"
             android:numStars="5"
             android:rating="2"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
             android:stepSize="0.5" />
     </LinearLayout>
 
@@ -64,7 +68,7 @@
             android:layout_marginLeft="-10dp"
             android:layout_marginRight="10dp"
             android:text="环境:"
-            android:textSize="36sp" />
+            android:textSize="20sp" />
 
         <RatingBar
             android:id="@+id/ratingBar_environment"
@@ -74,6 +78,8 @@
             android:max="5"
             android:numStars="5"
             android:rating="2"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
             android:stepSize="0.5" />
     </LinearLayout>
 
@@ -81,9 +87,15 @@
         android:id="@+id/grade_commit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
         android:layout_marginTop="8dp"
-        android:background="#FF5000"
-        android:text="提    交" />
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn1_bg"
+        android:backgroundTint="@color/teal_700"
+        android:backgroundTintMode="src_over"
+        android:text="提    交"
+        android:textColor="@color/colorWhite" />
 
 
 </LinearLayout>

@@ -26,24 +26,27 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'org.litepal.guolindev:core:3.1.1'
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'com.google.code.gson:gson:2.6.2'
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.10.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment:2.3.0'
+    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
     implementation 'com.alibaba:fastjson:1.1.70.android'
@@ -53,6 +56,7 @@ dependencies {
     implementation 'com.github.dueeeke.dkplayer:player-ijk:3.2.6'
     implementation 'com.github.dueeeke.dkplayer:videocache:3.2.6'
 
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'com.lxj:xpopup:2.2.23'
@@ -63,6 +67,10 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
     // Glide 图片加载
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation "com.leinardi.android:speed-dial:3.1.1"
 
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    compile ("com.github.bumptech.glide:recyclerview-integration:4.11.0") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
 }

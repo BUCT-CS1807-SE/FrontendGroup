@@ -4,48 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F8F8">
+
+    <com.youth.banner.Banner
+        android:id="@+id/mBanner"
+        android:layout_width="match_parent"
+        android:layout_height="330dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.youth.banner.Banner>
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scroller"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#F8F8F8"
+        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/content_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingBottom="100dp">
-
-            <com.youth.banner.Banner
-                android:id="@+id/mBanner"
-                android:layout_width="match_parent"
-                android:layout_height="330dp">
-
-            </com.youth.banner.Banner>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="#fff8f8f8"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="10dp">
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/museum_title"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_margin="10dp"-->
-                <!--                    android:text="一个博物馆"-->
-                <!--                    android:textSize="24sp"-->
-                <!--                    android:textStyle="bold" />-->
-            </androidx.cardview.widget.CardView>
+            android:paddingTop="300dp"
+            android:paddingBottom="300dp">
 
             <com.example.myapplication.view.InfoContainerView
                 android:id="@+id/briefIntro"
@@ -76,7 +64,7 @@
                 app:title="展品" />
 
             <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/show"
+                android:id="@+id/exhibition"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:title="展览">
@@ -98,16 +86,17 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/more"
+        android:layout_gravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintTop_toTopOf="@+id/scroller"
+        app:layout_constraintVertical_bias="0.95"
+        app:sdMainFabClosedSrc="@mipmap/more" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

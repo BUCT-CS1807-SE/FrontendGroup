@@ -317,7 +317,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
-        //getMapMarkerList();
+//        getMapMarkerList();
 
         //添加测试数据
 //        new Thread() {
@@ -363,7 +363,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 new Thread() {
                     public void run() {
 
-                        List<ClusterItem> items = new ArrayList<ClusterItem>();
+                        List<ClusterItem> items = new ArrayList<>();
 
                         //随机100个点
 //                        for (int i = 0; i < 100; i++) {

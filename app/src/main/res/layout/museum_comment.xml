@@ -11,16 +11,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-<!--        <androidx.constraintlayout.utils.widget.ImageFilterView-->
-<!--            android:id="@+id/imageFilterView"-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:layout_gravity="top"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            app:roundPercent="50.0"-->
-<!--            app:srcCompat="@mipmap/header"-->
-<!--            />-->
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/imageFilterView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@mipmap/header"
+            app:roundPercent="50.0"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,11 +48,22 @@
                     android:id="@+id/comment_like"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@mipmap/like" />
+
+                <TextView
+                    android:id="@+id/liked_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1100"
+                    android:textSize="8sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/comment_like"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/comment_like"
+                    app:layout_constraintTop_toTopOf="@+id/comment_like" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
