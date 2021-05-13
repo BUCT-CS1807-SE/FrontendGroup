@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -43,16 +44,17 @@ import com.example.myapplication.api.ApiConfig;
 import com.example.myapplication.api.TtitCallback;
 import com.example.myapplication.entity.MapListResponse;
 import com.example.myapplication.entity.RowsDTO;
+import com.example.myapplication.util.StringUtils;
 import com.example.myapplication.xpopup.MapBottom;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 
 public class MapFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
@@ -84,7 +86,6 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private Boolean FirstLoaded;
     private FloatingActionButton nearButton;
     private MapBottom mapBottom =null;
-    private BasePopupView basePopupView;
 
     public MapFragment() {
     }
@@ -143,7 +144,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
             public void onClick(View v) {
                 if(mapBottom==null)
                     mapBottom=new MapBottom(getActivity(),neardatas);
-                basePopupView=new XPopup.Builder(getActivity())
+                new XPopup.Builder(getActivity())
                         .popupPosition(PopupPosition.Right)//右边
                         .hasStatusBarShadow(true) //启用状态栏阴影
                         .asCustom(mapBottom)
@@ -247,6 +248,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         }
         museumInfo.setVisibility(View.GONE);
     }
+
+
     /**
      * 必须重写以下方法
      */
@@ -279,6 +282,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     @Override
     public void onMapLoaded() {
         getMapMarkerList();
+
     }
 
     private void getMapMarkerList()
@@ -293,14 +297,13 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 {
                     datas =response.getRows();
                 }
-                double curlat = mLocationClient.getLastKnownLocation().getLatitude();
-                double curlon = mLocationClient.getLastKnownLocation().getLongitude();
-                LatLng curlatLng = new LatLng(curlat, curlon, false);
                 new Thread() {
                     public void run() {
 
                         List<ClusterItem> items = new ArrayList<ClusterItem>();
-
+                        double curlat=aMap.getMyLocation().getLatitude();
+                        double curlon=aMap.getMyLocation().getLongitude();
+                        LatLng curlatLng=new LatLng(curlat,curlon,false);
                         for (int i = 0; i < datas.size()-5; i++) {
 
                             double lat = datas.get(i).getLatitude();
@@ -327,6 +330,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
                 }
                         .start();
+
             }
 
             @Override
