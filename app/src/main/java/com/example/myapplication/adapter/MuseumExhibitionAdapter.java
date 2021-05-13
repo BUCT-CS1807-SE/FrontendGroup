@@ -1,5 +1,7 @@
 package com.example.myapplication.adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activity.ExhibitionInfoActivity;
+import com.example.myapplication.activity.ItemInfoActivity;
 import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MuseumExhibitionAdapter extends RecyclerView.Adapter<MuseumExhibitionAdapter.ExhibitionViewHolder> {
     private ArrayList<Exhibition> localDataSet;
@@ -38,6 +43,18 @@ public class MuseumExhibitionAdapter extends RecyclerView.Adapter<MuseumExhibiti
         holder.getExhibitionName().setText(exhibition.getExhibitionName());
         holder.getExhibitionDescribe().setText(exhibition.getExhibitionDescribe());
 
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ExhibitionViewHolder holder , int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), ExhibitionInfoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("exhibition",localDataSet.get(position));
+            intent.putExtra("exhibition_data",bundle);
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override

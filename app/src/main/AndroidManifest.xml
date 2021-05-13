@@ -25,8 +25,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="n">
-        <activity android:name=".activity.RouteActivity"></activity>
-        <activity android:name=".activity.RouteDetailActivity"></activity>
+        <activity
+            android:name=".activity.ItemInfoActivity"
+            android:label="@string/title_activity_item_info"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity.ExhibitionInfoActivity"
+            android:label="@string/title_activity_item_info"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+        <activity android:name=".activity.RouteActivity" />
+        <activity android:name=".activity.RouteDetailActivity" />
         <activity android:name=".activity.MusicPlayer" />
         <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".MainActivity">
