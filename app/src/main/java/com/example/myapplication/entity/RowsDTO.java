@@ -50,12 +50,12 @@ public class RowsDTO {
     private String scenicspotsaround;
     @SerializedName("cover")
     private String cover;
+    @SerializedName("longitude")
+    private Double longitude;
+    @SerializedName("latitude")
+    private Double latitude;
     @SerializedName("note")
     private Object note;
-    @SerializedName("longitude")
-    private Integer longitude;
-    @SerializedName("latitude")
-    private Integer latitude;
 
     public Object getSearchValue() {
         return searchValue;
@@ -241,27 +241,27 @@ public class RowsDTO {
         this.cover = cover;
     }
 
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
     public Object getNote() {
         return note;
     }
 
     public void setNote(Object note) {
         this.note = note;
-    }
-
-    public Integer getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Integer longitude) {
-        this.longitude = longitude;
-    }
-
-    public Integer getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Integer latitude) {
-        this.latitude = latitude;
     }
 }

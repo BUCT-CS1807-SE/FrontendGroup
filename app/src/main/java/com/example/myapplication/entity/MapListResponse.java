@@ -8,6 +8,7 @@ import java.util.List;
 
 public class MapListResponse implements Serializable {
 
+
     @SerializedName("total")
     private Integer total;
     @SerializedName("rows")

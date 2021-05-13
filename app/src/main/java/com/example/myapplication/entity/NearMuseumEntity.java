@@ -2,7 +2,7 @@ package com.example.myapplication.entity;
 
 public class NearMuseumEntity {
     private String museumName;
-    private double level;
+    private String level;
     private String openTime;
     private String ticker;
 
@@ -22,11 +22,11 @@ public class NearMuseumEntity {
         this.ticker = ticker;
     }
 
-    public double getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(double level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 

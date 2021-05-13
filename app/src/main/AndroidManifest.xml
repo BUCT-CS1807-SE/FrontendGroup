@@ -27,6 +27,7 @@
         tools:targetApi="n">
         <activity android:name=".activity.RouteActivity"></activity>
         <activity android:name=".activity.RouteDetailActivity"></activity>
+        <activity android:name=".activity.MusicPlayer" />
         <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

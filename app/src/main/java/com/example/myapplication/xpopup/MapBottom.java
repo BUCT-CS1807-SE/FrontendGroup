@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.NearMuseumAdapter;
 import com.example.myapplication.entity.NearMuseumEntity;
+import com.example.myapplication.entity.RowsDTO;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 
@@ -19,8 +20,10 @@ import java.util.List;
 public class MapBottom extends BottomPopupView {
     RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    public MapBottom(@NonNull Context context) {
+    private List<RowsDTO> nearMuseum;
+    public MapBottom(@NonNull Context context, List<RowsDTO> neardatas) {
         super(context);
+        nearMuseum=neardatas;
     }
     @Override
     protected int getImplLayoutId() {
@@ -34,14 +37,33 @@ public class MapBottom extends BottomPopupView {
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
         List<NearMuseumEntity> datas =new ArrayList<>();
-        for(int i=0;i<8;i++)
+        String museumName;
+        String museumLev;
+        String museumOpen;
+        Integer museumTicket;
+        for(int i=0;i<nearMuseum.size();i++)
         {
+            museumName=nearMuseum.get(i).getName();
+            museumLev=nearMuseum.get(i).getMuseumlevel();
+            museumOpen=nearMuseum.get(i).getOpeninghours();
+            museumTicket=nearMuseum.get(i).getTicketprice();
+
             NearMuseumEntity nearM=new NearMuseumEntity();
-            nearM.setMuseumName("博物馆"+i);
-            nearM.setLevel(4.8);
-            nearM.setOpenTime("全天");
-            nearM.setTicker("80元");
+            nearM.setMuseumName(museumName);
+            if(museumLev==""||museumLev==null)
+                nearM.setLevel("暂无");
+            else
+            nearM.setLevel(museumLev);
+            if(museumOpen==""||museumOpen==null)
+                nearM.setOpenTime("暂无");
+            else
+            nearM.setOpenTime(museumOpen);
+            if(museumTicket==null)
+                nearM.setTicker("暂无");
+            else
+            nearM.setTicker(museumTicket+"元");
             datas.add(nearM);
         }
         NearMuseumAdapter nearMuseumAdapter = new NearMuseumAdapter(getContext(),datas);

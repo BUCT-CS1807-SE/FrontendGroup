@@ -233,6 +233,42 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     }
 
+    /**
+     * 获取每个聚合点的绘制样式
+     */
+    private Bitmap getBitmapDes(int num, String title) {
+        View view = View.inflate(mContext, R.layout.marker_view, null);
+        TextView textView = (TextView) view.findViewById(R.id.tv_libName);
+        ImageView imageView =(ImageView)view.findViewById(R.id.img_marker);
+        if(num==1)
+            textView.setText(title);
+        else
+        {
+            String tile = String.valueOf(num);
+            textView.setText(tile);
+            if(num<10)
+            {
+                imageView.setImageResource(R.drawable.marker32);
+            }
+            else if(num<60)
+                imageView.setImageResource(R.drawable.marker64);
+            else
+                imageView.setImageResource(R.drawable.marker128);
+        }
+        Bitmap bitmap = convertViewToBitmap(view);
+        return bitmap;
+    }
+
+    /**
+     * 更新已加入地图聚合点的样式
+     */
+    private void updateCluster(Cluster cluster) {
+
+        Marker marker = cluster.getMarker();
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitmapDes(cluster.getClusterCount(), cluster.getClusterItems().get(0).getTitle())));
+    }
+
+
     public static Bitmap convertViewToBitmap(View view) {
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
@@ -342,40 +378,9 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     }
 
 
-    /**
-     * 获取每个聚合点的绘制样式
-     */
-    private Bitmap getBitmapDes(int num, String title) {
-        View view = View.inflate(mContext, R.layout.marker_view, null);
-        TextView textView = (TextView) view.findViewById(R.id.tv_libName);
-        ImageView imageView =(ImageView)view.findViewById(R.id.img_marker);
-        if(num==1)
-            textView.setText(title);
-        else
-        {
-            String tile = String.valueOf(num);
-            textView.setText(tile);
-            if(num<10)
-            {
-                imageView.setImageResource(R.drawable.marker32);
-            }
-            else if(num<60)
-                imageView.setImageResource(R.drawable.marker64);
-            else
-                imageView.setImageResource(R.drawable.marker128);
-        }
-        Bitmap bitmap = convertViewToBitmap(view);
-        return bitmap;
-    }
 
-    /**
-     * 更新已加入地图聚合点的样式
-     */
-    private void updateCluster(Cluster cluster) {
 
-            Marker marker = cluster.getMarker();
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getBitmapDes(cluster.getClusterCount(), cluster.getClusterItems().get(0).getTitle())));
-    }
+
 
 
 //-----------------------辅助内部类用---------------------------------------------

@@ -15,4 +15,6 @@ public interface ClusterItem {
      LatLng getPosition();
 
     String getTitle();
+
+    String getLevel();
 }
