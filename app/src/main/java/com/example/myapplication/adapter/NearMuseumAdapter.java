@@ -1,15 +1,19 @@
 package com.example.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.activity.MusicPlayer;
+import com.example.myapplication.activity.RouteActivity;
 import com.example.myapplication.entity.NearMuseumEntity;
 
 import java.util.List;
@@ -35,9 +39,16 @@ public class NearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ViewHolder vh=(ViewHolder) holder;
         NearMuseumEntity nearMuseumEntity=Data.get(position);
         vh.LibName.setText(nearMuseumEntity.getMuseumName());
-        vh.Lev.setText(String.valueOf(nearMuseumEntity.getLevel()));
+        vh.Lev.setText(nearMuseumEntity.getLevel());
         vh.open.setText(nearMuseumEntity.getOpenTime());
         vh.price.setText(nearMuseumEntity.getTicker());
+        vh.mediaPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(mContext, MusicPlayer.class);
+                mContext.startActivity(in);
+            }
+        });
     }
 
     @Override
@@ -50,13 +61,14 @@ public class NearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView open;
         private TextView Lev;
         private TextView price;
-
+        private LinearLayout mediaPlayer;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             LibName=itemView.findViewById(R.id.textView10);
             open=itemView.findViewById(R.id.textView19);
             price=itemView.findViewById(R.id.textView17);
             Lev=itemView.findViewById(R.id.textView13);
+            mediaPlayer=itemView.findViewById(R.id.mediaplayer);
         }
     }
 }

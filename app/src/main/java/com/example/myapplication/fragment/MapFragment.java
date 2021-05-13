@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -19,6 +18,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
@@ -43,17 +43,16 @@ import com.example.myapplication.api.ApiConfig;
 import com.example.myapplication.api.TtitCallback;
 import com.example.myapplication.entity.MapListResponse;
 import com.example.myapplication.entity.RowsDTO;
-import com.example.myapplication.util.StringUtils;
 import com.example.myapplication.xpopup.MapBottom;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 
 
 public class MapFragment extends BaseFragment implements AMapLocationListener,LocationSource,AMap.OnMapTouchListener,AMap.OnMapClickListener, ClusterRender,
@@ -62,6 +61,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
 //    private NewsAdapter newsAdapter;
     List<RowsDTO> datas =new ArrayList<>();
+    List<RowsDTO> neardatas =new ArrayList<>();
     private int pageNum = 1;
     private MyLocationStyle myLocationStyle;
     private MapView mapView;
@@ -74,7 +74,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     public AMapLocationClientOption mLocationOption = null;
     private List<Marker> markerList = new ArrayList<>();
     public CardView museumInfo;
-    MarkerOptions markerOptions;
+    private TextView museumLevel;
+
     private ClusterOverlay mClusterOverlay;
     private int clusterRadius = 120;
     private ClusterRender clusterRender;
@@ -83,6 +84,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private Boolean FirstLoaded;
     private FloatingActionButton nearButton;
     private MapBottom mapBottom =null;
+    private BasePopupView basePopupView;
 
     public MapFragment() {
     }
@@ -107,6 +109,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         museumInfo=(CardView) view.findViewById(R.id.component1);
         Libname=(TextView)view.findViewById(R.id.textView2);
         nearButton=view.findViewById(R.id.fab_poi);
+        museumLevel=view.findViewById(R.id.textView4);
         museumInfo.setVisibility(View.GONE);
         FirstLoaded=false;
         initview(savedInstanceState,view);
@@ -139,8 +142,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
             @Override
             public void onClick(View v) {
                 if(mapBottom==null)
-                    mapBottom=new MapBottom(getActivity());
-                new XPopup.Builder(getActivity())
+                    mapBottom=new MapBottom(getActivity(),neardatas);
+                basePopupView=new XPopup.Builder(getActivity())
                         .popupPosition(PopupPosition.Right)//右边
                         .hasStatusBarShadow(true) //启用状态栏阴影
                         .asCustom(mapBottom)
@@ -244,48 +247,6 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         }
         museumInfo.setVisibility(View.GONE);
     }
-
-//    private void addMarker(LatLng latLng) {
-//        Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("标题").snippet("详细信息").icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
-//        marker.showInfoWindow();
-//        markerList.add(marker);
-//    }
-//public  void addMarkersToMap(Context context, AMap aMap, LatLng latlng) {
-//    if (aMap != null) {
-//        View view = View.inflate(context, R.layout.marker_view, null);
-//        TextView textView =  view.findViewById(R.id.tv_libName);
-//        Bitmap bitmap = convertViewToBitmap(view);
-//        markerOptions = new MarkerOptions()
-//                .position(latlng)
-//                .draggable(true)
-//               .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
-//               ;
-//        Marker marker = aMap.addMarker(markerOptions);
-//        markerList.add(marker);
-//    }
-//}
-
-//    public static Bitmap convertViewToBitmap(View view) {
-//        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-//        view.buildDrawingCache();
-//        Bitmap bitmap = view.getDrawingCache();
-//        return bitmap;
-//    }
-
-
-//    @Override
-//    public boolean onMarkerClick(Marker marker) {
-//        if (!marker.isInfoWindowShown()) {
-//            //显示
-//            marker.showInfoWindow();
-//        } else {
-//            //隐藏
-//            marker.hideInfoWindow();
-//        }
-//        museumInfo.setVisibility(View.VISIBLE);
-//        return true;
-//    }
     /**
      * 必须重写以下方法
      */
@@ -317,35 +278,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
-//        getMapMarkerList();
-
-        //添加测试数据
-//        new Thread() {
-//            public void run() {
-//
-//                List<ClusterItem> items = new ArrayList<ClusterItem>();
-//
-//                //随机100个点
-//                for (int i = 0; i < 100; i++) {
-//
-//                    double lat = Math.random()*50 + 39.474923;
-//                    double lon = Math.random()*50 + 116.027116;
-//
-//                    LatLng latLng = new LatLng(lat, lon, false);
-//                    RegionItem regionItem = new RegionItem(latLng,
-//                            "test" + i);
-//                    items.add(regionItem);
-//
-//                }
-//                mClusterOverlay = new ClusterOverlay(aMap, items,
-//                        dp2px(getActivity(), clusterRadius),
-//                        getActivity());
-//                mClusterOverlay.setClusterRenderer(clusterRender);
-//                mClusterOverlay.setOnClusterClickListener(clusterClickListener);
-//            }
-//
-//        }
-//                .start();
+        getMapMarkerList();
     }
 
     private void getMapMarkerList()
@@ -360,31 +293,27 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 {
                     datas =response.getRows();
                 }
+                double curlat = mLocationClient.getLastKnownLocation().getLatitude();
+                double curlon = mLocationClient.getLastKnownLocation().getLongitude();
+                LatLng curlatLng = new LatLng(curlat, curlon, false);
                 new Thread() {
                     public void run() {
 
-                        List<ClusterItem> items = new ArrayList<>();
+                        List<ClusterItem> items = new ArrayList<ClusterItem>();
 
-                        //随机100个点
-//                        for (int i = 0; i < 100; i++) {
-//
-//                            double lat = Math.random()*50 + 39.474923;
-//                            double lon = Math.random()*50 + 116.027116;
-//
-//                            LatLng latLng = new LatLng(lat, lon, false);
-//                            RegionItem regionItem = new RegionItem(latLng,
-//                                    "test" + i);
-//                            items.add(regionItem);
-//
-//                        }
                         for (int i = 0; i < datas.size()-5; i++) {
 
                             double lat = datas.get(i).getLatitude();
                             double lon = datas.get(i).getLongitude();
 
                             LatLng latLng = new LatLng(lat, lon, false);
+
+                            if(AMapUtils.calculateLineDistance(curlatLng,latLng)<100000)
+                            {
+                                neardatas.add(datas.get(i));
+                            }
                             RegionItem regionItem = new RegionItem(latLng,
-                                    datas.get(i).getName());
+                                    datas.get(i).getName(),datas.get(i).getMuseumlevel());
                             items.add(regionItem);
                         }
 
@@ -398,20 +327,6 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
                 }
                         .start();
-//                List<ClusterItem> items = new ArrayList<ClusterItem>();
-//
-//                //随机100个点
-//                for (int i = 0; i < datas.size(); i++) {
-//
-//                    double lat = datas.get(i).getLatitude();
-//                    double lon = datas.get(i).getLongitude();
-//
-//                    LatLng latLng = new LatLng(lat, lon, false);
-//                    RegionItem regionItem = new RegionItem(latLng,
-//                            datas.get(i).getName());
-//                    items.add(regionItem);
-//                }
-
             }
 
             @Override
@@ -426,8 +341,9 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         if(clusterItems.size()==1)
         {
             Libname.setText(clusterItems.get(0).getTitle());
+            museumLevel.setText(clusterItems.get(0).getLevel());
             museumInfo.setVisibility(View.VISIBLE);
-            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 10, 0, 0)));
+            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 17, 0, 0)));
         }
         else
         {
