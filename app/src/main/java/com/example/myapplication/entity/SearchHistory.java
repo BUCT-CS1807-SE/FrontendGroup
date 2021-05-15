@@ -50,4 +50,5 @@ public class SearchHistory extends LitePalSupport {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
 }

@@ -4,9 +4,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.services.interfaces.IShareSearch;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.RequestBuilder;
@@ -22,10 +26,13 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
 import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.SearchResultAdapter;
+import com.example.myapplication.dao.SearchHistoryDao;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.entity.SearchHistory;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
+import com.example.myapplication.view.FlowLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,15 +40,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.crypto.spec.DHGenParameterSpec;
+
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 
 public class SearchFragment extends BaseFragment {
 
+    private static final String TAG = "SearchFragment";
     private TextView searchKey;
     private ImageButton search;
     private RecyclerView result;
     private List<Museum> museums;
     private RequestManager requestManager;
+    private FlowLayout flowLayout;
+    private List<String> list=new ArrayList<>();
+    private List<SearchHistory> HistoryList=new ArrayList<>();
+    private View DeleteHistory;
 
     private class SearchResultPreloadModelProvider<U> implements ListPreloader.PreloadModelProvider {
 
@@ -102,6 +116,14 @@ public class SearchFragment extends BaseFragment {
         //--------------------------
 
 
+
+            flowLayout = mRootView.findViewById(R.id.flow);
+
+            list.add("Android");
+            GetHistory();
+
+
+
         //搜索框响应事件
         searchKey = mRootView.findViewById(R.id.searchKey);
         search = mRootView.findViewById(R.id.search);
@@ -131,11 +153,66 @@ public class SearchFragment extends BaseFragment {
             };
             HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
             //@TODO 存入搜索历史
+            InsertHistory(key);
 
         });
 
+        //删除按钮相应事件
+        DeleteHistory=mRootView.findViewById(R.id.DeleteHistory);
+        DeleteHistory.setOnClickListener(v -> {
+            DeleteHistory();
+            showToast("已删除搜索记录");
+        });
+
         //--------------------
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(10, 5, 10, 5);
+        if (flowLayout != null) {
+            flowLayout.removeAllViews();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            TextView tv = new TextView(this.getContext());
+            tv.setPadding(28, 10, 28, 10);
+            tv.setText(list.get(i));
+            tv.setMaxEms(10);
+            tv.setSingleLine();
+            tv.setOnClickListener(v -> {
+
+            });
+            //tv.setBackgroundResource(R.drawable.selector_playsearch);
+            tv.setLayoutParams(layoutParams);
+            flowLayout.addView(tv, layoutParams);
+        }
 
     }
+
+    private void GetHistory()
+    {
+        HistoryList= SearchHistoryDao.findAll();
+        for(int i=0;i<HistoryList.size();i++)
+        {
+            list.add(HistoryList.get(i).getSearchContent());
+            Log.d(TAG, "GetHistory: "+ HistoryList.get(i).getSearchContent());
+        }
+    }
+
+    private void InsertHistory(String key)
+    {
+        SearchHistory s1=new SearchHistory();
+        s1.setSearchContent(key);
+        SearchHistoryDao.insert(s1);
+    }
+
+    private void DeleteHistory()
+    {
+        SearchHistoryDao.deleteAll();
+    }
+
+    private void ToSearch(String key)
+    {
+        searchKey.setText(key);
+        //@todo
+    }
+
 
 }
