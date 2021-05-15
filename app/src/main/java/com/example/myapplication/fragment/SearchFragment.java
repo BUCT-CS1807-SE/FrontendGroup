@@ -116,11 +116,11 @@ public class SearchFragment extends BaseFragment {
         //--------------------------
 
 
+        //初始化博物馆历史记录list
+        flowLayout = mRootView.findViewById(R.id.flow);
 
-            flowLayout = mRootView.findViewById(R.id.flow);
-
-            list.add("Android");
-            GetHistory();
+        //list.add("Android");
+        GetHistory();
 
 
 
@@ -154,6 +154,7 @@ public class SearchFragment extends BaseFragment {
             HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
             //@TODO 存入搜索历史
             InsertHistory(key);
+            GetHistory();
 
         });
 
@@ -161,10 +162,24 @@ public class SearchFragment extends BaseFragment {
         DeleteHistory=mRootView.findViewById(R.id.DeleteHistory);
         DeleteHistory.setOnClickListener(v -> {
             DeleteHistory();
+            GetHistory();
             showToast("已删除搜索记录");
         });
 
-        //--------------------
+        //将list数据添加进flowlayout中
+
+
+    }
+
+    private void GetHistory()
+    {
+        list.clear();
+        HistoryList= SearchHistoryDao.findAll();
+        for(int i=0;i<HistoryList.size();i++)
+        {
+            list.add(HistoryList.get(i).getSearchContent());
+            Log.d(TAG, "GetHistory: "+ HistoryList.get(i).getSearchContent());
+        }
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(10, 5, 10, 5);
         if (flowLayout != null) {
@@ -172,27 +187,17 @@ public class SearchFragment extends BaseFragment {
         }
         for (int i = 0; i < list.size(); i++) {
             TextView tv = new TextView(this.getContext());
+            String key= list.get(i);
             tv.setPadding(28, 10, 28, 10);
-            tv.setText(list.get(i));
+            tv.setText(key);
             tv.setMaxEms(10);
             tv.setSingleLine();
             tv.setOnClickListener(v -> {
-
+                ToSearch(key);
             });
             //tv.setBackgroundResource(R.drawable.selector_playsearch);
             tv.setLayoutParams(layoutParams);
             flowLayout.addView(tv, layoutParams);
-        }
-
-    }
-
-    private void GetHistory()
-    {
-        HistoryList= SearchHistoryDao.findAll();
-        for(int i=0;i<HistoryList.size();i++)
-        {
-            list.add(HistoryList.get(i).getSearchContent());
-            Log.d(TAG, "GetHistory: "+ HistoryList.get(i).getSearchContent());
         }
     }
 
@@ -200,7 +205,21 @@ public class SearchFragment extends BaseFragment {
     {
         SearchHistory s1=new SearchHistory();
         s1.setSearchContent(key);
-        SearchHistoryDao.insert(s1);
+        int flag=0;
+        HistoryList=SearchHistoryDao.findAll();
+        for(int i=0;i<HistoryList.size();i++)
+        {
+            Log.d(TAG, "InsertHistory: "+HistoryList.get(i).getSearchContent());
+            if(HistoryList.get(i).getSearchContent().equals(key))
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag==0)
+        {
+            SearchHistoryDao.insert(s1);
+        }
     }
 
     private void DeleteHistory()
@@ -211,7 +230,25 @@ public class SearchFragment extends BaseFragment {
     private void ToSearch(String key)
     {
         searchKey.setText(key);
-        //@todo
+        //@TODO 搜索,网络发起请求并调用adapter展示
+        Handler handler=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    museums= (List<Museum>) msg.obj;
+                    if (museums.size() == 0) {
+                        showToast("没有搜索到这个博物馆信息");
+                        return;
+                    }
+                    result.addOnScrollListener(preloader);
+                    result.setAdapter(new SearchResultAdapter((ArrayList<Museum>) museums));
+                    result.setLayoutManager(new LinearLayoutManager(SearchFragment.this.getContext()));
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
+
     }
 
 
