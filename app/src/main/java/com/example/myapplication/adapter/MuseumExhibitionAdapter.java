@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MuseumExhibitionAdapter extends RecyclerView.Adapter<MuseumExhibitionAdapter.ExhibitionViewHolder> {
-    private ArrayList<Exhibition> localDataSet;
+    private List<Exhibition> localDataSet;
 
-    public MuseumExhibitionAdapter(ArrayList<Exhibition> localDataSet) {
+    public MuseumExhibitionAdapter(List<Exhibition> localDataSet) {
         this.localDataSet = localDataSet;
 
     }
