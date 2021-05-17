@@ -5,7 +5,7 @@ public class NearMuseumEntity {
     private String level;
     private String openTime;
     private String ticker;
-
+    private String ImageUrl;
     public String getMuseumName() {
         return museumName;
     }
@@ -36,5 +36,13 @@ public class NearMuseumEntity {
 
     public void setOpenTime(String openTime) {
         this.openTime = openTime;
+    }
+
+    public String getImageUrl() {
+        return ImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
     }
 }

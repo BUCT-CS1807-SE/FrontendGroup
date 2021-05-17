@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MusicPlayer;
 import com.example.myapplication.activity.RouteActivity;
 import com.example.myapplication.entity.NearMuseumEntity;
+import com.example.myapplication.util.ImageUtils;
 
 import java.util.List;
 
@@ -42,6 +45,12 @@ public class NearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         vh.Lev.setText(nearMuseumEntity.getLevel());
         vh.open.setText(nearMuseumEntity.getOpenTime());
         vh.price.setText(nearMuseumEntity.getTicker());
+        Glide.with(vh.itemView)
+                .load(ImageUtils.genURL(nearMuseumEntity.getMuseumName()))
+                .centerCrop()
+                .placeholder(R.drawable.ic_museum_explain)
+                .into(vh.nearLibImage);
+
         vh.mediaPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +71,7 @@ public class NearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView Lev;
         private TextView price;
         private LinearLayout mediaPlayer;
+        private ImageView nearLibImage;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             LibName=itemView.findViewById(R.id.textView10);
@@ -69,6 +79,7 @@ public class NearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             price=itemView.findViewById(R.id.textView17);
             Lev=itemView.findViewById(R.id.textView13);
             mediaPlayer=itemView.findViewById(R.id.mediaplayer);
+            nearLibImage=itemView.findViewById(R.id.imageView4);
         }
     }
 }

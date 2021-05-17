@@ -281,7 +281,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
-//        getMapMarkerList();
+        getMapMarkerList();
 
     }
 

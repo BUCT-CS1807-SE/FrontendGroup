@@ -64,6 +64,8 @@ public class MapBottom extends BottomPopupView {
                 nearM.setTicker("暂无");
             else
             nearM.setTicker(museumTicket+"元");
+
+            nearM.setImageUrl("8.140.136.108/coverpic/"+museumName+".jpg");
             datas.add(nearM);
         }
         NearMuseumAdapter nearMuseumAdapter = new NearMuseumAdapter(getContext(),datas);
