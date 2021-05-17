@@ -11,7 +11,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.entity.Comment;
+import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.entity.MuseumCollectedPost;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -32,9 +34,6 @@ import static android.content.ContentValues.TAG;
 //import org.json.JSONObject;
 
 public class NetworkUtils {
-    /***
-     * 评论的实体类我已经建了 ——黄熠
-     */
 
     public enum ResultType {
         ALL_MUSEUM, //博物馆查询结果
@@ -42,6 +41,8 @@ public class NetworkUtils {
         COMMENT,    //评论查询
         COMMENT_POST, //提交评论
         COMMENT_LIKE, //评论点赞数
+        COMMENT_LIKE_POST, //评论点赞提交
+        COLLECT_POST, //收藏提交
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
@@ -54,18 +55,27 @@ public class NetworkUtils {
         put(ResultType.COMMENT, "http://8.140.136.108:8080/system/comments/select/all/%s");
         put(ResultType.COMMENT_POST,"http://8.140.136.108:8080/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108:8080/system/commentlike/select/all/%s");
+        put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108:8080/system/commentlike");
+        put(ResultType.COLLECT_POST,"http://8.140.136.108:8080/system/museumcollection");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
     }};
-    private static final OkHttpClient client = new OkHttpClient.Builder()
-            .build();
+    private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
-    public static void HttpRequestPost(ResultType resultType,Handler handler
-    ) {
+    public static void HttpRequestPost(Handler handler, CommentIsLiked commentIsLiked){
+        String data=JSON.toJSONString(commentIsLiked);
+        HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+    }
+    public static void HttpRequestPost(Handler handler,Comment comment) {
+        String data = JSON.toJSONString(comment);
+        HttpRequestPost(ResultType.COMMENT,handler,data.getBytes(),MediaType.parse("application/json;"));
+    }
+    public static void HttpRequestPost(Handler handler, MuseumCollectedPost museumCollectedPost) {
+        String data = JSON.toJSONString(museumCollectedPost);
+        HttpRequestPost(ResultType.COLLECT_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+    }
+    public static void HttpRequestPost(ResultType resultType,Handler handler,byte[] data,MediaType type) {
         String url = m.get(resultType);
-        Comment comment=new Comment(1,1,1,"曾梅","2021-05-19","==这个博物馆不太行==");//假数据
-        JSONObject jsonComment= (JSONObject) JSONObject.toJSON(comment);
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON,jsonComment.toJSONString());
+        RequestBody requestBody = RequestBody.create(data,type);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -108,7 +118,7 @@ public class NetworkUtils {
         });
     }
 
-    public static void HttpRequestGet(ResultType resultType, Handler handler, String... args) {
+    public static void HttpRequestGet(ResultType resultType, Handler handler, Object... args) {
         String url = m.get(resultType);
         if (args != null) {
             Formatter formatter = new Formatter();

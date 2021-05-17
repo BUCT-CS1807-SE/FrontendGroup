@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Rating;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,9 +34,11 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.MuseumExhibitionAdapter;
 import com.example.myapplication.adapter.MuseumItemAdapter;
 import com.example.myapplication.entity.Comment;
+import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
@@ -48,9 +51,12 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
 
 /**
  * 博物馆详情页
@@ -163,6 +169,16 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         View grade_view = LayoutInflater.from(grade.getContainer().getContext()).inflate(R.layout.museum_grade,grade.getContainer(),false);
         addGrade(grade_view);
         grade.addElement(grade_view);
+        RatingBar show_rating = findViewById(R.id.ratingBar_show);
+        RatingBar service_rating=findViewById(R.id.ratingBar_service);
+        RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
+        Button grade_commit=findViewById(R.id.grade_commit);
+        grade_commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //----------评论----------
         //获取评论
@@ -180,7 +196,22 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             }
 
             //@TODO 提交评论
-            showToast("提交评论:"+content);
+            Handler commentPost=new Handler(Looper.myLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what==1){
+                        showToastSync("评论成功");
+                    } else {
+                        showToastSync("提交评论失败");
+                    }
+                }
+            };
+
+            Comment comment=new Comment(1,1,1,"曾梅","2020/2/2",content);
+
+            HttpRequestPost(commentPost,comment);
+
         });
 
         comments=null;//网络接口完成后，初始化方式放入handler中
@@ -195,19 +226,6 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             }
         };
         HttpRequestGet(NetworkUtils.ResultType.COMMENT,commentGet,museum.getId().toString());
-        //提交评论
-        Handler commentPost=new Handler(Looper.myLooper()){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                if(msg.what==1){
-                    showToastSync("评论成功");
-                } else {
-                    showToastSync("提交评论失败");
-                }
-            }
-        };
-//        HttpRequestPost(NetworkUtils.ResultType.COMMENT_POST,commentPost);
         //----------藏品----------
         item = findViewById(R.id.items);
 
@@ -254,12 +272,26 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 .setLabelColor(Color.WHITE)
                 .create());
 
+        Handler collectedPost=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    showToastSync("ok");
+                }
+                else showToastSync("false");
+            }
+        };
+        MuseumCollectedPost museumCollectedPost=new MuseumCollectedPost();
         more.setOnActionSelectedListener(actionItem -> {
             int id = actionItem.getId();
             switch (id) {
                 case R.id.museum_menu_collect:{
                     //收藏
-
+                    museumCollectedPost.setId(1);
+                    museumCollectedPost.setMumid(1);
+                    museumCollectedPost.setUserid(1);
+                    HttpRequestPost(collectedPost,museumCollectedPost);
                     return true;
                 }
                 case R.id.museum_menu_explain:{
@@ -294,18 +326,34 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             like.setImageResource(R.mipmap.like_active);
             like.setTag(COMMENT_LIKED);
         }
+        Handler commentLikePost=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    System.out.println("---------------操作成功--------------");
+                }
+            }
+        };
+        CommentIsLiked commentIsLiked=new CommentIsLiked();
         like.setOnClickListener(v -> {
             Integer state = (Integer)like.getTag();
             if (state == COMMENT_LIKED) {
                 like.setImageResource(R.mipmap.like);
                 like.setTag(COMMENT_UNLIKED);
                 //已经点过赞了，取消点赞，下一步向后台提供数据
-
+                commentIsLiked.setUserid(1);
+                commentIsLiked.setCommentid(1);
+                commentIsLiked.setIslike(0);
+                HttpRequestPost(commentLikePost,commentIsLiked);
             } else {
                 like.setImageResource(R.mipmap.like_active);
                 like.setTag(COMMENT_LIKED);
                 //点赞成功，向后台提供数据
-
+                commentIsLiked.setUserid(1);
+                commentIsLiked.setCommentid(1);
+                commentIsLiked.setIslike(1);
+                HttpRequestPost(commentLikePost,commentIsLiked);
             }
         });
 

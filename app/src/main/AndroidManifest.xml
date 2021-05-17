@@ -40,6 +40,7 @@
         <activity android:name=".activity.MusicPlayer" />
         <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +49,8 @@
         </activity>
         <activity
             android:name=".activity.HomePageActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".activity.MuseumIntroActivity" />
 
