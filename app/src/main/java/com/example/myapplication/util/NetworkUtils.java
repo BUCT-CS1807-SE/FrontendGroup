@@ -50,6 +50,7 @@ public class NetworkUtils {
         MUSEUM_EXPLAIN,//博物馆讲解
         OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
+        NEW
         ;
     }
 
