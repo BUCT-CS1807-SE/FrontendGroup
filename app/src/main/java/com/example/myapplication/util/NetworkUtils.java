@@ -14,6 +14,7 @@ import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
+import com.example.myapplication.entity.Rating;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -42,7 +43,9 @@ public class NetworkUtils {
         COMMENT_POST, //提交评论
         COMMENT_LIKE, //评论点赞数
         COMMENT_LIKE_POST, //评论点赞提交
+        COMMENT_LIKE_CANCEL_POST, //取消评论
         COLLECT_POST, //收藏提交
+        GRADE_POST, //博物馆评分
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
@@ -56,11 +59,17 @@ public class NetworkUtils {
         put(ResultType.COMMENT_POST,"http://8.140.136.108:8080/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108:8080/system/commentlike/select/all/%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108:8080/system/commentlike");
+        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108:8080/system/%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108:8080/system/museumcollection");
+        put(ResultType.GRADE_POST,"http://8.140.136.108:8080/system/museumrating");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
+    public static void HttpRequestPost(Handler handler, Rating rating){
+        String data=JSON.toJSONString(rating);
+        HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+    }
     public static void HttpRequestPost(Handler handler, CommentIsLiked commentIsLiked){
         String data=JSON.toJSONString(commentIsLiked);
         HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),MediaType.parse("application/json;"));

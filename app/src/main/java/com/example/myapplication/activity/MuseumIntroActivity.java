@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Rating;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +39,7 @@ import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
+import com.example.myapplication.entity.Rating;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.InfoContainerView;
@@ -173,10 +173,21 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         RatingBar service_rating=findViewById(R.id.ratingBar_service);
         RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
         Button grade_commit=findViewById(R.id.grade_commit);
+        Handler ratingPost=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    showToastSync("ok");
+                }
+                else showToastSync("false");
+            }
+        };
         grade_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Rating rating=new Rating(1,1,1,service_rating.getNumStars(),service_rating.getNumStars(),environment_rating.getNumStars());
+                HttpRequestPost(ratingPost,rating);
             }
         });
 
