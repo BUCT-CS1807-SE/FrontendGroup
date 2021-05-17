@@ -14,8 +14,9 @@ import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
-import com.example.myapplication.entity.Museum_explain;
+import com.example.myapplication.entity.MuseumNew;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -35,6 +37,11 @@ import static android.content.ContentValues.TAG;
 //import org.json.JSONObject;
 
 public class NetworkUtils {
+
+    public static final MediaType TYPE_IMAGE_PNG = MediaType.parse("image/png");
+    public static final MediaType TYPE_IMAGE_JPG = MediaType.parse("image/jpg");
+    public static final MediaType TYPE_JSON = MediaType.parse("application/json");
+    public static final MediaType TYPE_FILE = MediaType.parse("multipart/form-data");
 
     public enum ResultType {
         ALL_MUSEUM, //博物馆查询结果
@@ -47,10 +54,8 @@ public class NetworkUtils {
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
-        MUSEUM_EXPLAIN,//博物馆讲解
-        OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
-        NEW
+        NEW,        //新闻
         ;
     }
 
@@ -61,28 +66,53 @@ public class NetworkUtils {
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108:8080/system/commentlike/select/all/%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108:8080/system/commentlike");
         put(ResultType.COLLECT_POST,"http://8.140.136.108:8080/system/museumcollection");
+        put(ResultType.NEW,"http://8.140.136.108:8080/system/news/select/all/%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
-        put(ResultType.MUSEUM_EXPLAIN,"http://8.140.136.108/prod-api/system/museumexplain/select/museumid/%s");
-        put(ResultType.OBJECT_EXPLAIN,"http://8.140.136.108/prod-api/system/collectionexplain/collectionid/all/%s");
-
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
     public static void HttpRequestPost(Handler handler, CommentIsLiked commentIsLiked){
         String data=JSON.toJSONString(commentIsLiked);
-        HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+        HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
     public static void HttpRequestPost(Handler handler,Comment comment) {
         String data = JSON.toJSONString(comment);
-        HttpRequestPost(ResultType.COMMENT,handler,data.getBytes(),MediaType.parse("application/json;"));
+        HttpRequestPost(ResultType.COMMENT,handler,data.getBytes(),TYPE_JSON,null);
     }
     public static void HttpRequestPost(Handler handler, MuseumCollectedPost museumCollectedPost) {
         String data = JSON.toJSONString(museumCollectedPost);
-        HttpRequestPost(ResultType.COLLECT_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+        HttpRequestPost(ResultType.COLLECT_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
-    public static void HttpRequestPost(ResultType resultType,Handler handler,byte[] data,MediaType type) {
+
+    /**
+     * 提交文件 ,使用方式(jpg图片)：HttpRequestPost(resultType,handler,"name",null,data,NetworkUtil.TYPE_IMAGE_JPG)
+     * @param resultType 链接种类，在ResultType枚举对象中选择合适的值，该值对应相应的提交接口链接
+     * @param handler 处理函数
+     * @param arg 表单名，比如"image"
+     * @param name 文件名，默认为"uploaded_file"
+     * @param data 数据，二进制数组
+     * @param type 数据类型，可以是 TYPE_IMAGE_PNG、TYPE_IMAGE_JPG、TYPE_FILE，如果是null默认用TYPE_FILE.
+     */
+    public static void HttpRequestPost(ResultType resultType,Handler handler,String arg,String name, byte[] data,MediaType type) {
+        if (type == null)
+            type = TYPE_FILE;
+        if (name == null||name.isEmpty())
+            name = "uploaded_file";
+
+        RequestBody fileBody = RequestBody.create( data,type);
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(arg, name, fileBody)
+                .build();
+
+        HttpRequestPost(resultType,handler,null,null,body);
+    }
+
+    public static void HttpRequestPost(ResultType resultType,Handler handler,byte[] data,MediaType type,RequestBody requestBody) {
         String url = m.get(resultType);
-        RequestBody requestBody = RequestBody.create(data,type);
+        if (requestBody == null) {
+            requestBody = RequestBody.create(data,type);
+        }
 
         Request request = new Request.Builder()
                 .url(url)
@@ -124,7 +154,6 @@ public class NetworkUtils {
             }
         });
     }
-
 
     public static void HttpRequestGet(ResultType resultType, Handler handler, Object... args) {
         String url = m.get(resultType);
@@ -171,10 +200,11 @@ public class NetworkUtils {
                             send=outcome.getInteger("total");
 //                            JSONArray data = outcome.getJSONArray("rows");
 //                            send=data.size();
+                            break;
                         }
-                        case MUSEUM_EXPLAIN:{
+                        case NEW:{
                             JSONArray data = outcome.getJSONArray("rows");
-                            send = JSON.parseArray(data.toJSONString(), Museum_explain.class);
+                            send = JSON.parseArray(data.toJSONString(), MuseumNew.class);
                             break;
                         }
                         case TEST: {
@@ -192,56 +222,6 @@ public class NetworkUtils {
                     message.obj = null;
                     handler.sendMessage(message);
                 }
-            }
-        });
-    }
-
-    //讲解test
-    public static void HttpRequestPost(ResultType resultType,Handler handler
-    ) {
-        String url = m.get(resultType);
-        Comment comment=new Comment(1,1,1,"曾梅","2021-05-19","==这个博物馆不太行==");//假数据
-        JSONObject jsonComment= (JSONObject) JSONObject.toJSON(comment);
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(JSON,jsonComment.toJSONString());
-
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
-
-        final Call call = client.newCall(request);
-
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.e(TAG, "onFailure: ", e);
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                int code = response.code();
-                Message message = new Message();
-                message.what = 1;
-                switch (code){
-                    default:{
-                        message.what = 0;
-                        break;
-                    }
-                    case 200:{
-                        String s = response.body().string();
-                        JSONObject obj = JSONObject.parseObject(s);
-                        int c = obj.getInteger("code");
-                        if (c == 200) {
-                            message.what = 1;
-                        } else {
-                            message.what = 0;
-                        }
-                        break;
-                    }
-                }
-                handler.handleMessage(message);
-                System.out.println("_____________________OK_______________________");
             }
         });
     }

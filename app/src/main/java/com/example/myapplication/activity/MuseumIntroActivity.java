@@ -164,7 +164,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                     museumNews = (List<MuseumNew>) msg.obj;
                     initNews();
                 } else {
-                    showToastSync("新闻获取失败");
+                    showToast("新闻获取失败");
                 }
             }
         };
