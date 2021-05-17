@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Edit_message">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginBottom="684dp"
+        android:background="@android:color/transparent"
+        android:text="用户信息"
+        android:textColor="#FF000000"
+        android:textColorHint="#bcbcbc"
+        android:textSize="20sp" />
+
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="17dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/left_back"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="339dp"
+        android:layout_marginRight="339dp"
+        android:layout_marginBottom="682dp"
+        android:background="@android:color/transparent"
+        android:text="返回"
+        android:textColor="#85000000"
+        android:textColorHint="#bcbcbc"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/et_2"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/edit_text_bg2"
+        android:hint="请输入密码"
+        android:inputType="text"
+        android:paddingStart="25dp"
+        android:textSize="18sp"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/et_3"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:background="@drawable/edit_text_bg2"
+        android:hint="请输入新密码"
+        android:inputType="text"
+        android:paddingStart="25dp"
+        android:textSize="18sp"
+        android:layout_marginTop="320dp"
+        android:layout_centerHorizontal="true"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/et_4"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:background="@drawable/edit_text_bg2"
+        android:hint="请确认新密码"
+        android:inputType="text"
+        android:paddingStart="25dp"
+        android:textSize="18sp"
+        android:layout_marginTop="410dp"
+        android:layout_centerHorizontal="true"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/et_5"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:background="@drawable/edit_text_bg2"
+        android:hint="请输入电子邮箱"
+        android:inputType="text"
+        android:paddingStart="25dp"
+        android:textSize="18sp"
+        android:layout_marginTop="500dp"
+        android:layout_centerHorizontal="true"
+        tools:ignore="RtlSymmetry" />
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="627dp"
+        android:background="@drawable/shape_model1"
+        android:text="确认修改"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="40dp"
+        android:layout_height="26dp"
+        android:text="密码"
+        android:textSize="16dp"
+        android:layout_marginTop="290dp"
+        android:textColor="#85000000"
+        android:textColorHint="#bcbcbc"
+        android:layout_marginStart="30dp"
+         />
+
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="60dp"
+        android:layout_height="26dp"
+        android:text="新密码"
+        android:textSize="16sp"
+        android:layout_marginTop="380dp"
+        android:textColor="#85000000"
+        android:textColorHint="#bcbcbc"
+        android:layout_marginLeft="25dp" />
+
+    <TextView
+        android:id="@+id/tv_6"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:text="确认新密码"
+        android:textSize="16sp"
+        android:layout_marginTop="465dp"
+        android:textColor="#85000000"
+        android:textColorHint="#bcbcbc"
+        android:layout_marginLeft="25dp" />
+
+    <!-- 注册按钮 -->
+
+    <TextView
+        android:id="@+id/tv_7"
+        android:layout_width="100dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="560dp"
+        android:text="更改电子邮箱"
+        android:textColor="#85000000"
+        android:textColorHint="#bcbcbc"
+        android:textSize="16sp" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        android:layout_marginTop="55dp"
+        android:background="@drawable/shape_model"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="43dp"
+        android:paddingRight="31dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="148dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginBottom="670dp"
+                android:background="@android:color/transparent"
+                android:text="用户信息"
+                android:textColor="#FF000000"
+                android:textColorHint="#bcbcbc"
+                android:textSize="20sp" />
+<!--显示个人ID-->
+            <TextView
+                android:id="@+id/uernames"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="-60dp"
+                android:layout_marginTop="-30dp"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+            <!--显示个人邮件-->
+            <TextView
+                android:id="@+id/emailnames"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="130dp"
+                android:layout_marginLeft="140dp"
+                android:src="@drawable/idtest" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

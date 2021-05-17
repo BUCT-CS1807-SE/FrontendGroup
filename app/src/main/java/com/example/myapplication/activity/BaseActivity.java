@@ -26,6 +26,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        //我们自己的方法
+        super.onDestroy();
+    }
+
     protected abstract int initLayout();
 
     protected abstract void initView();

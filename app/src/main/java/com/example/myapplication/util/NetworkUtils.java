@@ -14,6 +14,7 @@ import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
+import com.example.myapplication.entity.Museum_explain;
 
 import java.io.IOException;
 import java.util.Formatter;
@@ -46,6 +47,8 @@ public class NetworkUtils {
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
+        MUSEUM_EXPLAIN,//博物馆讲解
+        OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
         ;
     }
@@ -58,6 +61,9 @@ public class NetworkUtils {
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108:8080/system/commentlike");
         put(ResultType.COLLECT_POST,"http://8.140.136.108:8080/system/museumcollection");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
+        put(ResultType.MUSEUM_EXPLAIN,"http://8.140.136.108/prod-api/system/museumexplain/select/museumid/%s");
+        put(ResultType.OBJECT_EXPLAIN,"http://8.140.136.108/prod-api/system/collectionexplain/collectionid/all/%s");
+
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
@@ -118,6 +124,7 @@ public class NetworkUtils {
         });
     }
 
+
     public static void HttpRequestGet(ResultType resultType, Handler handler, Object... args) {
         String url = m.get(resultType);
         if (args != null) {
@@ -164,6 +171,11 @@ public class NetworkUtils {
 //                            JSONArray data = outcome.getJSONArray("rows");
 //                            send=data.size();
                         }
+                        case MUSEUM_EXPLAIN:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Museum_explain.class);
+                            break;
+                        }
                         case TEST: {
 
                             break;
@@ -179,6 +191,56 @@ public class NetworkUtils {
                     message.obj = null;
                     handler.sendMessage(message);
                 }
+            }
+        });
+    }
+
+    //讲解test
+    public static void HttpRequestPost(ResultType resultType,Handler handler
+    ) {
+        String url = m.get(resultType);
+        Comment comment=new Comment(1,1,1,"曾梅","2021-05-19","==这个博物馆不太行==");//假数据
+        JSONObject jsonComment= (JSONObject) JSONObject.toJSON(comment);
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(JSON,jsonComment.toJSONString());
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        final Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e(TAG, "onFailure: ", e);
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                int code = response.code();
+                Message message = new Message();
+                message.what = 1;
+                switch (code){
+                    default:{
+                        message.what = 0;
+                        break;
+                    }
+                    case 200:{
+                        String s = response.body().string();
+                        JSONObject obj = JSONObject.parseObject(s);
+                        int c = obj.getInteger("code");
+                        if (c == 200) {
+                            message.what = 1;
+                        } else {
+                            message.what = 0;
+                        }
+                        break;
+                    }
+                }
+                handler.handleMessage(message);
+                System.out.println("_____________________OK_______________________");
             }
         });
     }

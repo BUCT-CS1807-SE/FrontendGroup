@@ -39,6 +39,9 @@
         <activity android:name=".activity.RouteDetailActivity" />
         <activity android:name=".activity.MusicPlayer" />
         <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.UserexplainActivity">
+
+        </activity>
         <activity android:name=".MainActivity">
 
             <intent-filter>
