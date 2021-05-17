@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/tv_1"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="50dp"
             android:text="登入"
             android:textColor="@color/black"
@@ -65,7 +65,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="-60dp"
+                android:layout_marginStart="-65dp"
                 android:src="@drawable/material3" />
 
         </LinearLayout>
@@ -97,7 +97,7 @@
                 android:background="@drawable/edit_text_bg1"
                 android:ems="10"
                 android:hint="请输入密码"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:paddingStart="25dp"
                 android:textSize="18sp"
                 />
@@ -105,14 +105,21 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="-60dp"
+                android:layout_marginStart="-65dp"
                 android:src="@drawable/material2" />
+
+            <!--            <CheckBox-->
+<!--                android:id="@+id/checkbox1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="显示密码"-->
+<!--                android:textSize="10sp"></CheckBox>-->
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="83dp"
             android:layout_marginTop="20dp"
             android:foregroundGravity="center"
             android:gravity="center"
@@ -122,8 +129,8 @@
                 android:id="@+id/btn_1"
                 android:layout_width="160dp"
                 android:layout_height="55dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:background="@drawable/btn1_bg"
                 android:backgroundTint="#FFC94A03"
                 android:text="@string/register"
@@ -137,8 +144,8 @@
                 android:layout_height="55dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:text="@string/login"
                 android:background="@drawable/btn1_bg"
+                android:text="@string/login"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -148,17 +155,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginTop="20dp"
             android:foregroundGravity="center"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="-10dp">
+
 
             <CheckBox
                 android:id="@+id/cb_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="25dp"
+                android:textSize="10dp"
                 android:text="记住密码" />
 
             <CheckBox
@@ -167,7 +176,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
+                android:textSize="10dp"
                 android:text="自动登录" />
+
+            <CheckBox
+                android:id="@+id/cb_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="25dp"
+                android:textSize="10dp"
+                android:text="显示密码" />
+
 
         </LinearLayout>
 

@@ -38,7 +38,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        viewPager = mRootView.findViewById(R.id.fixedViewPager);
+        viewPager = mRootView.findViewById(R.id.viewpager);
         slidingTabLayout = mRootView.findViewById(R.id.slidingTabLayout);
     }
 

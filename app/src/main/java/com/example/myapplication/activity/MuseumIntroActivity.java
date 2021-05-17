@@ -54,6 +54,7 @@ import com.youth.banner.loader.ImageLoader;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
@@ -87,10 +88,10 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     private Banner banner;
     private ArrayList<String> list_path;
 
-    private ArrayList<Comment> comments;
-    private ArrayList<MuseumNew> museumNews;
-    private ArrayList<Item> items;
-    private ArrayList<Exhibition>exhibitions;
+    private List<Comment> comments;
+    private List<MuseumNew> museumNews;
+    private List<Item> items;
+    private List<Exhibition>exhibitions;
     private float score_environment=2;
     private float score_service=2;
     private float score_show=2;
@@ -155,7 +156,19 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //----------新闻----------
         news = findViewById(R.id.news);
-        museumNews = new ArrayList<>();
+        Handler getNewsHandler = new Handler(Looper.myLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    museumNews = (List<MuseumNew>) msg.obj;
+                    initNews();
+                } else {
+                    showToast("新闻获取失败");
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.NEW,getNewsHandler,museum_name);
 
         //----------到达方式----------
         arrive = findViewById(R.id.arrive);
@@ -231,7 +244,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if(msg.what==1){
-                    comments= (ArrayList<Comment>) msg.obj;
+                    comments= (List<Comment>) msg.obj;
                     initComments();
                 }
             }
@@ -441,13 +454,15 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
      * @param isEnd 是否是最后一个条目，如果是则关闭底部边界
      */
 
-    public void addNew(MuseumNew museumNew,boolean isEnd) {
+    @SuppressLint("SetTextI18n")
+    public void addNew(MuseumNew museumNew, boolean isEnd) {
         LinearLayout container = this.news.getContainer();
         View newsView = LayoutInflater.from(container.getContext()).inflate(R.layout.museum_new,container,false);
         TextView newsTitle = newsView.findViewById(R.id.new_title);
         TextView newsBrief = newsView.findViewById(R.id.new_content);
         TextView newsAuthor = newsView.findViewById(R.id.new_author);
         TextView newsTime = newsView.findViewById(R.id.new_time);
+        TextView newsType = newsView.findViewById(R.id.new_type);
         if (isEnd) {
             newsView.findViewById(R.id.museum_newborder).setAlpha(0.0f);
         }
@@ -456,6 +471,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         newsBrief.setText(museumNew.getContent());
         newsAuthor.setText(museumNew.getAuthor());
         newsTime.setText(museumNew.getTime());
+        newsType.setText("分类："+museumNew.getType1()+" ,"+museumNew.getType2());
 
         //创建点击事件监听器
         newsView.setOnClickListener((view)->{
@@ -471,10 +487,10 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     protected void initData() {
         //------------数   据   造   假-------------
 
-        museumNews.add(new MuseumNew(0,"这个博物馆出大事了","小编","2021-5-15","www.jd.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName()));
-        museumNews.add(new MuseumNew(1,"这个博物馆出大事了","小编","2021-5-15","www.taobao.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName()));
-        museumNews.add(new MuseumNew(2,"这个博物馆出大事了","小编","2021-5-15","www.qq.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName()));
-        initNews();
+//        museumNews.add(new MuseumNew(0,"这个博物馆出大事了","小编","2021-5-15","www.jd.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName(),"坏事儿","Fake News"));
+//        museumNews.add(new MuseumNew(1,"这个博物馆出大事了","小编","2021-5-15","www.taobao.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName(),"好事儿","Fake News"));
+//        museumNews.add(new MuseumNew(2,"这个博物馆出大事了","小编","2021-5-15","www.qq.com","具体是什么大事呢，小编也不知道，下面就一起和小编来看看吧",museum.getName(),"坏事儿","Fake News"));
+//        initNews();
     }
 
     private void initComments() {
