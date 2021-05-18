@@ -61,6 +61,26 @@
         android:id="@+id/fixedViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="0">
+
+    </com.example.myapplication.view.FixedViewPager>
+
+    <com.example.myapplication.view.InfoContainerView
+        android:id="@+id/environment_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tl:title="博物馆环境排名" />
+
+    <com.example.myapplication.view.InfoContainerView
+        android:id="@+id/exhibition_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tl:title="博物馆展览排名" />
+
+    <com.example.myapplication.view.InfoContainerView
+        android:id="@+id/service_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tl:title="博物馆服务排名" />
 
 </LinearLayout>
