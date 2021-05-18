@@ -1,11 +1,41 @@
 package com.example.myapplication.entity;
 
+import java.util.List;
+
 public class NearMuseumEntity {
     private String museumName;
     private String level;
     private String openTime;
     private String ticker;
     private String ImageUrl;
+    private String exhibitionName;
+    private Integer museumId;
+    private List<exhtestEntity> exhItem;
+
+    public List<exhtestEntity> getExhItem() {
+        return exhItem;
+    }
+
+    public void setExhItem(List<exhtestEntity> exhItem) {
+        this.exhItem = exhItem;
+    }
+
+    public Integer getMuseumId() {
+        return museumId;
+    }
+
+    public void setMuseumId(Integer museumId) {
+        this.museumId = museumId;
+    }
+
+    public String getExhibitionName() {
+        return exhibitionName;
+    }
+
+    public void setExhibitionName(String exhibitionName) {
+        this.exhibitionName = exhibitionName;
+    }
+
     public String getMuseumName() {
         return museumName;
     }

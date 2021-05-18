@@ -44,6 +44,9 @@ import com.example.myapplication.api.ApiConfig;
 import com.example.myapplication.api.TtitCallback;
 import com.example.myapplication.entity.MapListResponse;
 import com.example.myapplication.entity.RowsDTO;
+import com.example.myapplication.entity.exhibitionItem;
+import com.example.myapplication.entity.exhibitionResponse;
+import com.example.myapplication.entity.exhtestEntity;
 import com.example.myapplication.util.StringUtils;
 import com.example.myapplication.xpopup.MapBottom;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -86,7 +89,8 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private Boolean FirstLoaded;
     private FloatingActionButton nearButton;
     private MapBottom mapBottom =null;
-
+    private boolean flag = false;
+    private Integer readyNum = 0;
     public MapFragment() {
     }
 
@@ -142,8 +146,13 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         nearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mapBottom==null)
-                    mapBottom=new MapBottom(getActivity(),neardatas);
+                if(readyNum < neardatas.size())
+                {
+                    showToast("正在搜索附近博物馆，请稍后....");
+                    return;
+                }
+                mapBottom=new MapBottom(getActivity(),neardatas);
+
                 new XPopup.Builder(getActivity())
                         .popupPosition(PopupPosition.Right)//右边
                         .hasStatusBarShadow(true) //启用状态栏阴影
@@ -151,8 +160,6 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                         .show();
             }
         });
-
-
     }
     private void initview( Bundle savedInstanceState,View view){
         mapView= view.findViewById(R.id.map_view);
@@ -174,6 +181,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         uiSettings.setLogoBottomMargin(-150);
         uiSettings.setZoomControlsEnabled(false);
         uiSettings.setScaleControlsEnabled(true);
+        getMapMarkerList();
     }
 
     /**
@@ -281,7 +289,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
-        getMapMarkerList();
+
 
     }
 
@@ -299,7 +307,6 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 }
                 new Thread() {
                     public void run() {
-
                         List<ClusterItem> items = new ArrayList<ClusterItem>();
                         double curlat=aMap.getMyLocation().getLatitude();
                         double curlon=aMap.getMyLocation().getLongitude();
@@ -320,6 +327,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                             items.add(regionItem);
                         }
 
+                        getExhinbitionName();
 
                         mClusterOverlay = new ClusterOverlay(aMap, items,
                                 dp2px(getActivity(), clusterRadius),
@@ -369,4 +377,60 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
+    public void getExhinbitionName(){
+        for(int i=0;i<neardatas.size();i++)
+        {
+            HashMap<String,Object> params= new HashMap<>();
+            int finalI = i;
+            Api.config(ApiConfig.Libitem+neardatas.get(i).getId(),params).getRequest(new TtitCallback(){
+                @Override
+                public void onSuccess(String res) {
+                    exhibitionResponse response = new Gson().fromJson(res,exhibitionResponse.class);
+                    if(response!=null)
+                    {
+                        if(response.getRows().size()!=0)
+                            neardatas.get(finalI).setExhName(response.getRows().get(0).getExhibitname());
+                        else
+                            neardatas.get(finalI).setExhName("暂无");
+                        HashMap<String,Object> params= new HashMap<>();
+                        params.put("museumid",neardatas.get(finalI).getId());
+                        params.put("exhibitname",neardatas.get(finalI).getExhName());
+                        Api.config(ApiConfig.exhiItem,params).getRequest(new TtitCallback(){
+                            @Override
+                            public void onSuccess(String res) {
+                                exhibitionItem response = new Gson().fromJson(res,exhibitionItem.class);
+                                if(response!=null)
+                                {
+                                    List<exhtestEntity> tempExhEntity = new ArrayList<>();
+                                    for(int j=0;j<response.getRows().size();j++)
+                                    {
+                                        exhtestEntity temp =new exhtestEntity();
+                                        temp.setName(response.getRows().get(j).getCollectionname());
+                                        temp.setImageUrl(response.getRows().get(j).getCollectionimageurl());
+                                        tempExhEntity.add(temp);
+                                    }
+                                    neardatas.get(finalI).setExhItem(tempExhEntity);
+                                    readyNum++;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                readyNum++;
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            });
+        }
+    }
+
+
+
 }
