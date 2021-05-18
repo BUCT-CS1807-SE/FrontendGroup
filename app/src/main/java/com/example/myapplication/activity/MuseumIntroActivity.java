@@ -237,20 +237,28 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         HttpRequestGet(NetworkUtils.ResultType.COMMENT, commentGet, museum.getId().toString());
         //----------藏品----------
         item = findViewById(R.id.items);
-
-        items = new ArrayList<>();//初始化，未来转入Handler
-        //假数据
-        items.add(new Item(1, 1, "", "", "这是一个好藏品", "大宝贝1", ""));
-        items.add(new Item(2, 1, "", "", "这是一个坏藏品", "大宝贝2", ""));
-        items.add(new Item(3, 1, "", "", "这是一个很好的藏品", "大宝贝3", ""));
-        items.add(new Item(4, 1, "", "", "这是一个很坏的藏品", "大宝贝4", ""));
-
         RecyclerView itemContainer = new RecyclerView(item.getContainer().getContext());
-        itemContainer.setAdapter(new MuseumItemAdapter(items));
         LinearLayoutManager manager = new LinearLayoutManager(itemContainer.getContext());
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         itemContainer.setLayoutManager(manager);
-        item.addElement(itemContainer);
+
+        Handler getItems = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    items = (List<Item>) msg.obj;
+                    runOnUiThread(() -> {
+                        itemContainer.setAdapter(new MuseumItemAdapter(items));
+                        item.addElement(itemContainer);
+                    });
+                } else {
+                    showToast("获取藏品失败");
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.ITEMS,getItems,museum.getId(),"");
+
 
         //----------展览----------
         exhibition = findViewById(R.id.exhibition);
