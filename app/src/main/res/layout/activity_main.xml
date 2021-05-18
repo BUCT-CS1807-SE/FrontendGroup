@@ -55,9 +55,9 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:background="@drawable/edit_text_bg1"
-                android:ems="10"
                 android:hint="请输入手机号"
                 android:inputType="text"
+                android:layout_marginLeft="-10dp"
                 android:paddingStart="25dp"
                 android:textSize="18sp"
                 />
@@ -98,6 +98,7 @@
                 android:ems="10"
                 android:hint="请输入密码"
                 android:inputType="textPassword"
+                android:layout_marginLeft="-10dp"
                 android:paddingStart="25dp"
                 android:textSize="18sp"
                 />
@@ -109,11 +110,11 @@
                 android:src="@drawable/material2" />
 
             <!--            <CheckBox-->
-<!--                android:id="@+id/checkbox1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="显示密码"-->
-<!--                android:textSize="10sp"></CheckBox>-->
+            <!--                android:id="@+id/checkbox1"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="显示密码"-->
+            <!--                android:textSize="10sp"></CheckBox>-->
 
         </LinearLayout>
 
@@ -142,8 +143,8 @@
                 android:id="@+id/btn_2"
                 android:layout_width="160dp"
                 android:layout_height="55dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="25dp"
                 android:background="@drawable/btn1_bg"
                 android:text="@string/login"
                 android:textColor="@color/white"

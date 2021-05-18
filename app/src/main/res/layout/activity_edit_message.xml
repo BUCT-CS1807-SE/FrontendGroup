@@ -6,100 +6,134 @@
     android:layout_height="match_parent"
     tools:context=".Edit_message">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="158dp"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="15dp"
+            android:text="用户信息"
+            android:textColor="@color/gray_600"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="73dp"
+        android:src="@drawable/idtest" />
+
+
+    <LinearLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        >
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="17dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/left_back"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:background="@android:color/transparent"
+            android:paddingLeft="10dp"
+            android:paddingTop="25dp"
+            android:text="返回"
+            android:textColor="#85000000"
+            android:textColorHint="#bcbcbc"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_6"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/edit_text_bg2"
+        android:hint="输入新用户名"
+        android:inputType="text"
+        android:paddingStart="125dp"
+        android:textSize="16sp"
+        tools:ignore="RtlSymmetry" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginRight="19dp"
-        android:layout_marginBottom="684dp"
-        android:background="@android:color/transparent"
-        android:text="用户信息"
-        android:textColor="#FF000000"
+        android:id="@+id/et_7"
+        android:layout_width="123dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
+        android:text="修改用户名"
+        android:textColor="@color/light_blue_600"
         android:textColorHint="#bcbcbc"
-        android:textSize="20sp" />
-
-
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="17dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/left_back"
-        android:clickable="true" />
-
-    <TextView
-        android:id="@+id/tv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="339dp"
-        android:layout_marginRight="339dp"
-        android:layout_marginBottom="682dp"
-        android:background="@android:color/transparent"
-        android:text="返回"
-        android:textColor="#85000000"
-        android:textColorHint="#bcbcbc"
-        android:textSize="20sp" />
+        android:textSize="16dp"
+        android:layout_marginLeft="25dp"
+        android:textStyle="italic" />
 
     <EditText
         android:id="@+id/et_2"
-        android:layout_width="380dp"
-        android:layout_height="55dp"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="300dp"
         android:background="@drawable/edit_text_bg2"
-        android:hint="请输入密码"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
+        android:hint="请输入旧密码"
+        android:paddingStart="125dp"
+        android:inputType="textPassword"
+        android:textSize="16sp"
         tools:ignore="RtlSymmetry" />
 
     <EditText
         android:id="@+id/et_3"
-        android:layout_width="380dp"
+        android:layout_width="360dp"
         android:layout_height="55dp"
         android:background="@drawable/edit_text_bg2"
         android:hint="请输入新密码"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        android:layout_marginTop="320dp"
+        android:paddingStart="125dp"
+        android:inputType="textPassword"
+        android:textSize="16sp"
+        android:layout_marginTop="390dp"
         android:layout_centerHorizontal="true"
         tools:ignore="RtlSymmetry" />
 
     <EditText
         android:id="@+id/et_4"
-        android:layout_width="380dp"
-        android:layout_height="55dp"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="480dp"
         android:background="@drawable/edit_text_bg2"
         android:hint="请确认新密码"
-        android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        android:layout_marginTop="410dp"
-        android:layout_centerHorizontal="true"
+        android:paddingStart="125dp"
+        android:inputType="textPassword"
+        android:textSize="16sp"
         tools:ignore="RtlSymmetry" />
 
     <EditText
         android:id="@+id/et_5"
-        android:layout_width="380dp"
-        android:layout_height="55dp"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
         android:background="@drawable/edit_text_bg2"
-        android:hint="请输入电子邮箱"
+        android:hint="请输入新的电子邮箱"
+        android:paddingStart="105dp"
         android:inputType="text"
-        android:paddingStart="25dp"
-        android:textSize="18sp"
-        android:layout_marginTop="500dp"
+        android:textSize="16sp"
+        android:layout_marginTop="570dp"
         android:layout_centerHorizontal="true"
         tools:ignore="RtlSymmetry" />
 
@@ -109,10 +143,10 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="627dp"
+        android:layout_marginTop="675dp"
         android:background="@drawable/shape_model1"
         android:text="确认修改"
-        android:textColor="@color/white"
+        android:textColor="@color/skin_text_white"
         android:textSize="26sp"
         android:textStyle="bold" />
 
@@ -121,21 +155,23 @@
         android:layout_width="40dp"
         android:layout_height="26dp"
         android:text="密码"
+        android:textStyle="italic"
         android:textSize="16dp"
-        android:layout_marginTop="290dp"
-        android:textColor="#85000000"
+        android:layout_marginTop="360dp"
+        android:textColor="@color/light_blue_600"
         android:textColorHint="#bcbcbc"
-        android:layout_marginStart="30dp"
-         />
+        android:layout_marginStart="25dp"
+        />
 
     <TextView
         android:id="@+id/tv_5"
         android:layout_width="60dp"
         android:layout_height="26dp"
         android:text="新密码"
+        android:textStyle="italic"
         android:textSize="16sp"
-        android:layout_marginTop="380dp"
-        android:textColor="#85000000"
+        android:layout_marginTop="450dp"
+        android:textColor="@color/light_blue_600"
         android:textColorHint="#bcbcbc"
         android:layout_marginLeft="25dp" />
 
@@ -144,9 +180,10 @@
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:text="确认新密码"
+        android:textStyle="italic"
         android:textSize="16sp"
-        android:layout_marginTop="465dp"
-        android:textColor="#85000000"
+        android:layout_marginTop="540dp"
+        android:textColor="@color/light_blue_600"
         android:textColorHint="#bcbcbc"
         android:layout_marginLeft="25dp" />
 
@@ -158,75 +195,58 @@
         android:layout_height="26dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="560dp"
-        android:text="更改电子邮箱"
-        android:textColor="#85000000"
+        android:layout_marginTop="630dp"
+        android:text="更改邮箱"
+        android:textStyle="italic"
+        android:textColor="@color/light_blue_600"
         android:textColorHint="#bcbcbc"
         android:textSize="16sp" />
 
-    <LinearLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="148dp"
-        android:layout_marginTop="55dp"
-        android:background="@drawable/shape_model"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="43dp"
-        android:paddingRight="31dp">
+    <!--显示个人ID-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="80dp"
+        android:text="用户："
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="148dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+    <!--显示个人ID-->
+    <TextView
+        android:id="@+id/usernames"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="italic" />
 
+    <!--显示个人邮件-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/black"
+        android:text="邮箱："
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="31dp"
-                android:layout_marginEnd="18dp"
-                android:layout_marginRight="18dp"
-                android:layout_marginBottom="670dp"
-                android:background="@android:color/transparent"
-                android:text="用户信息"
-                android:textColor="#FF000000"
-                android:textColorHint="#bcbcbc"
-                android:textSize="20sp" />
-<!--显示个人ID-->
-            <TextView
-                android:id="@+id/uernames"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="-60dp"
-                android:layout_marginTop="-30dp"
-                android:textColor="@color/black"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-            <!--显示个人邮件-->
-            <TextView
-                android:id="@+id/emailnames"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/black"
-                android:textSize="26sp"
-                android:textStyle="bold" />
+    <!--显示个人邮件-->
+    <TextView
+        android:id="@+id/emailnames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="italic" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="130dp"
-                android:layout_marginLeft="140dp"
-                android:src="@drawable/idtest" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </RelativeLayout>
+

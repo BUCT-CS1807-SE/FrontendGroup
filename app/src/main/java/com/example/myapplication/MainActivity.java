@@ -43,6 +43,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
     public static Personalin person = new Personalin();
     public static String token="";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         cbRemember = findViewById(R.id.cb_1);
         cbAutoLogin = findViewById(R.id.cb_2);
+
 
         SharedPreferences token_sp = getSharedPreferences("token",MODE_PRIVATE);
         token=token_sp.getString("token","");
@@ -139,6 +141,8 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
         person.setPhone(json.getJSONArray("rows").getJSONObject(0).getString("phone"));
 
         person.setEmail(json.getJSONArray("rows").getJSONObject(0).getString("email"));
+
+        person.setId(Integer.valueOf(json.getJSONArray("rows").getJSONObject(0).getString("id")));
 
     }
 
@@ -215,12 +219,10 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-                                        String result = response.body().string();
-                                        Log.e("token",result );
+                                        Log.e("token", response.body().string());
                                         JSONObject outcome;
                                         outcome = JSON.parseObject(result);
-                                        token = outcome.getString("token");
-                                        System.out.println("======================="+token);
+                                        String token = outcome.getString("token");
                                         SharedPreferences token_sp = getSharedPreferences("token",MODE_PRIVATE);
                                         SharedPreferences.Editor edit = token_sp.edit();
                                         edit.putString("token",token);

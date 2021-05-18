@@ -56,7 +56,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".activity.MuseumIntroActivity" />
-
+        <activity android:name=".Edit_message" />
         <service android:name="com.amap.api.location.APSService" />
 
 
