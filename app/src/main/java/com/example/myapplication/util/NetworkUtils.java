@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Item;
+import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
@@ -81,6 +82,7 @@ public class NetworkUtils {
         put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
         put(ResultType.ITEMS,"http://8.140.136.108/prod-api/system/exhibitcollection/list?museumid=%s&exhibitname=%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
+        put(ResultType.SHOWS,"http://8.140.136.108/prod-api/system/exhibitcollection/select/all/%s");
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
@@ -238,10 +240,18 @@ public class NetworkUtils {
                             send = JSON.parseObject(data.toJSONString(), Museum.class);
                             break;
                         }
+
+                        case SHOWS:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Exhibition.class);
+                            break;
+                        }
+
                         case TEST: {
 
                             break;
                         }
+
                     }
                     Message message = new Message();
                     message.what = 1;

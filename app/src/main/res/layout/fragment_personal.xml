@@ -11,7 +11,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
@@ -30,26 +29,41 @@
             android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_1"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="30dp"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_changeinf"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="25dp"
-                android:backgroundTint="@color/white"
-                android:text="@string/changeinf"
-                android:textColor="#AAAAAA" />
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_changeinf"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/changeinf"
+                    android:textColor="@color/gray_600"
+                    android:textColorLink="@color/gray_600"
+                    android:textStyle="italic" />
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -62,10 +76,12 @@
             <TextView
                 android:id="@+id/tv_2"
                 android:layout_width="240dp"
-                android:layout_height="23dp"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="0dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="10dp"
                 android:text="迟迟钟鼓初长夜，耿耿星河欲曙天"
+                android:textStyle="bold"
+                android:typeface="serif"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -78,7 +94,7 @@
                 android:background="#AAAAAA" />
 
         </LinearLayout>
-c
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -91,8 +107,8 @@ c
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -101,7 +117,7 @@ c
                     android:layout_width="80dp"
                     android:layout_height="70dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/material10" />
+                    android:src="@drawable/collection" />
 
                 <TextView
                     android:id="@+id/tv_3"
@@ -115,8 +131,8 @@ c
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -125,7 +141,7 @@ c
                     android:layout_width="80dp"
                     android:layout_height="70dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/material9" />
+                    android:src="@drawable/lecturem" />
 
                 <TextView
                     android:id="@+id/tv_4"
@@ -139,26 +155,53 @@ c
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center"
                 android:orientation="vertical">
+
 
                 <ImageButton
                     android:id="@+id/btn_main_login"
                     android:layout_width="80dp"
                     android:layout_height="70dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/material8" />
-
+                    android:src="@drawable/returnlogin" />
 
                 <TextView
                     android:id="@+id/tv_5"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="26dp"
-                    android:text="返回登陆界面"
+                    android:text="返回登陆"
+                    android:paddingLeft="10dp"
                     android:textColor="@color/black"
-                    android:textSize="10sp" />
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageButton
+                    android:id="@+id/btn_main_collect"
+                    android:layout_width="80dp"
+                    android:layout_height="70dp"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/trace" />
+
+                <TextView
+                    android:id="@+id/tv_8"
+                    android:layout_width="80dp"
+                    android:layout_height="26dp"
+                    android:text="浏览历史"
+                    android:paddingLeft="13dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -169,14 +212,6 @@ c
             android:layout_marginTop="0dp"
             android:foregroundGravity="center"
             android:orientation="vertical">
-
-            <View
-                android:layout_width="390dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/black" />
 
             <View
                 android:layout_width="match_parent"
@@ -197,17 +232,18 @@ c
                     android:text="关于"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textStyle="italic"
                     android:layout_marginLeft="20dp" />
 
+                <!--                上-->
                 <ImageButton
                     android:id="@+id/btn_about"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="280dp"
+                    android:layout_marginLeft="240dp"
                     android:layout_marginTop="0dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/material11" />
+                    android:src="@drawable/reright" />
 
             </LinearLayout>
 
@@ -228,23 +264,25 @@ c
                     android:text="用户协议"
                     android:textColor="@color/black"
                     android:textSize="20dp"
-                    android:textStyle="bold"
+                    android:textStyle="italic"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp" />
 
+                <!--                下-->
                 <ImageButton
                     android:id="@+id/btn_accord"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="240dp"
+                    android:layout_marginLeft="200dp"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/material11" />
+                    android:src="@drawable/reright"
+                    />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 android:background="#AAAAAA">
             </View>
 
