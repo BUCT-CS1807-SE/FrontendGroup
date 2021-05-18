@@ -3,7 +3,6 @@ package com.example.myapplication.util;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -17,15 +16,12 @@ import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
 import com.example.myapplication.entity.Rating;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -34,6 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static android.content.ContentValues.TAG;
+import static com.example.myapplication.MainActivity.token;
 
 //import org.json.JSONObject;
 
@@ -54,6 +51,8 @@ public class NetworkUtils {
         COMMENT_LIKE_CANCEL_POST, //取消评论
         COLLECT_POST, //收藏提交
         GRADE_POST, //博物馆评分
+        MUSEUM_COLLECTION_POST, //博物馆收藏发送
+        MUSEUM_COLLECTION_GET, //博物馆收藏获取
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
@@ -65,22 +64,24 @@ public class NetworkUtils {
     }
 
     private static final HashMap<ResultType, String> m = new HashMap<ResultType, String>() {{
-        put(ResultType.MUSEUM, "http://8.140.136.108:8080/system/museum/select/all/%s");
-        put(ResultType.COMMENT, "http://8.140.136.108:8080/system/comments/select/all/%s");
-        put(ResultType.COMMENT_POST,"http://8.140.136.108:8080/system/comments");
-        put(ResultType.COMMENT_LIKE,"http://8.140.136.108:8080/system/commentlike/select/all/%s");
-        put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108:8080/system/commentlike");
-        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108:8080/system/%s");
-        put(ResultType.COLLECT_POST,"http://8.140.136.108:8080/system/museumcollection");
-        put(ResultType.GRADE_POST,"http://8.140.136.108:8080/system/museumrating");
-        put(ResultType.NEW,"http://8.140.136.108:8080/system/news/select/all/%s");
+        put(ResultType.MUSEUM, "http://8.140.136.108/prod-api/system/museum/select/all/%s");
+        put(ResultType.COMMENT, "http://8.140.136.108/prod-api/system/comments/select/all/%s");
+        put(ResultType.COMMENT_POST,"http://8.140.136.108/prod-api/system/comments");
+        put(ResultType.COMMENT_LIKE,"http://8.140.136.108/prod-api/system/commentlike/select/all/%s");
+        put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
+        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/%s");
+        put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
+        put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/dev-api/system/museumcollection/%s");
+        put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/dev-api/system/museumcollection/select/all/%s");
+        put(ResultType.GRADE_POST,"http://8.140.136.108/prod-api/system/museumrating");
+        put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
     public static void HttpRequestPost(Handler handler, Rating rating){
         String data=JSON.toJSONString(rating);
-        HttpRequestPost(ResultType.COMMENT_LIKE_POST,handler,data.getBytes(),MediaType.parse("application/json;"));
+        HttpRequestPost(ResultType.GRADE_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
     public static void HttpRequestPost(Handler handler, CommentIsLiked commentIsLiked){
         String data=JSON.toJSONString(commentIsLiked);
@@ -88,7 +89,7 @@ public class NetworkUtils {
     }
     public static void HttpRequestPost(Handler handler,Comment comment) {
         String data = JSON.toJSONString(comment);
-        HttpRequestPost(ResultType.COMMENT,handler,data.getBytes(),TYPE_JSON,null);
+        HttpRequestPost(ResultType.COMMENT_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
     public static void HttpRequestPost(Handler handler, MuseumCollectedPost museumCollectedPost) {
         String data = JSON.toJSONString(museumCollectedPost);
@@ -124,10 +125,10 @@ public class NetworkUtils {
         if (requestBody == null) {
             requestBody = RequestBody.create(data,type);
         }
-
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
+                .header("Authorization", token)
                 .build();
 
         final Call call = client.newCall(request);
@@ -161,7 +162,6 @@ public class NetworkUtils {
                     }
                 }
                 handler.handleMessage(message);
-                System.out.println("_____________________OK_______________________");
             }
         });
     }
@@ -233,6 +233,102 @@ public class NetworkUtils {
                     message.obj = null;
                     handler.sendMessage(message);
                 }
+            }
+        });
+    }
+
+    public static void HttpRequestDelete(ResultType resultType,Handler handler,Object... args){
+        String url = m.get(resultType);
+        if (args != null) {
+            Formatter formatter = new Formatter();
+            formatter.format(url,args);
+            url = formatter.toString();
+            System.out.println(url);
+        } else {
+            url.replaceAll("%s", "");
+        }
+        assert url != null;
+        Request request = new Request.Builder()
+                .url(url)
+                .delete()
+                .build();
+        final Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e(TAG, "onFailure: ", e);
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                int code = response.code();
+                Message message = new Message();
+                message.what = 1;
+                switch (code){
+                    default:{
+                        message.what = 0;
+                        break;
+                    }
+                    case 200:{
+                        String s = response.body().string();
+                        JSONObject obj = JSONObject.parseObject(s);
+                        int c = obj.getInteger("code");
+                        if (c == 200) {
+                            message.what = 1;
+                        } else {
+                            message.what = 0;
+                        }
+                        break;
+                    }
+                }
+                handler.handleMessage(message);
+            }
+        });
+    }
+
+    public static void HttpRequestPut(ResultType resultType,Handler handler,byte[] data,MediaType type,RequestBody requestBody) {
+        String url = m.get(resultType);
+        if (requestBody == null) {
+            requestBody = RequestBody.create(data,type);
+        }
+        Request request = new Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .header("Authorization", token)
+                .build();
+
+        final Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e(TAG, "onFailure: ", e);
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                int code = response.code();
+                Message message = new Message();
+                message.what = 1;
+                switch (code){
+                    default:{
+                        message.what = 0;
+                        break;
+                    }
+                    case 200:{
+                        String s = response.body().string();
+                        JSONObject obj = JSONObject.parseObject(s);
+                        int c = obj.getInteger("code");
+                        if (c == 200) {
+                            message.what = 1;
+                        } else {
+                            message.what = 0;
+                        }
+                        break;
+                    }
+                }
+                handler.handleMessage(message);
             }
         });
     }

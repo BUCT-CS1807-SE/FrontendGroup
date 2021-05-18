@@ -1,31 +1,21 @@
 package com.example.myapplication.entity;
 
 public class Rating {
-    Integer id;
     Integer userid;
     Integer museumid;
     Integer scoreone;
-    Integer scoretow;
+    Integer scoretwo;
     Integer scorethree;
 
     public Rating() {
     }
 
-    public Rating(Integer id, Integer userid, Integer museumid, Integer scoreone, Integer scoretow, Integer scoreThree) {
-        this.id = id;
+    public Rating( Integer userid, Integer museumid, Integer scoreone, Integer scoretwo, Integer scorethree) {
         this.userid = userid;
         this.museumid = museumid;
         this.scoreone = scoreone;
-        this.scoretow = scoretow;
-        this.scorethree = scoreThree;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.scoretwo = scoretwo;
+        this.scorethree = scorethree;
     }
 
     public Integer getUserid() {
@@ -52,19 +42,19 @@ public class Rating {
         this.scoreone = scoreone;
     }
 
-    public Integer getScoretow() {
-        return scoretow;
+    public Integer getScoretwo() {
+        return scoretwo;
     }
 
-    public void setScoretow(Integer scoretow) {
-        this.scoretow = scoretow;
+    public void setScoretwo(Integer scoretwo) {
+        this.scoretwo = scoretwo;
     }
 
-    public Integer getScoreThree() {
+    public Integer getScorethree() {
         return scorethree;
     }
 
-    public void setScoreThree(Integer scoreThree) {
-        this.scorethree = scoreThree;
+    public void setScorethree(Integer scorethree) {
+        this.scorethree = scorethree;
     }
 }

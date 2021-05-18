@@ -41,6 +41,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
     private EditText etPhone,etPassword,editText;
     private CheckBox cbRemember,cbAutoLogin,checkBox;
     public static Personalin person = new Personalin();
+    public static String token="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
         cbRemember = findViewById(R.id.cb_1);
         cbAutoLogin = findViewById(R.id.cb_2);
 
+        SharedPreferences token_sp = getSharedPreferences("token",MODE_PRIVATE);
+        token=token_sp.getString("token","");
         cbAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -212,10 +215,12 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-                                        Log.e("token", response.body().string());
+                                        String result = response.body().string();
+                                        Log.e("token",result );
                                         JSONObject outcome;
                                         outcome = JSON.parseObject(result);
-                                        String token = outcome.getString("token");
+                                        token = outcome.getString("token");
+                                        System.out.println("======================="+token);
                                         SharedPreferences token_sp = getSharedPreferences("token",MODE_PRIVATE);
                                         SharedPreferences.Editor edit = token_sp.edit();
                                         edit.putString("token",token);
