@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="0dp"
         android:background="#344261"
         android:orientation="vertical">
 
@@ -47,12 +47,12 @@
             android:id="@+id/slidingTabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            tl:tl_indicator_color="#fdf299"
             tl:tl_indicator_corner_radius="1.5dp"
             tl:tl_indicator_height="3dp"
             tl:tl_indicator_width="17dp"
             tl:tl_textSelectColor="#fdf299"
             tl:tl_textUnselectColor="#ffffff"
-            tl:tl_indicator_color="#fdf299"
             tl:tl_textsize="16sp" />
 
     </LinearLayout>
@@ -65,22 +65,35 @@
 
     </com.example.myapplication.view.FixedViewPager>
 
-    <com.example.myapplication.view.InfoContainerView
-        android:id="@+id/environment_rank"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tl:title="博物馆环境排名" />
+        android:layout_height="match_parent">
 
-    <com.example.myapplication.view.InfoContainerView
-        android:id="@+id/exhibition_rank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tl:title="博物馆展览排名" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <com.example.myapplication.view.InfoContainerView
-        android:id="@+id/service_rank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tl:title="博物馆服务排名" />
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/environment_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tl:title="博物馆环境排名" >
+
+            </com.example.myapplication.view.InfoContainerView>
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/exhibition_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tl:title="博物馆展览排名" />
+
+            <com.example.myapplication.view.InfoContainerView
+                android:id="@+id/service_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tl:title="博物馆服务排名" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
