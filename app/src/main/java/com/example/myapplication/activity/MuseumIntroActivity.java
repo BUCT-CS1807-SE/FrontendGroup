@@ -184,6 +184,16 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         View grade_view = LayoutInflater.from(grade.getContainer().getContext()).inflate(R.layout.museum_grade, grade.getContainer(), false);
         addGrade(grade_view);
         grade.addElement(grade_view);
+        RatingBar show_rating = findViewById(R.id.ratingBar_show);
+        RatingBar service_rating=findViewById(R.id.ratingBar_service);
+        RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
+        Button grade_commit=findViewById(R.id.grade_commit);
+        grade_commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //----------评论----------
         //获取评论
@@ -254,17 +264,27 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
 
         //----------展览----------
         exhibition = findViewById(R.id.exhibition);
-        exhibitions = new ArrayList<>();
-        exhibitions.add(new Exhibition(1, 1, "4856", "644"));
-        exhibitions.add(new Exhibition(2, 1, "小绿片", "你爱看的"));
-        exhibitions.add(new Exhibition(3, 1, "馍馍", "好吃的"));
-        exhibitions.add(new Exhibition(4, 1, "倒装句", "属于是"));
         RecyclerView exhibitionContainer = new RecyclerView(exhibition.getContainer().getContext());
-        exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
         LinearLayoutManager exhibit_manager = new LinearLayoutManager(exhibitionContainer.getContext());
         exhibit_manager.setOrientation(LinearLayoutManager.VERTICAL);
         exhibitionContainer.setLayoutManager(exhibit_manager);
-        exhibition.addElement(exhibitionContainer);
+        Handler getExhibition = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    exhibitions = (List<Exhibition>) msg.obj;
+                    runOnUiThread(() -> {
+                        exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
+                        exhibition.addElement(exhibitionContainer);
+                    });
+                } else {
+                    showToast("获取展览失败");
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.SHOWS,getExhibition,museum.getId(),"");
+
 
         //----------菜单浮动按钮----------
         more = findViewById(R.id.more);
@@ -305,7 +325,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
                 case R.id.museum_menu_explain: {
                     //博物馆讲解
-                    
+
                     return true;
                 }
             }
