@@ -2,6 +2,8 @@ package com.example.myapplication.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 
 public class RowsDTO {
     @SerializedName("searchValue")
@@ -56,6 +58,26 @@ public class RowsDTO {
     private Double latitude;
     @SerializedName("note")
     private Object note;
+
+    private String ExhName;
+
+    private List<exhtestEntity> ExhItem;
+
+    public List<exhtestEntity> getExhItem() {
+        return ExhItem;
+    }
+
+    public void setExhItem(List<exhtestEntity> exhItem) {
+        ExhItem = exhItem;
+    }
+
+    public String getExhName() {
+        return ExhName;
+    }
+
+    public void setExhName(String exhName) {
+        ExhName = exhName;
+    }
 
     public Object getSearchValue() {
         return searchValue;
