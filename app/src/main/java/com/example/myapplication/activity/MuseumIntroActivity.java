@@ -305,7 +305,12 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 }
                 case R.id.museum_menu_explain: {
                     //博物馆讲解
-                    
+                    Intent intent=new Intent();
+                    intent.putExtra("id",museum.getId().toString());
+                    intent.putExtra("ShowName",museum.getName());
+                    intent.putExtra("kind","MUSEUM");
+                    intent.setClass(this,UserexplainActivity.class);
+                    startActivity(intent);
                     return true;
                 }
             }

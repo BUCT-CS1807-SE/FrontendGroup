@@ -56,6 +56,20 @@ public class Museum_explain {
         Museumid = museumid;
     }
 
+    public Integer getCollectionid () {
+        return Museumid;
+    }
+    public void setCollectionid (Integer museumid) {
+        Museumid = museumid;
+    }
+
+    public Integer getExhibitid  () {
+        return Museumid;
+    }
+    public void setExhibitid  (Integer museumid) {
+        Museumid = museumid;
+    }
+
 
     public String getText() {
         return Text;

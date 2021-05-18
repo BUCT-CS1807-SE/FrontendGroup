@@ -14,6 +14,7 @@ import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
+import com.example.myapplication.entity.Museum_explain;
 import com.example.myapplication.entity.Rating;
 
 import java.io.IOException;
@@ -40,7 +41,9 @@ public class NetworkUtils {
     public static final MediaType TYPE_IMAGE_JPG = MediaType.parse("image/jpg");
     public static final MediaType TYPE_JSON = MediaType.parse("application/json");
     public static final MediaType TYPE_FILE = MediaType.parse("multipart/form-data");
-
+    public static final MediaType AAC = MediaType.parse("audio/aac");
+    public static final MediaType WAV = MediaType.parse("audio/x-wav");
+    public static final MediaType MP3 = MediaType.parse("audio/mpeg");
     public enum ResultType {
         ALL_MUSEUM, //博物馆查询结果
         MUSEUM,     //单个博物馆查询
@@ -60,6 +63,19 @@ public class NetworkUtils {
         OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
         NEW,        //新闻
+        EXHI_EXPLAIN_POST,
+        OBJECT_EXPLAIN_POST,// TODO 添加展览的接口*2
+        MUSEUM_HELP,
+        EXHI_HELP,
+        OBJECT_HELP,
+        EXHI_EXPLAIN,
+        MUSEUM_PIC_POST,
+        EXHI_PIC_POST,
+        OBJECT_PIC_POST,
+        MUSEUM_VOI_POST,
+        EXHI_VOI_POST,
+        MUSEUM_EXPLAIN_POST,
+        OBJECT_VOI_POST,
         ;
     }
 
@@ -76,6 +92,27 @@ public class NetworkUtils {
         put(ResultType.GRADE_POST,"http://8.140.136.108/prod-api/system/museumrating");
         put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
+
+        put(ResultType.MUSEUM_EXPLAIN,"http://8.140.136.108/prod-api/system/museumexplain/select/museumid/%s");
+        put(ResultType.EXHI_EXPLAIN,"http://8.140.136.108/prod-api/system/exhibitexplain/select/museumid/%s");
+        put(ResultType.OBJECT_EXPLAIN,"http://8.140.136.108/prod-api/system/collectionexplain/select/collectionid/%s");
+
+        put(ResultType.MUSEUM_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/museumexplain");
+        put(ResultType.EXHI_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/exhibitexplain");
+        put(ResultType.OBJECT_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/collectionexplain");
+
+
+        put(ResultType.MUSEUM_HELP,"http://8.140.136.108/prod-api/system/museumexplain/select/id/%s");
+        put(ResultType.EXHI_HELP,"http://8.140.136.108/prod-api/system/exhibitexplain/select/id/%s");
+        put(ResultType.OBJECT_HELP,"http://8.140.136.108/prod-api/system/collectionexplain/select/id/%s");
+
+        put(ResultType.MUSEUM_PIC_POST,"http://8.140.136.108/prod-api/system/museumexplain/put/pic/");
+        put(ResultType.EXHI_PIC_POST,"http://8.140.136.108/prod-api/system/exhibitexplain/put/pic/");
+        put(ResultType.OBJECT_PIC_POST,"http://8.140.136.108/prod-api/system/collectionexplain/put/pic/");
+
+        put(ResultType.MUSEUM_VOI_POST,"http://8.140.136.108/prod-api/system/museumexplain/put/voice/");
+        put(ResultType.EXHI_VOI_POST,"http://8.140.136.108/prod-api/system/exhibitexplain/put/voice/");
+        put(ResultType.OBJECT_VOI_POST,"http://8.140.136.108/prod-api/system/collectionexplain/put/voice/");
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
@@ -94,6 +131,87 @@ public class NetworkUtils {
     public static void HttpRequestPost(Handler handler, MuseumCollectedPost museumCollectedPost) {
         String data = JSON.toJSONString(museumCollectedPost);
         HttpRequestPost(ResultType.COLLECT_POST,handler,data.getBytes(),TYPE_JSON,null);
+    }
+    public static void HttpRequestPost(Handler handler, Museum_explain museum_explain, String kind) {
+        String data = JSON.toJSONString(museum_explain);
+        if(kind.equals("MUSEUM"))
+            HttpRequestPost(ResultType.MUSEUM_EXPLAIN_POST,handler,data.getBytes(),TYPE_JSON,null);
+        else if(kind.equals("EXHIBITION"))
+            HttpRequestPost(ResultType.EXHI_EXPLAIN_POST,handler,data.getBytes(),TYPE_JSON,null);
+        else if(kind.equals("COLLECTION"))
+            HttpRequestPost(ResultType.OBJECT_EXPLAIN_POST,handler,data.getBytes(),TYPE_JSON,null);
+    }
+
+    public static void HttpRequestPost(ResultType resultType,String id,Handler handler,String arg,String name, byte[] data,MediaType type)
+    {
+        if (type == null)
+            type = TYPE_FILE;
+        if (name == null||name.isEmpty())
+            name = "uploaded_file";
+
+        RequestBody fileBody = RequestBody.create( data,type);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(arg, name, fileBody)
+                .build();
+
+        String url = m.get(resultType)+id;
+        if (requestBody == null) {
+            requestBody = RequestBody.create(data,type);
+        }
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        final Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e(TAG, "onFailure: ", e);
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Message message = new Message();
+                message.what = 0;
+                String s = response.body().string();
+                if(s.equals("1"))
+                    message.what = 1;
+                System.out.println("return message: "+s);
+                System.out.println("_____________________POST IMAGE OR AUDIO OK_______________________");
+                handler.handleMessage(message);
+                /* int code = response.code();
+                Message message = new Message();
+                message.what = 1;
+                switch (code){
+                    default:{
+                        message.what = 0;
+                        break;
+                    }
+                    case 200:{
+                        String s = response.body().string();
+                        JSONObject obj = JSONObject.parseObject(s);
+                        int c = obj.getInteger("code");
+                        //Log.e(TAG, "showC "+c);
+                        if (c == 200) {
+                            message.what = 1;
+                        } else {
+                            message.what = 0;
+                        }
+                        break;
+                    }
+
+                }
+                handler.handleMessage(message);*/
+
+            }
+        });
+
+
+
     }
 
     /**
@@ -216,6 +334,16 @@ public class NetworkUtils {
                         case NEW:{
                             JSONArray data = outcome.getJSONArray("rows");
                             send = JSON.parseArray(data.toJSONString(), MuseumNew.class);
+                            break;
+                        }
+                        case MUSEUM_EXPLAIN:
+                        case EXHI_EXPLAIN:
+                        case OBJECT_EXPLAIN:
+                        case MUSEUM_HELP:
+                        case EXHI_HELP:
+                        case OBJECT_HELP:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Museum_explain.class);
                             break;
                         }
                         case TEST: {

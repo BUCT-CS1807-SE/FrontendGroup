@@ -1,5 +1,6 @@
 package com.example.myapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -58,6 +59,12 @@ public class ItemInfoActivity extends AppCompatActivity {
         explainItem.setOnClickListener(v -> {
             //跳转藏品讲解
             Toast.makeText(this,"藏品讲解页面",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent();
+            intent.putExtra("id",item.getId().toString());
+            intent.putExtra("ShowName",item.getItemName());
+            intent.putExtra("kind","COLLECTION");
+            intent.setClass(this,UserexplainActivity.class);
+            startActivity(intent);
         });
     }
 

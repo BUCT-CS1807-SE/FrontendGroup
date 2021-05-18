@@ -13,12 +13,16 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsoluteLayout;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,6 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -56,24 +61,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+
+import static com.example.myapplication.MainActivity.person;
 import static com.example.myapplication.util.ImageUtils.getURLimage;
+import static com.example.myapplication.util.NetworkUtils.AAC;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
+import static com.example.myapplication.util.NetworkUtils.TYPE_IMAGE_PNG;
+import static com.example.myapplication.util.NetworkUtils.WAV;
 import static com.example.myapplication.util.Pathutil.getFileAbsolutePath;
 
 public class UserexplainActivity extends BaseActivity{
-    //音乐播放器
 
     private static final String TAG = "UserexplainActivity";
-    MediaPlayer mp;
-    SeekBar sb;
-    Handler handler=new Handler();
+    private byte[] imagestream;
+    private byte[] voicestream;
+    private MediaType imageType=TYPE_IMAGE_JPG;
+    private MediaType voiceType=MP3;
+
+    MediaPlayer[] Amp=new MediaPlayer[1024];
+    SeekBar [] Asb=new SeekBar[1024];
+    Handler[] Ahandler=new Handler[1024];
+    Start[] Astart=new Start[1024];
+    Updatasb[] Aupdatasb=new Updatasb[1024];
 
     private ArrayList<Museum_explain> Mexplain;
-    private InfoContainerView eitems;
+    private ArrayList<Museum_explain> PostidTemp;
+    private Museum_explain Oexplain;
     private CardView uploadItem;
 
-    private boolean isMuseum=true;
-    private Integer id=4;//博物馆或藏品的id
+    private String kind="MUSEUM";// EXHIBITION  COLLECTION MUSEUM
+    private int id=2;//博物馆或藏品的id
+    private String ShowName;
+    private Integer createid=1;// 用户id
 
     private static final int IMAGE_CHOOSER = 0x1234;
     private static final int VOICE_CHOOSER = 0x4321;
@@ -82,19 +103,38 @@ public class UserexplainActivity extends BaseActivity{
 
     private ScrollView scroller;
     private LinearLayout content_linearlayout;
+    private LinearLayout offical;
+
+    private Integer postid=1;
+    private Museum_explain Mpostid=null;
+    private LinearLayout container=null;
+
+    public static final MediaType TYPE_IMAGE_JPG = MediaType.parse("image/jpg");
+    public static final MediaType MP3 = MediaType.parse("audio/mpeg");
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //setContentView(R.layout.user_explain);
+        Intent intent=getIntent();
+        kind=intent.getStringExtra("kind");
+        id=Integer.parseInt(intent.getStringExtra("id"));
+        ShowName=intent.getStringExtra("ShowName");
+        createid=person.getId();
         requestPermission();
         initView();
 
     }
     @Override
     protected void onDestroy() {
-        if(mp.isPlaying())
-            mp.stop();
+        for(int i=0;i<1024;i++)
+        {
+            if(Amp[i]!=null&&Amp[i].isPlaying())
+                Amp[i].stop();
+        }
+        if(container!=null)
+            container.removeAllViews();
         super.onDestroy();
     }
 
@@ -143,9 +183,6 @@ public class UserexplainActivity extends BaseActivity{
 
 
 
-    /**
-     * 模拟文件写入
-     */
     private void writeFile() {
         showToast("已获得存储权限");
     }
@@ -162,25 +199,10 @@ public class UserexplainActivity extends BaseActivity{
             int scrollY2 = Math.min(scrollY, paddingTop);
             float transparent = (paddingTop-scrollY2)*1.0f/paddingTop;
         });
+        //-----------------官方讲解------------------------
+        initOffical();//官方讲解只有一条
 
-
-
-        //测试用
-//        View cView =LayoutInflater.from(eitems.getContainer().getContext()).inflate(R.layout.userexplain_part,eitems.getContainer(),false);
-        // ImageView Image=findViewById(R.id.imageView0);
-//        Image.setImageURI(null);
-//
-//        StringBuffer Imageuri=new StringBuffer("http://8.140.136.108/coverpic/shandongbowuguan.jpg");//需要根据Museum_explain中的Image路径进行修改
-//        Bitmap pngBM = getURLimage(Imageuri.toString());
-//        Image.setImageBitmap(pngBM);
-        //Glide.with(this).load(ImageUtils.genURL("故宫博物院")).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
-//        eitems.addElement(cView);
-        //eitems.getContainer().addView(cView,0);
-        // LinearLayout view = findViewById(R.id.RelativeLayout0);
-        //View cView =LayoutInflater.from(view.getContext()).inflate(R.layout.userexplain_part,view,false);
-        //view.addView(cView);
-        //测试结束 无法显示
-
+        //-----------------用户讲解--------------
         Mexplain=null;
         Handler explainGet=new Handler(Looper.myLooper()){
             @Override
@@ -196,10 +218,14 @@ public class UserexplainActivity extends BaseActivity{
                 }
             }
         };
-        if(isMuseum)
-            HttpRequestGet(NetworkUtils.ResultType.MUSEUM_EXPLAIN,explainGet,id.toString());
-        else
-            HttpRequestGet(NetworkUtils.ResultType.OBJECT_EXPLAIN,explainGet,id.toString());
+        if(kind.equals("MUSEUM"))
+            HttpRequestGet(NetworkUtils.ResultType.MUSEUM_EXPLAIN,explainGet,id);
+        else if(kind.equals("EXHIBITION"))
+            HttpRequestGet(NetworkUtils.ResultType.EXHI_EXPLAIN,explainGet,id);
+        else if(kind.equals("COLLECTION"))
+            HttpRequestGet(NetworkUtils.ResultType.OBJECT_EXPLAIN,explainGet,id);
+        //---------------init postid-----------
+        initPostid();
 
 
         //上传讲解
@@ -210,9 +236,244 @@ public class UserexplainActivity extends BaseActivity{
         addImage.setOnClickListener(upI);
         VoiceListener upV=new VoiceListener();
         addVioce.setOnClickListener(upV);
+        EditText edit=findViewById(R.id.edit_2_4);
+        Button submitbutton=findViewById(R.id.button);
+        submitbutton.setOnClickListener(v ->
+        {
+            String content = edit.getText().toString(); //评论字符串
+            if (content.isEmpty()) {
+                showToast("请输入评论");
+                return;
+            }
+            Handler explainPost=new Handler(Looper.myLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what==1){
+                        showToastSync("上传讲解成功");
+                    }
+                    else {
+                        showToastSync("提交讲解失败");
+                    }
+                }
+            };
+            Museum_explain museum_explain=new Museum_explain(0,createid,0,id,content,0,0);
+            HttpRequestPost(explainPost,museum_explain,kind);
+
+            Handler imagePost=new Handler(Looper.myLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what==1){
+                        showToastSync("上传图片成功");
+                    }
+                    else {
+                        showToastSync("提交图片失败");
+                    }
+                }
+            };
+            if(imagestream==null)
+                System.out.println("the imagefile is null");
+            else
+            {
+                System.out.println(imagestream.length);
+                if(kind.equals("MUSEUM"))
+                    HttpRequestPost(NetworkUtils.ResultType.MUSEUM_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                else if(kind.equals("EXHIBITION"))
+                    HttpRequestPost(NetworkUtils.ResultType.EXHI_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                else if(kind.equals("COLLECTION"))
+                    HttpRequestPost(NetworkUtils.ResultType.OBJECT_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                imagestream=null;
+
+            }
 
 
-        //TODO here 获得文字以及给提交增加监听
+
+            Handler voicePost=new Handler(Looper.myLooper()){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what==1){
+                        showToastSync("上传音频成功");
+                    }
+                    else {
+                        showToastSync("提交音频失败");
+                    }
+                }
+            };
+            if(voicestream==null)
+                System.out.println("the voicefile is null");
+            else
+            {
+                System.out.println(voicestream.length);
+                if(kind.equals("MUSEUM"))
+                    HttpRequestPost(NetworkUtils.ResultType.MUSEUM_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                else if(kind.equals("EXHIBITION"))
+                    HttpRequestPost(NetworkUtils.ResultType.EXHI_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                else if(kind.equals("COLLECTION"))
+                    HttpRequestPost(NetworkUtils.ResultType.OBJECT_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                voicestream=null;
+            }
+        });
+
+    }
+    public void initPostid()
+    {
+
+        Handler helpGet=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    PostidTemp=(ArrayList<Museum_explain>) msg.obj;
+                    if(PostidTemp.size()>0)
+                    {
+                        Mpostid= PostidTemp.get(0);
+                        postid=Mpostid.getId();
+                    }
+
+                    // showToast("postid:" +postid);
+                }
+            }
+        };
+        if(kind.equals("MUSEUM"))
+            HttpRequestGet(NetworkUtils.ResultType.MUSEUM_HELP,helpGet,createid.toString());
+        else if(kind.equals("EXHIBITION"))
+            HttpRequestGet(NetworkUtils.ResultType.EXHI_HELP,helpGet,createid.toString());
+        else if(kind.equals("COLLECTION"))
+            HttpRequestGet(NetworkUtils.ResultType.OBJECT_HELP,helpGet,createid.toString());
+    }
+    public void initOffical()
+    {
+        Oexplain=null;
+        Handler OexplainGet=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    Oexplain = ((ArrayList<Museum_explain>) msg.obj).get(0);
+                    if(Oexplain.getType()==1&&Oexplain.getState()==1)
+                    {
+                        int index=0;
+                        offical=findViewById(R.id.offical);
+                        View officaView = LayoutInflater.from(offical.getContext()).inflate(R.layout.userexplain_part,offical,true);
+
+                        TextView officaltext=officaView.findViewById(R.id.title_1);
+                        officaltext.setText("官方讲解");
+                        ImageView Image=officaView.findViewById(R.id.menu_add5);
+
+                        showToast(Oexplain.getId()+"");
+                        if(kind.equals("MUSEUM"))
+                            Glide.with(officaView).load(ImageUtils.genExplainURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+                        else if(kind.equals("EXHIBITION"))
+                            Glide.with(officaView).load(ImageUtils.genEXHIBITIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+                        else if(kind.equals("COLLECTION"))
+                            Glide.with(officaView).load(ImageUtils.genCOLLECTIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+
+                        StringBuffer Voiceuri;
+                        if(kind.equals("MUSEUM"))
+                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+                        else if(kind.equals("EXHIBITION"))
+                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/exhibitexplain/select/voice/");
+                        else if(kind.equals("COLLECTION"))
+                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/collectionexplain/select/voice/");
+                        else
+                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+
+                        Voiceuri.append(Oexplain.getId());
+                        if((Amp[index] =MediaPlayer.create(officaView.getContext(), Uri.parse(Voiceuri.toString())))!=null)
+                        {
+                            int Duration;
+                            Button play,pause;
+                            play=(Button)officaView.findViewById(R.id.play);
+                            pause=(Button)officaView.findViewById(R.id.pause);
+                            Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
+
+
+                            Ahandler[index]=new Handler();
+
+                            Astart[index]=new Start(index);
+                            Aupdatasb[index]=new Updatasb(index);
+                            View.OnClickListener playlis=new View.OnClickListener(){
+
+                                @Override
+                                public void onClick(View v) {
+                                    Ahandler[index].post(Astart[index]);
+                                    //调用handler播放
+
+                                }
+
+                            };
+                            View.OnClickListener pauselis=new View.OnClickListener(){
+
+                                @Override
+                                public void onClick(View v) {
+                                    Amp[index].pause();
+                                    //暂停
+                                }
+
+                            };
+                            SeekBar.OnSeekBarChangeListener sbLis=new SeekBar.OnSeekBarChangeListener(){
+
+                                @Override
+                                public void onProgressChanged(SeekBar seekBar, int progress,
+                                                              boolean fromUser) {
+
+                                }
+
+                                @Override
+                                public void onStartTrackingTouch(SeekBar seekBar) {
+
+
+                                }
+
+                                @Override
+                                public void onStopTrackingTouch(SeekBar seekBar) {
+                                    Amp[index].seekTo(Asb[index].getProgress());
+
+                                }
+
+                            };
+                            play.setOnClickListener(playlis);
+                            pause.setOnClickListener(pauselis);
+                            Asb[index].setOnSeekBarChangeListener(sbLis);
+                            Duration=Amp[index].getDuration();Asb[index].setMax(Duration);
+                        }
+                        else
+                        {
+                            //showToast("not a audio");
+                            Button play,pause;
+                            play=(Button)officaView.findViewById(R.id.play);
+                            pause=(Button)officaView.findViewById(R.id.pause);
+                            Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
+                            TextView text=officaView.findViewById(R.id.title_6);
+                            text.setText("暂无音频");
+                            play.setVisibility(View.INVISIBLE);
+                            pause.setVisibility(View.INVISIBLE);
+                            Asb[index].setVisibility(View.INVISIBLE);
+                        }
+
+
+
+                        TextView text=officaView.findViewById(R.id.title_8);
+                        text.setText(Oexplain.getText());
+                        //offical.addView(officaView);
+
+
+                    }
+
+
+                }
+            }
+        };
+        if(kind.equals("MUSEUM"))
+            HttpRequestGet(NetworkUtils.ResultType.MUSEUM_EXPLAIN,OexplainGet,id);
+        else if(kind.equals("EXHIBITION"))
+            HttpRequestGet(NetworkUtils.ResultType.EXHI_EXPLAIN,OexplainGet,id);
+        else if(kind.equals("COLLECTION"))
+            HttpRequestGet(NetworkUtils.ResultType.OBJECT_EXPLAIN,OexplainGet,id);
+
+
     }
     class imageListener implements View.OnClickListener{
 
@@ -220,8 +481,7 @@ public class UserexplainActivity extends BaseActivity{
         public void onClick(View v) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);//意图：文件浏览器
             intent.setType("*/*");// TODO 限制文件类型
-            //intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{IMG});
-
+            // intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{TYPE_IMAGE_JPG});
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             startActivityForResult(intent, IMAGE_CHOOSER);
 
@@ -233,7 +493,7 @@ public class UserexplainActivity extends BaseActivity{
         public void onClick(View v) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);//意图：文件浏览器
             intent.setType("*/*");// TODO 限制文件类型
-            //intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{MP3});//TODO 解决此bug
+            //intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{MP3});
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             startActivityForResult(intent, VOICE_CHOOSER);
 
@@ -255,16 +515,16 @@ public class UserexplainActivity extends BaseActivity{
                 if (resultCode == RESULT_OK) {
 
                     Uri uri = data.getData();
-                    //对获得的uri做解析
                     String path = getFileAbsolutePath(uploadItem.getContext(), uri);
                     Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
                     File file=new File(path);
                     long len=file.length();
-                    byte [] buf=new byte[(int) len];
+                    imagestream=new byte[(int) len];
                     try {
                         InputStream in=new FileInputStream(file);
-                        in.read(buf);
-                        in.close();//TODO 已获得图片字节流
+                        in.read(imagestream);
+                        in.close();
+                        if(file.getPath().endsWith(".png")) imageType=TYPE_IMAGE_PNG;
                     } catch (FileNotFoundException e) {
                         Toast.makeText(this,"FileNotFoundException", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -292,13 +552,15 @@ public class UserexplainActivity extends BaseActivity{
                     Toast.makeText(this, path+"  voice", Toast.LENGTH_SHORT).show();
                     File file=new File(path);
 
-                    MediaPlayer play=MediaPlayer.create(uploadItem.getContext(),uri);play.start();
+                    //MediaPlayer play=MediaPlayer.create(uploadItem.getContext(),uri);play.start();
                     long len=file.length();
-                    byte [] buf=new byte[(int) len];
+                    voicestream=new byte[(int) len];
                     try {
                         InputStream in=new FileInputStream(file);
-                        in.read(buf);
+                        in.read(voicestream);
                         in.close();//TODO 已获得音频字节流
+                        if(file.getPath().endsWith(".aac")) voiceType=AAC;
+                        else if(file.getPath().endsWith(".wav")) voiceType=WAV;
                     } catch (FileNotFoundException e) {
                         Toast.makeText(this,"FileNotFoundException", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -326,118 +588,156 @@ public class UserexplainActivity extends BaseActivity{
     }
 
     public void initMexplain() throws IOException {
-        showToast("thesize"+Mexplain.size());
+        // showToast("thesize"+Mexplain.size()+" the id"+Mexplain.get(0).getCollectionid());
         for (int i = 0; i < Mexplain.size(); i++) {
             if (i == Mexplain.size()-1) {
-                addexplain(Mexplain.get(i),true,false);
+                addexplain(Mexplain.get(i),i+1,false);
             } else {
-                addexplain(Mexplain.get(i),false,false);
+                addexplain(Mexplain.get(i),i+1,false);
             }
         }
 
     }
 
-    public void addexplain(Museum_explain explain,boolean isEnd,boolean isLiked) throws IOException {
-        showToast(""+explain.getMuseumid());
-        LinearLayout container = findViewById(R.id.RelativeLayout0);
-        // view.addView(cView);
+    public void addexplain(Museum_explain explain,int index,boolean isLiked) throws IOException {
+        //showToast("图片插入的讲解id为"+explain.getId());
+        //ConstraintLayout container = findViewById(R.id.RelativeLayout0);
 
-        View explainView = LayoutInflater.from(container.getContext()).inflate(R.layout.userexplain_part,container,false);
-        if(explain.getType()==1&&explain.getState()==1)//民间讲解且通过审核 TODO 按照逻辑改成01
+        if(explain.getType()==0&&explain.getState()==1)//民间讲解且通过审核
         {
+            container = findViewById(R.id.RelativeLayout0);
+            View explainView = LayoutInflater.from(container.getContext()).inflate(R.layout.userexplain_part,container,true);
             ImageView Image=explainView.findViewById(R.id.menu_add5);
-            Glide.with(explainView).load(ImageUtils.genExplainURL("4")).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
 
-            Button play,pause;
-            int Duration;
-            play=(Button)explainView.findViewById(R.id.play);
-            pause=(Button)explainView.findViewById(R.id.pause);
-            sb=(SeekBar)explainView.findViewById(R.id.seekbar_id);
-            StringBuffer Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/205");
-            mp =MediaPlayer.create(this, Uri.parse(Voiceuri.toString()));
+            showToast(explain.getId()+"");
+            if(kind.equals("MUSEUM"))
+                Glide.with(explainView).load(ImageUtils.genExplainURL(explain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+            else if(kind.equals("EXHIBITION"))
+                Glide.with(explainView).load(ImageUtils.genEXHIBITIONURL(explain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+            else if(kind.equals("COLLECTION"))
+                Glide.with(explainView).load(ImageUtils.genCOLLECTIONURL(explain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
 
-            play.setOnClickListener(playlis);
-            pause.setOnClickListener(pauselis);
-            sb.setOnSeekBarChangeListener(sbLis);
-            Duration=mp.getDuration();sb.setMax(Duration);
+            StringBuffer Voiceuri;
+            if(kind.equals("MUSEUM"))
+                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+            else if(kind.equals("EXHIBITION"))
+                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/exhibitexplain/select/voice/");
+            else if(kind.equals("COLLECTION"))
+                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/collectionexplain/select/voice/");
+            else
+                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+
+            Voiceuri.append(explain.getId());
+            if((Amp[index] =MediaPlayer.create(this, Uri.parse(Voiceuri.toString())))!=null)
+            {
+                int Duration;
+                Button play,pause;
+                play=(Button)explainView.findViewById(R.id.play);
+                pause=(Button)explainView.findViewById(R.id.pause);
+                Asb[index]=(SeekBar)explainView.findViewById(R.id.seekbar_id);
+
+
+                Ahandler[index]=new Handler();
+
+                Astart[index]=new Start(index);
+                Aupdatasb[index]=new Updatasb(index);
+                View.OnClickListener playlis=new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        Ahandler[index].post(Astart[index]);
+                        //调用handler播放
+
+                    }
+
+                };
+                View.OnClickListener pauselis=new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        Amp[index].pause();
+                        //暂停
+                    }
+
+                };
+                SeekBar.OnSeekBarChangeListener sbLis=new SeekBar.OnSeekBarChangeListener(){
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress,
+                                                  boolean fromUser) {
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        Amp[index].seekTo(Asb[index].getProgress());
+                        //SeekBar确定位置后，跳到指定位置
+                    }
+
+                };
+                play.setOnClickListener(playlis);
+                pause.setOnClickListener(pauselis);
+                Asb[index].setOnSeekBarChangeListener(sbLis);
+                Duration=Amp[index].getDuration();Asb[index].setMax(Duration);
+            }
+            else
+            {
+                //showToast("not a audio");
+                Button play,pause;
+                play=(Button)explainView.findViewById(R.id.play);
+                pause=(Button)explainView.findViewById(R.id.pause);
+                Asb[index]=(SeekBar)explainView.findViewById(R.id.seekbar_id);
+                TextView text=explainView.findViewById(R.id.title_6);
+                text.setText("暂无音频");
+                play.setVisibility(View.INVISIBLE);
+                pause.setVisibility(View.INVISIBLE);
+                Asb[index].setVisibility(View.INVISIBLE);
+            }
+
 
 
             TextView text=explainView.findViewById(R.id.title_8);
             text.setText(explain.getText());
-
-            container.addView(explainView);
+            //container.addView(explainView);
 
 
         }
     }
-    private View.OnClickListener playlis=new View.OnClickListener(){
 
-        @Override
-        public void onClick(View v) {
-            // TODO Auto-generated method stub
-            handler.post(start);
-            //调用handler播放
-
+    class Start implements Runnable
+    {
+        private int in;
+        public Start(int in)
+        {
+            this.in=in;
         }
-
-    };
-    Runnable start=new Runnable(){
-
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            if(mp!=null)
+        public void run()
+        {
+            if(Amp[in]!=null)
             {
-                mp.start();
-                //mp.seekTo(sb.getProgress());
-                handler.post(updatesb);
+                Amp[in].start();
+                Ahandler[in].post(Aupdatasb[in]);
             }
         }
-
-    };
-    Runnable updatesb =new Runnable(){
-
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            sb.setProgress(mp.getCurrentPosition());
-            handler.postDelayed(updatesb, 1000);
-            //每秒钟更新一次
+    }
+    class Updatasb implements Runnable
+    {
+        private int in;
+        public Updatasb(int in)
+        {
+            this.in=in;
         }
-
-    };
-    private View.OnClickListener pauselis=new View.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-            // TODO Auto-generated method stub
-            mp.pause();
-            //暂停
+        public void run()
+        {
+            Asb[in].setProgress(Amp[in].getCurrentPosition());
+            Ahandler[in].postDelayed(Aupdatasb[in], 1000);
         }
+    }
 
-    };
-    private SeekBar.OnSeekBarChangeListener sbLis=new SeekBar.OnSeekBarChangeListener(){
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress,
-                                      boolean fromUser) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-            mp.seekTo(sb.getProgress());
-            //SeekBar确定位置后，跳到指定位置
-        }
-
-    };
 
 
 }

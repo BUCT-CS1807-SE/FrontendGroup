@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#F2F4F9"
+    android:layout_height="match_parent"
+    tools:context=".xgmm">
+
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#19FFFFFF"
+        android:layout_marginLeft="52dp"
+        android:text="修改密码"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginTop="72dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/et_1"
+        android:layout_width="331dp"
+        android:layout_height="62dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="182dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="input"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#19FFFFFF"
+        android:layout_marginLeft="66dp"
+        android:text="手机号"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginTop="248dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/et_2"
+        android:layout_width="331dp"
+        android:layout_height="62dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="308dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="input"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#19FFFFFF"
+        android:layout_marginLeft="66dp"
+        android:text="电子邮箱"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginTop="374dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/et_3"
+        android:layout_width="331dp"
+        android:layout_height="62dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="434dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="input"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/title_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#19FFFFFF"
+        android:layout_marginLeft="66dp"
+        android:text="新密码"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginTop="500dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/title_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="#19FFFFFF"
+        android:layout_marginLeft="66dp"
+        android:text="确认新密码"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginTop="586dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/et_4"
+        android:layout_width="331dp"
+        android:layout_height="62dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="520dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="input"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="244dp"
+        android:layout_height="49dp"
+        android:background="#A55528"
+        android:layout_marginLeft="95dp"
+        android:text="提交"
+        android:layout_marginTop="659dp"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
