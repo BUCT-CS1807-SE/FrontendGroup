@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="136dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,15 +26,17 @@
                 app:layout_constraintVertical_bias="0.0">
 
                 <ImageView
-                    android:id="@+id/imageView8"
+                    android:id="@+id/rankIcon"
                     android:layout_width="33dp"
                     android:layout_height="match_parent"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    android:background="@color/divider"
+                    android:tint="#E89C62"
+                    tools:srcCompat="@mipmap/rank" />
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/museumRankImage"
                     android:layout_width="115dp"
-                    android:layout_height="134dp"
+                    android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_museum_explain" />
             </LinearLayout>
 
@@ -73,8 +75,9 @@
                 <TextView
                     android:id="@+id/museun_intro"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
+                    android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:lineSpacingExtra="8sp"
                     android:lines="3"
                     android:paddingStart="6dp"
                     android:paddingLeft="6dp"
@@ -89,7 +92,7 @@
                 <TextView
                     android:id="@+id/museum_time"
                     android:layout_width="match_parent"
-                    android:layout_height="18dp"
+                    android:layout_height="wrap_content"
                     android:ellipsize="start"
                     android:gravity="bottom|end"
                     android:text="08:30 - 17:00"
@@ -101,5 +104,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
 
 </LinearLayout>

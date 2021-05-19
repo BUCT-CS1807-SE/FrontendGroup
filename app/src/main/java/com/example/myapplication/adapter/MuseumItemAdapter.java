@@ -21,6 +21,7 @@ import com.example.myapplication.activity.ItemInfoActivity;
 import com.example.myapplication.activity.MuseumIntroActivity;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +73,9 @@ public class MuseumItemAdapter extends RecyclerView.Adapter<MuseumItemAdapter.It
         // contents of the view with that element
         Item item = localDataSet.get(position);
         viewHolder.getItemName().setText(item.getItemName());
-        //@TODO 设置缩略图，暂时没有
-        Glide.with(viewHolder.itemView).load(R.mipmap.default_bg).transform(new MultiTransformation(new CenterCrop(),new RoundedCorners(50))).into(viewHolder.getItemIcon());
+        Glide.with(viewHolder.itemView).load(ImageUtils.genItemImage(item.getImageAddress())).placeholder(R.mipmap.museum).thumbnail(0.06f)
+                .transform(new MultiTransformation(new CenterCrop(),new RoundedCorners(50)))
+                .into(viewHolder.getItemIcon());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

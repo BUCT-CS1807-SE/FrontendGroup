@@ -146,11 +146,11 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         nearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(readyNum < neardatas.size())
-                {
-                    showToast("正在搜索附近博物馆，请稍后....");
-                    return;
-                }
+//                if(readyNum < neardatas.size())
+//                {
+//                    showToast("正在搜索附近博物馆，请稍后....");
+//                    return;
+//                }
                 mapBottom=new MapBottom(getActivity(),neardatas);
 
                 new XPopup.Builder(getActivity())
@@ -183,7 +183,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         uiSettings.setLogoBottomMargin(-150);
         uiSettings.setZoomControlsEnabled(false);
         uiSettings.setScaleControlsEnabled(true);
-        getMapMarkerList();
+
     }
 
     /**
@@ -291,8 +291,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
 
     @Override
     public void onMapLoaded() {
-
-
+        getMapMarkerList();
     }
 
     private void getMapMarkerList()

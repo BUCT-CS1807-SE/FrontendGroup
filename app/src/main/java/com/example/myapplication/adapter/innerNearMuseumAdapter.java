@@ -1,12 +1,10 @@
 package com.example.myapplication.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.activity.MusicPlayer;
-import com.example.myapplication.activity.RouteActivity;
-import com.example.myapplication.entity.NearMuseumEntity;
-import com.example.myapplication.entity.RowsDTOXX;
-import com.example.myapplication.entity.exhibitionItem;
 import com.example.myapplication.entity.exhtestEntity;
-import com.example.myapplication.util.ImageUtils;
 
 import java.util.List;
 
@@ -76,7 +68,7 @@ public class innerNearMuseumAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             exhItemName=itemView.findViewById(R.id.textView15);
-            nearLibImage=itemView.findViewById(R.id.imageView7);
+            nearLibImage=itemView.findViewById(R.id.museumRankImage);
         }
     }
 }
