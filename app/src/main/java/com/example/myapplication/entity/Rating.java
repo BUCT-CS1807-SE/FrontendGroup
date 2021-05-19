@@ -1,7 +1,7 @@
 package com.example.myapplication.entity;
 
 public class Rating {
-    Integer userid;
+    Integer usersid;
     Integer museumid;
     Integer scoreone;
     Integer scoretwo;
@@ -10,20 +10,20 @@ public class Rating {
     public Rating() {
     }
 
-    public Rating( Integer userid, Integer museumid, Integer scoreone, Integer scoretwo, Integer scorethree) {
-        this.userid = userid;
+    public Rating(Integer usersid, Integer museumid, Integer scoreone, Integer scoretwo, Integer scorethree) {
+        this.usersid = usersid;
         this.museumid = museumid;
         this.scoreone = scoreone;
         this.scoretwo = scoretwo;
         this.scorethree = scorethree;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUsersid() {
+        return usersid;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUsersid(Integer usersid) {
+        this.usersid = usersid;
     }
 
     public Integer getMuseumid() {

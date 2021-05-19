@@ -289,7 +289,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     showToastSync("收藏成功");
-                } else showToastSync("收藏失败");
+                } else showToastSync("已收藏");
             }
         };
         MuseumCollectedPost museumCollectedPost = new MuseumCollectedPost();
@@ -355,11 +355,23 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                         }
                     }
                 };
+                Handler commentLikeCancel = new Handler(Looper.myLooper()) {
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if (msg.what == 1) {
+                            runOnUiThread(()->{
+                                TextView view = commentView.findViewById(R.id.liked_number);
+                                view.setText(String.valueOf(Integer.valueOf(view.getText().toString())-1));
+                            });
+                        }
+                    }
+                };
                 if (state == COMMENT_LIKED) {
                     like.setImageResource(R.mipmap.like);
                     like.setTag(COMMENT_UNLIKED);
                     //已经点过赞了，取消点赞，下一步向后台提供数据
-                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikePost,comment.getId());
+                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,comment.getId());
                 } else {
                     like.setImageResource(R.mipmap.like_active);
                     like.setTag(COMMENT_LIKED);

@@ -69,10 +69,10 @@ public class NetworkUtils {
         put(ResultType.COMMENT_POST,"http://8.140.136.108/prod-api/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108/prod-api/system/commentlike/select/all/%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
-        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/dev-api/system/commentlike/%s");
+        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/commentlike/%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
-        put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/dev-api/system/museumcollection/%s");
-        put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/dev-api/system/museumcollection/select/all/%s");
+        put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/prod-api/system/museumcollection/%s");
+        put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/prod-api/system/museumcollection/select/all/%s");
         put(ResultType.GRADE_POST,"http://8.140.136.108/prod-api/system/museumrating");
         put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
@@ -251,7 +251,6 @@ public class NetworkUtils {
         Request request = new Request.Builder()
                 .url(url)
                 .delete()
-                .header("Authorization", token)
                 .build();
         final Call call = client.newCall(request);
 
