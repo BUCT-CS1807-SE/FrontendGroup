@@ -111,7 +111,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences spf = getSharedPreferences("spfRecorid",MODE_PRIVATE);
         boolean isRemember = spf.getBoolean("isRemember",false);
         boolean isLogin = spf.getBoolean("isLogin",false);
-        String token = spf.getString("token","");
+        System.out.println("bbbbbbbbbbb:"+token);
 
         if(isLogin && token != ""){
 
@@ -234,6 +234,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
                                     SharedPreferences.Editor edit = spf.edit();
                                     edit.putString("phone",phone);
                                     edit.putString("password",password);
+                                    edit.putString("token",token);
                                     edit.putBoolean("isRemember",true);
                                     if(cbAutoLogin.isChecked()){
                                         edit.putBoolean("isLogin",true);
