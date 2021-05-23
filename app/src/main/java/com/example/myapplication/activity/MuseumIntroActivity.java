@@ -3,6 +3,7 @@ package com.example.myapplication.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.myapplication.util.NetworkUtils.HttpRequestDelete;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
 
@@ -184,6 +186,16 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         View grade_view = LayoutInflater.from(grade.getContainer().getContext()).inflate(R.layout.museum_grade, grade.getContainer(), false);
         addGrade(grade_view);
         grade.addElement(grade_view);
+        RatingBar show_rating = findViewById(R.id.ratingBar_show);
+        RatingBar service_rating=findViewById(R.id.ratingBar_service);
+        RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
+        Button grade_commit=findViewById(R.id.grade_commit);
+        grade_commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //----------评论----------
         //获取评论
@@ -237,34 +249,52 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         HttpRequestGet(NetworkUtils.ResultType.COMMENT, commentGet, museum.getId().toString());
         //----------藏品----------
         item = findViewById(R.id.items);
-
-        items = new ArrayList<>();//初始化，未来转入Handler
-        //假数据
-        items.add(new Item(1, 1, "", "", "这是一个好藏品", "大宝贝1", ""));
-        items.add(new Item(2, 1, "", "", "这是一个坏藏品", "大宝贝2", ""));
-        items.add(new Item(3, 1, "", "", "这是一个很好的藏品", "大宝贝3", ""));
-        items.add(new Item(4, 1, "", "", "这是一个很坏的藏品", "大宝贝4", ""));
-
         RecyclerView itemContainer = new RecyclerView(item.getContainer().getContext());
-        itemContainer.setAdapter(new MuseumItemAdapter(items));
         LinearLayoutManager manager = new LinearLayoutManager(itemContainer.getContext());
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         itemContainer.setLayoutManager(manager);
-        item.addElement(itemContainer);
+
+        Handler getItems = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    items = (List<Item>) msg.obj;
+                    runOnUiThread(() -> {
+                        itemContainer.setAdapter(new MuseumItemAdapter(items));
+                        item.addElement(itemContainer);
+                    });
+                } else {
+                    showToast("获取藏品失败");
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.ITEMS,getItems,museum.getId(),"");
+
 
         //----------展览----------
         exhibition = findViewById(R.id.exhibition);
-        exhibitions = new ArrayList<>();
-        exhibitions.add(new Exhibition(1, 1, "4856", "644"));
-        exhibitions.add(new Exhibition(2, 1, "小绿片", "你爱看的"));
-        exhibitions.add(new Exhibition(3, 1, "馍馍", "好吃的"));
-        exhibitions.add(new Exhibition(4, 1, "倒装句", "属于是"));
         RecyclerView exhibitionContainer = new RecyclerView(exhibition.getContainer().getContext());
-        exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
         LinearLayoutManager exhibit_manager = new LinearLayoutManager(exhibitionContainer.getContext());
         exhibit_manager.setOrientation(LinearLayoutManager.VERTICAL);
         exhibitionContainer.setLayoutManager(exhibit_manager);
-        exhibition.addElement(exhibitionContainer);
+        Handler getExhibition = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    exhibitions = (List<Exhibition>) msg.obj;
+                    runOnUiThread(() -> {
+                        exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
+                        exhibition.addElement(exhibitionContainer);
+                    });
+                } else {
+                    showToast("获取展览失败");
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.SHOWS,getExhibition,museum.getId(),"");
+
 
         //----------菜单浮动按钮----------
         more = findViewById(R.id.more);
@@ -287,7 +317,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     showToastSync("收藏成功");
-                } else showToastSync("收藏失败");
+                } else showToastSync("已收藏");
             }
         };
         MuseumCollectedPost museumCollectedPost = new MuseumCollectedPost();
@@ -351,7 +381,22 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                     public void handleMessage(@NonNull Message msg) {
                         super.handleMessage(msg);
                         if (msg.what == 1) {
-                            System.out.println("---------------操作成功--------------");
+                            runOnUiThread(()->{
+                                TextView view = commentView.findViewById(R.id.liked_number);
+                                view.setText(String.valueOf(Integer.valueOf(view.getText().toString())+1));
+                            });
+                        }
+                    }
+                };
+                Handler commentLikeCancel = new Handler(Looper.myLooper()) {
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if (msg.what == 1) {
+                            runOnUiThread(()->{
+                                TextView view = commentView.findViewById(R.id.liked_number);
+                                view.setText(String.valueOf(Integer.valueOf(view.getText().toString())-1));
+                            });
                         }
                     }
                 };
@@ -359,13 +404,13 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                     like.setImageResource(R.mipmap.like);
                     like.setTag(COMMENT_UNLIKED);
                     //已经点过赞了，取消点赞，下一步向后台提供数据
-
+                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,comment.getId());
                 } else {
                     like.setImageResource(R.mipmap.like_active);
                     like.setTag(COMMENT_LIKED);
                     //点赞成功，向后台提供数据
-                    commentIsLiked.setUserid(1);
-                    commentIsLiked.setCommentid(1);
+                    commentIsLiked.setUserid(MainActivity.person.getId());
+                    commentIsLiked.setCommentid(comment.getId());
                     commentIsLiked.setIslike(1);
                     HttpRequestPost(commentLikePost, commentIsLiked);
                 }
@@ -381,6 +426,7 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                     super.handleMessage(msg);
                     if (msg.what == 1) {
                         int liked_number = (int) msg.obj;
+                        Context ctx = MuseumIntroActivity.this;
                         if (liked_number > 0) {
                             like.setImageResource(R.mipmap.like);
                             like.setTag(COMMENT_UNLIKED);

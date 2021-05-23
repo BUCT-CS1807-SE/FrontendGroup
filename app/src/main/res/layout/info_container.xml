@@ -33,15 +33,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:background="@color/gray_600" />
 
             <LinearLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
                 android:orientation="vertical"></LinearLayout>
         </LinearLayout>
 

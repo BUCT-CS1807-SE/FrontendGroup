@@ -12,9 +12,9 @@ public class Item implements Serializable {
     private String showName;
     @JSONField(alternateNames = "exhibitsummary")
     private String showIntro;
-    @JSONField(alternateNames = "collectionname")
-    private String itemIntro;
     @JSONField(alternateNames = "collectionsummary")
+    private String itemIntro;
+    @JSONField(alternateNames = "collectionname")
     private String itemName;
     @JSONField(alternateNames = "collectionimageurl")
     private String imageAddress;

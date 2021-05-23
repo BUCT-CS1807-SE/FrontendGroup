@@ -11,6 +11,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
+import com.example.myapplication.entity.Item;
+import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
@@ -45,7 +47,7 @@ public class NetworkUtils {
     public static final MediaType WAV = MediaType.parse("audio/x-wav");
     public static final MediaType MP3 = MediaType.parse("audio/mpeg");
     public enum ResultType {
-        ALL_MUSEUM, //博物馆查询结果
+        MUSEUM_ID, //博物馆ID查询结果
         MUSEUM,     //单个博物馆查询
         COMMENT,    //评论查询
         COMMENT_POST, //提交评论
@@ -59,6 +61,7 @@ public class NetworkUtils {
         USER_COMMENT,//用户评论查询
         ITEMS,      //藏品查询
         SHOWS,      //展览查询
+        GRADES,      //展览查询
         MUSEUM_EXPLAIN,//博物馆讲解
         OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
@@ -81,17 +84,21 @@ public class NetworkUtils {
 
     private static final HashMap<ResultType, String> m = new HashMap<ResultType, String>() {{
         put(ResultType.MUSEUM, "http://8.140.136.108/prod-api/system/museum/select/all/%s");
+        put(ResultType.MUSEUM_ID, "http://8.140.136.108/prod-api/system/museum/%s");
         put(ResultType.COMMENT, "http://8.140.136.108/prod-api/system/comments/select/all/%s");
         put(ResultType.COMMENT_POST,"http://8.140.136.108/prod-api/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108/prod-api/system/commentlike/select/all/%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
-        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/%s");
+        put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/commentlike/%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
-        put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/dev-api/system/museumcollection/%s");
-        put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/dev-api/system/museumcollection/select/all/%s");
+        put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/prod-api/system/museumcollection/%s");
+        put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/prod-api/system/museumcollection/select/all/%s");
         put(ResultType.GRADE_POST,"http://8.140.136.108/prod-api/system/museumrating");
+        put(ResultType.GRADES,"http://8.140.136.108/prod-api/system/museumrating/sortid");
         put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
+        put(ResultType.ITEMS,"http://8.140.136.108/prod-api/system/exhibitcollection/list?museumid=%s&exhibitname=%s");
         put(ResultType.TEST, "http://8.140.136.108:8081/sitemap.json");
+        put(ResultType.SHOWS,"http://8.140.136.108/prod-api/system/exhibitcollection/select/all/%s");
 
         put(ResultType.MUSEUM_EXPLAIN,"http://8.140.136.108/prod-api/system/museumexplain/select/museumid/%s");
         put(ResultType.EXHI_EXPLAIN,"http://8.140.136.108/prod-api/system/exhibitexplain/select/museumid/%s");
@@ -291,10 +298,10 @@ public class NetworkUtils {
             formatter.format(url,args);
             url = formatter.toString();
             System.out.println(url);
-        } else {
-            url.replaceAll("%s", "");
         }
+
         assert url != null;
+        url = url.replaceAll("%s", "");
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -346,10 +353,33 @@ public class NetworkUtils {
                             send = JSON.parseArray(data.toJSONString(), Museum_explain.class);
                             break;
                         }
+                        case ITEMS:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Item.class);
+                            break;
+                        }
+                        case GRADES:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Rating.class);
+                            break;
+                        }
+                        case MUSEUM_ID:{
+                            JSONObject data = outcome.getJSONObject("data");
+                            send = JSON.parseObject(data.toJSONString(), Museum.class);
+                            break;
+                        }
+
+                        case SHOWS:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), Exhibition.class);
+                            break;
+                        }
+
                         case TEST: {
 
                             break;
                         }
+
                     }
                     Message message = new Message();
                     message.what = 1;

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.databinding.ActivityItemInfoBinding;
 import com.example.myapplication.entity.Item;
+import com.example.myapplication.util.ImageUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -47,8 +48,7 @@ public class ItemInfoActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         binding.itemInfoName.setText(item.getItemName());
         binding.itemIntroContent.setText(item.getItemIntro());
-        //@TODO 设置图片，暂时没有
-        Glide.with(this).load(R.mipmap.default_bg).centerCrop().into(binding.itemInfoImage);
+        Glide.with(this).load(ImageUtils.genItemImage(item.getImageAddress())).placeholder(R.mipmap.museum).centerCrop().into(binding.itemInfoImage);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
