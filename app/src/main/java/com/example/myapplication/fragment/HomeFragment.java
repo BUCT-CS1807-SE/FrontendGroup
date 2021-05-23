@@ -64,7 +64,7 @@ public class HomeFragment extends BaseFragment implements OnBannerListener, View
     protected void initView() {
         mBanner = mRootView.findViewById(R.id.mBanner);
         //图片
-        int[] imageResourceID = new int[]{R.drawable.material1,R.mipmap.default_bg,R.mipmap.default_bg,R.mipmap.default_bg};
+        int[] imageResourceID = new int[]{R.drawable.a1,R.drawable.a2,R.drawable.a3};
         List<Integer> imgeList = new ArrayList<>();
         //轮播标题
         String[] mtitle = new String[]{"首页", "国家一级博物馆各地统计图", "排名前十的博物馆评分", "博物馆票价情况"};
@@ -84,7 +84,7 @@ public class HomeFragment extends BaseFragment implements OnBannerListener, View
             mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
             mBanner.setBannerTitles(titleList);
             mBanner.setIndicatorGravity(BannerConfig.CENTER);
-            mBanner.setDelayTime(1000);//设置轮播时间3秒切换下一图
+            mBanner.setDelayTime(2500);//设置轮播时间3秒切换下一图
             mBanner.setOnBannerListener(this);//设置监听
             mBanner.start();
         }
@@ -106,7 +106,6 @@ public class HomeFragment extends BaseFragment implements OnBannerListener, View
             bundle.putSerializable("museum",new Museum(1,"sda","sadad","北京","","","","","","","","","","","","","") );
             intent.putExtra("museum_data",bundle);
             environmentRankContainer.getContext().startActivity(intent);
-
         });
 
         LinearLayout exhibitionRankContainer = this.exhibitionRank.getContainer();
