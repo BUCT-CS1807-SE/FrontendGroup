@@ -139,7 +139,6 @@ public class SearchFragment extends BaseFragment {
                 return;
             }
 
-            //@TODO 搜索,网络发起请求并调用adapter展示
             Handler handler=new Handler(Looper.myLooper()){
                 @Override
                 public void handleMessage(@NonNull Message msg) {
@@ -157,7 +156,6 @@ public class SearchFragment extends BaseFragment {
                 }
             };
             HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
-            //@TODO 存入搜索历史
             InsertHistory(key);
             GetHistory();
 
@@ -187,7 +185,6 @@ public class SearchFragment extends BaseFragment {
                     return;
                 }
 
-                //@TODO 搜索,网络发起请求并调用adapter展示
                 Handler handler=new Handler(Looper.myLooper()){
                     @Override
                     public void handleMessage(@NonNull Message msg) {
@@ -270,7 +267,6 @@ public class SearchFragment extends BaseFragment {
     private void ToSearch(String key)
     {
         searchKey.setText(key);
-        //@TODO 搜索,网络发起请求并调用adapter展示
         Handler handler=new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {

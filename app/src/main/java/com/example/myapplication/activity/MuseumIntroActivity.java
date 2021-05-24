@@ -233,7 +233,6 @@ public class MuseumIntroActivity extends BaseActivity {
                 return;
             }
 
-            //@TODO 提交评论
             Comment comment = new Comment(1, MainActivity.person.getId(), museum.getId(), MainActivity.person.getName(), "2020-2-2", content);
             Handler commentPost = new Handler(Looper.myLooper()) {
                 private final Comment c = comment;
