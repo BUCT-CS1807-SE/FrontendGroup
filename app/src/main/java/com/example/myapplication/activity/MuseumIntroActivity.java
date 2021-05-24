@@ -216,10 +216,22 @@ public class MuseumIntroActivity extends BaseActivity {
         RatingBar service_rating=findViewById(R.id.ratingBar_service);
         RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
         Button grade_commit=findViewById(R.id.grade_commit);
+        Handler ratingPost=new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what==1){
+                    showToastSync("评分成功！");
+                }
+                else showToastSync("评分失败！");
+            }
+        };
         grade_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //@TODO 提交评分
+                Rating rating=new Rating(MainActivity.person.getId(),museum.getId(),(int)show_rating.getRating(),(int)service_rating.getRating(),(int)environment_rating.getRating());
+                HttpRequestPost(ratingPost,rating);
             }
         });
 
@@ -504,15 +516,6 @@ public class MuseumIntroActivity extends BaseActivity {
     public void addGrade(View grade_view) {
 
         RatingBar grade_environment = grade_view.findViewById(R.id.ratingBar_environment);
-        grade_environment.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                score_environment = rating;
-                Log.d("Score_Environment", "onRatingChanged: " + String.valueOf(rating));
-
-            }
-        });
-
         RatingBar grade_service = grade_view.findViewById(R.id.ratingBar_service);
         grade_service.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
