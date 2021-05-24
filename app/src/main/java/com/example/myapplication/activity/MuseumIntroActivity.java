@@ -284,6 +284,13 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     exhibitions = (List<Exhibition>) msg.obj;
+                    for (int i = exhibitions.size()-1;i > 0;i--) {
+                        Exhibition ex = exhibitions.get(i);
+                        if (ex.getExhibitionName().equals(exhibitions.get(i-1).getExhibitionName())){
+                            exhibitions.remove(i);
+                        }
+                    }
+
                     runOnUiThread(() -> {
                         exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
                         exhibition.addElement(exhibitionContainer);
