@@ -30,7 +30,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.util.TouchEventUtil;
 import com.example.myapplication.MainActivity;
@@ -102,7 +101,6 @@ public class MuseumIntroActivity extends BaseActivity {
     private ArrayList<String> list_path;
 
     private List<Comment> comments;
-
     private List<MuseumNew> museumNews;
     private List<Item> items;
     private List<Exhibition> exhibitions;
@@ -154,9 +152,6 @@ public class MuseumIntroActivity extends BaseActivity {
                     banner.isAutoPlay(true);
                     banner.setIndicatorGravity(BannerConfig.CENTER);
                     banner.setImages(list_path)
-                            .setOnBannerListener((position)->{
-                                Toast.makeText(getBaseContext(), "你点击了第" + (position + 1) + "张轮播图", Toast.LENGTH_SHORT).show();
-                            })
                             .start();
                 }
             }
@@ -491,7 +486,6 @@ public class MuseumIntroActivity extends BaseActivity {
                     super.handleMessage(msg);
                     if (msg.what == 1) {
                         int liked_number = (int) msg.obj;
-                        Context ctx = MuseumIntroActivity.this;
                         TextView view = commentView.findViewById(R.id.liked_number);
                         view.setText(String.valueOf(liked_number));
                     }
@@ -573,7 +567,6 @@ public class MuseumIntroActivity extends BaseActivity {
         LinearLayout container = this.news.getContainer();
         View newsView = LayoutInflater.from(container.getContext()).inflate(R.layout.museum_new, container, false);
         TextView newsTitle = newsView.findViewById(R.id.new_title);
-        TextView newsBrief = newsView.findViewById(R.id.new_content);
         TextView newsAuthor = newsView.findViewById(R.id.new_author);
         TextView newsTime = newsView.findViewById(R.id.new_time);
         TextView newsType = newsView.findViewById(R.id.new_type);
@@ -582,10 +575,12 @@ public class MuseumIntroActivity extends BaseActivity {
         }
 
         newsTitle.setText(museumNew.getTitle());
-        newsBrief.setText(museumNew.getContent());
         newsAuthor.setText(museumNew.getAuthor());
         newsTime.setText(museumNew.getTime());
-        newsType.setText("分类：" + museumNew.getType1() + " ," + museumNew.getType2());
+        if ((museumNew.getType1() != null&&museumNew.getType2() != null)
+        &&(!"?".equals(museumNew.getType1())&&!"?".equals(museumNew.getType2()))) {
+            newsType.setText("分类：" + museumNew.getType1() + " ," + museumNew.getType2());
+        }
 
         //创建点击事件监听器
         newsView.setOnClickListener((view) -> {
