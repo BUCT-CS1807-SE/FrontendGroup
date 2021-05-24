@@ -11,7 +11,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="0dp"
+        app:cardCornerRadius="4dp"
         app:cardElevation="4dp">
 
         <LinearLayout
@@ -23,7 +23,8 @@
                 android:id="@+id/tilte"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="left"
+                android:layout_marginLeft="18dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:text="Title"
@@ -32,8 +33,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/gray_600" />
+                android:layout_marginTop="5dp" />
 
             <LinearLayout
                 android:id="@+id/container"

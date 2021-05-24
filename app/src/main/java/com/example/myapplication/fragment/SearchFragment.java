@@ -33,6 +33,11 @@ import com.example.myapplication.entity.SearchHistory;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.FlowLayout;
+import com.scwang.smart.refresh.header.MaterialHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -168,6 +173,41 @@ public class SearchFragment extends BaseFragment {
 
         //将list数据添加进flowlayout中
 
+        //下拉刷新
+        RefreshLayout refreshLayout = (RefreshLayout)mRootView.findViewById(R.id.searchRefresh);
+        refreshLayout.setRefreshHeader(new MaterialHeader(mRootView.getContext()));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+
+                String key = searchKey.getText().toString();
+                if (key.isEmpty()) {
+                    showToast("请输入搜索关键字");
+                    refreshlayout.finishRefresh(500/*,false*/);//传入false表示刷新失败
+                    return;
+                }
+
+                //@TODO 搜索,网络发起请求并调用adapter展示
+                Handler handler=new Handler(Looper.myLooper()){
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if(msg.what==1){
+                            museums= (List<Museum>) msg.obj;
+                            refreshlayout.finishRefresh(500/*,false*/);//传入false表示刷新失败
+                            if (museums.size() == 0) {
+                                showToast("没有搜索到这个博物馆信息");
+                                return;
+                            }
+                            result.addOnScrollListener(preloader);
+                            result.setAdapter(new SearchResultAdapter((ArrayList<Museum>) museums));
+                            result.setLayoutManager(new LinearLayoutManager(SearchFragment.this.getContext()));
+                        }
+                    }
+                };
+                HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
+            }
+        });
 
     }
 
@@ -250,6 +290,7 @@ public class SearchFragment extends BaseFragment {
         HttpRequestGet(NetworkUtils.ResultType.MUSEUM,handler, key);
 
     }
+
 
 
 }

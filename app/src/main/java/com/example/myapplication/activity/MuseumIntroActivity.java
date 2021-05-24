@@ -34,6 +34,7 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.MuseumExhibitionAdapter;
 import com.example.myapplication.adapter.MuseumItemAdapter;
+import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.Exhibition;
@@ -42,11 +43,15 @@ import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.MuseumCollectedPost;
 import com.example.myapplication.entity.MuseumNew;
 import com.example.myapplication.entity.Rating;
+import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.InfoContainerView;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
+import com.scwang.smart.refresh.header.MaterialHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -67,7 +72,7 @@ import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
  *
  * @author 黄熠
  */
-public class MuseumIntroActivity extends BaseActivity implements OnBannerListener {
+public class MuseumIntroActivity extends BaseActivity {
 
     private final static Integer COMMENT_LIKED = 1;
     private final static Integer COMMENT_UNLIKED = 2;
@@ -140,15 +145,31 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
         banner = findViewById(R.id.mBanner);
         list_path = new ArrayList<>();
         list_path.add(ImageUtils.genURL(museum.getName()));
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        banner.setImageLoader(new MyLoader());
-        banner.setBannerAnimation(Transformer.Default);
-        banner.setDelayTime(3000);
-        banner.isAutoPlay(true);
-        banner.setIndicatorGravity(BannerConfig.CENTER);
-        banner.setImages(list_path)
-                .setOnBannerListener(this)
-                .start();
+
+        Handler getAddress = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    List<String> arr = (List)msg.obj;
+                    for (String s : arr) {
+                        list_path.add(ImageUtils.genINTERIORURL(s));
+                    }
+                    banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+                    banner.setImageLoader(new MyLoader());
+                    banner.setBannerAnimation(Transformer.Default);
+                    banner.setDelayTime(6000);
+                    banner.isAutoPlay(true);
+                    banner.setIndicatorGravity(BannerConfig.CENTER);
+                    banner.setImages(list_path)
+                            .setOnBannerListener((position)->{
+                                Toast.makeText(getBaseContext(), "你点击了第" + (position + 1) + "张轮播图", Toast.LENGTH_SHORT).show();
+                            })
+                            .start();
+                }
+            }
+        };
+        HttpRequestGet(NetworkUtils.ResultType.INTERIOR,getAddress,museum.getId());
 
         //----------简介----------
         briefIntro = findViewById(R.id.briefIntro);
@@ -353,9 +374,15 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
             }
             return false;
         });
-
+        RefreshLayout refreshLayout = (RefreshLayout)findViewById(R.id.museumRefresh);
+        refreshLayout.setRefreshHeader(new MaterialHeader(this));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(500/*,false*/);//传入false表示刷新失败
+            }
+        });
     }
-
     /**
      * 添加评论
      *
@@ -580,12 +607,6 @@ public class MuseumIntroActivity extends BaseActivity implements OnBannerListene
     protected void onStop() {
         super.onStop();
         banner.stopAutoPlay();//结束轮播
-    }
-
-    //对轮播图设置点击监听事件
-    @Override
-    public void OnBannerClick(int position) {
-        Toast.makeText(this, "你点击了第" + (position + 1) + "张轮播图", Toast.LENGTH_SHORT).show();
     }
 
     private class MyLoader extends ImageLoader {

@@ -20,8 +20,10 @@ import com.example.myapplication.entity.Museum_explain;
 import com.example.myapplication.entity.Rating;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,6 +68,7 @@ public class NetworkUtils {
         OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
         NEW,        //新闻
+        INTERIOR, //内景图
         EXHI_EXPLAIN_POST,
         OBJECT_EXPLAIN_POST,// TODO 添加展览的接口*2
         MUSEUM_HELP,
@@ -107,6 +110,7 @@ public class NetworkUtils {
         put(ResultType.MUSEUM_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/museumexplain");
         put(ResultType.EXHI_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/exhibitexplain");
         put(ResultType.OBJECT_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/collectionexplain");
+        put(ResultType.INTERIOR,"http://8.140.136.108/prod-api/system/interiorview/select/all/%s");
 
 
         put(ResultType.MUSEUM_HELP,"http://8.140.136.108/prod-api/system/museumexplain/select/id/%s");
@@ -375,6 +379,16 @@ public class NetworkUtils {
                             break;
                         }
 
+                        case INTERIOR:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            List<String> arr = new ArrayList<>();
+                            for (Object datum : data) {
+                                JSONObject obj = (JSONObject) datum;
+                                arr.add(obj.getString("address"));
+                            }
+                            send = arr;
+                            break;
+                        }
                         case TEST: {
 
                             break;

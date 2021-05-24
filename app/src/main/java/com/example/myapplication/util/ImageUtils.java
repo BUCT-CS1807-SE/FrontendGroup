@@ -10,6 +10,7 @@ import java.net.URL;
 public class ImageUtils {
 
     public static final String IMAGE_URL = "http://8.140.136.108/coverpic/";
+    public static final String INTERIOR_IMAGE_URL = "http://8.140.136.108/";
     public static final String ITEM_IMAGE_URL = "http://8.140.136.108/exhibitcollection/";
     public static final String MUSEUM_EXPLAIN_URL = "http://8.140.136.108/prod-api/system/museumexplain/select/pic/";
     public static final String EXHIBITION_EXPLAIN_URL="http://8.140.136.108/prod-api/system/exhibitexplain/select/pic/";
@@ -17,6 +18,9 @@ public class ImageUtils {
 
     public static String genURL(String name) {
         return IMAGE_URL+name+".jpg";
+    }
+    public static String genINTERIORURL(String url) {
+        return INTERIOR_IMAGE_URL+url;
     }
     public static String genExplainURL(String name) {
         return MUSEUM_EXPLAIN_URL+name+"";
