@@ -111,7 +111,7 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences spf = getSharedPreferences("spfRecorid",MODE_PRIVATE);
         boolean isRemember = spf.getBoolean("isRemember",false);
         boolean isLogin = spf.getBoolean("isLogin",false);
-        System.out.println("bbbbbbbbbbb:"+token);
+        String token = spf.getString("token","");
 
         if(isLogin && token != ""){
 
@@ -219,10 +219,10 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-                                        Log.e("token", response.body().string());
+                                        String result = response.body().string();
                                         JSONObject outcome;
                                         outcome = JSON.parseObject(result);
-                                        String token = outcome.getString("token");
+                                        token = outcome.getString("token");
                                         SharedPreferences token_sp = getSharedPreferences("token",MODE_PRIVATE);
                                         SharedPreferences.Editor edit = token_sp.edit();
                                         edit.putString("token",token);
@@ -234,7 +234,6 @@ public class  MainActivity extends AppCompatActivity implements View.OnClickList
                                     SharedPreferences.Editor edit = spf.edit();
                                     edit.putString("phone",phone);
                                     edit.putString("password",password);
-                                    edit.putString("token",token);
                                     edit.putBoolean("isRemember",true);
                                     if(cbAutoLogin.isChecked()){
                                         edit.putBoolean("isLogin",true);

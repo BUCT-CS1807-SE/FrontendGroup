@@ -78,7 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:gravity="center"
+
+                >
 
                 <com.youth.banner.Banner
                     android:id="@+id/mBanner"
@@ -96,24 +98,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:orientation="horizontal"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     >
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/menu_add5"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="38dp"-->
-<!--                        android:layout_marginLeft="74dp"-->
-<!--                        android:layout_marginTop="18dp"-->
-<!--                        android:background="#AAAAAA"-->
-<!--                        android:src="@drawable/bg_1" />-->
+                    <ImageView
+                        android:id="@+id/menu_add5"
+                        android:layout_width="40dp"
+                        android:layout_height="38dp"
+
+                        android:background="#AAAAAA"
+                        android:src="@drawable/u18" />
 
                     <TextView
                         android:id="@+id/title_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="18dp"
+
                         android:color="#19FFFFFF"
                         android:text="博物馆-看展览"
                         android:textColor="#000000"
@@ -135,7 +136,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/title_3"
@@ -183,24 +185,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/menu_add2"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="38dp"-->
-<!--                        android:layout_marginLeft="74dp"-->
-<!--                        android:layout_marginTop="18dp"-->
-<!--                        android:background="#AAAAAA"-->
-<!--                        android:src="@drawable/bg_1" />-->
+                    <ImageView
+                        android:id="@+id/menu_add2"
+                        android:layout_width="40dp"
+                        android:layout_height="38dp"
+
+                        android:background="#AAAAAA"
+                        android:src="@drawable/u18" />
 
                     <TextView
                         android:id="@+id/title_7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="18dp"
+
                         android:color="#19FFFFFF"
                         android:text="游景区-听讲解"
                         android:textColor="#000000"

@@ -139,7 +139,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MuseumIntroActivity.class);
-                intent.putExtra("museum_name",Libname.getText());
+                intent.putExtra("museum_data",Libname.getText());
                 startActivity(intent);
             }
         });
@@ -306,39 +306,39 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 {
                     datas =response.getRows();
                 }
-//                new Thread() {
-//                    public void run() {
-//                        List<ClusterItem> items = new ArrayList<ClusterItem>();
-//                        double curlat=aMap.getMyLocation().getLatitude();
-//                        double curlon=aMap.getMyLocation().getLongitude();
-//                        LatLng curlatLng=new LatLng(curlat,curlon,false);
-//                        for (int i = 0; i < datas.size()-5; i++) {
-//
-//                            double lat = datas.get(i).getLatitude();
-//                            double lon = datas.get(i).getLongitude();
-//
-//                            LatLng latLng = new LatLng(lat, lon, false);
-//
-//                            if(AMapUtils.calculateLineDistance(curlatLng,latLng)<100000)
-//                            {
-//                                neardatas.add(datas.get(i));
-//                            }
-//                            RegionItem regionItem = new RegionItem(latLng,
-//                                    datas.get(i).getName(),datas.get(i).getMuseumlevel());
-//                            items.add(regionItem);
-//                        }
-//
-//                        getExhinbitionName();
-//
-//                        mClusterOverlay = new ClusterOverlay(aMap, items,
-//                                dp2px(getActivity(), clusterRadius),
-//                                getActivity());
-//                        mClusterOverlay.setClusterRenderer(clusterRender);
-//                        mClusterOverlay.setOnClusterClickListener(clusterClickListener);
-//                    }
-//
-//                }
-//                        .start();
+                new Thread() {
+                    public void run() {
+                        List<ClusterItem> items = new ArrayList<ClusterItem>();
+                        double curlat=aMap.getMyLocation().getLatitude();
+                        double curlon=aMap.getMyLocation().getLongitude();
+                        LatLng curlatLng=new LatLng(curlat,curlon,false);
+                        for (int i = 0; i < datas.size()-5; i++) {
+
+                            double lat = datas.get(i).getLatitude();
+                            double lon = datas.get(i).getLongitude();
+
+                            LatLng latLng = new LatLng(lat, lon, false);
+
+                            if(AMapUtils.calculateLineDistance(curlatLng,latLng)<100000)
+                            {
+                                neardatas.add(datas.get(i));
+                            }
+                            RegionItem regionItem = new RegionItem(latLng,
+                                    datas.get(i).getName(),datas.get(i).getMuseumlevel());
+                            items.add(regionItem);
+                        }
+
+                        getExhinbitionName();
+
+                        mClusterOverlay = new ClusterOverlay(aMap, items,
+                                dp2px(getActivity(), clusterRadius),
+                                getActivity());
+                        mClusterOverlay.setClusterRenderer(clusterRender);
+                        mClusterOverlay.setOnClusterClickListener(clusterClickListener);
+                    }
+
+                }
+                        .start();
 
             }
 

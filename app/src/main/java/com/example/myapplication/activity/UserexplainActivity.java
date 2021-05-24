@@ -224,8 +224,6 @@ public class UserexplainActivity extends BaseActivity{
             HttpRequestGet(NetworkUtils.ResultType.EXHI_EXPLAIN,explainGet,id);
         else if(kind.equals("COLLECTION"))
             HttpRequestGet(NetworkUtils.ResultType.OBJECT_EXPLAIN,explainGet,id);
-        //---------------init postid-----------
-        initPostid();
 
 
         //上传讲解
@@ -260,60 +258,9 @@ public class UserexplainActivity extends BaseActivity{
             Museum_explain museum_explain=new Museum_explain(0,createid,0,id,content,0,0);
             HttpRequestPost(explainPost,museum_explain,kind);
 
-            Handler imagePost=new Handler(Looper.myLooper()){
-                @Override
-                public void handleMessage(@NonNull Message msg) {
-                    super.handleMessage(msg);
-                    if(msg.what==1){
-                        showToastSync("上传图片成功");
-                    }
-                    else {
-                        showToastSync("提交图片失败");
-                    }
-                }
-            };
-            if(imagestream==null)
-                System.out.println("the imagefile is null");
-            else
-            {
-                System.out.println(imagestream.length);
-                if(kind.equals("MUSEUM"))
-                    HttpRequestPost(NetworkUtils.ResultType.MUSEUM_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
-                else if(kind.equals("EXHIBITION"))
-                    HttpRequestPost(NetworkUtils.ResultType.EXHI_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
-                else if(kind.equals("COLLECTION"))
-                    HttpRequestPost(NetworkUtils.ResultType.OBJECT_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
-                imagestream=null;
+            //---------------init postid-----------
+            initPostid();
 
-            }
-
-
-
-            Handler voicePost=new Handler(Looper.myLooper()){
-                @Override
-                public void handleMessage(@NonNull Message msg) {
-                    super.handleMessage(msg);
-                    if(msg.what==1){
-                        showToastSync("上传音频成功");
-                    }
-                    else {
-                        showToastSync("提交音频失败");
-                    }
-                }
-            };
-            if(voicestream==null)
-                System.out.println("the voicefile is null");
-            else
-            {
-                System.out.println(voicestream.length);
-                if(kind.equals("MUSEUM"))
-                    HttpRequestPost(NetworkUtils.ResultType.MUSEUM_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
-                else if(kind.equals("EXHIBITION"))
-                    HttpRequestPost(NetworkUtils.ResultType.EXHI_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
-                else if(kind.equals("COLLECTION"))
-                    HttpRequestPost(NetworkUtils.ResultType.OBJECT_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
-                voicestream=null;
-            }
         });
 
     }
@@ -330,6 +277,61 @@ public class UserexplainActivity extends BaseActivity{
                     {
                         Mpostid= PostidTemp.get(0);
                         postid=Mpostid.getId();
+
+                        Handler imagePost=new Handler(Looper.myLooper()){
+                            @Override
+                            public void handleMessage(@NonNull Message msg) {
+                                super.handleMessage(msg);
+                                if(msg.what==1){
+                                    showToastSync("上传图片成功");
+                                }
+                                else {
+                                    showToastSync("提交图片失败");
+                                }
+                            }
+                        };
+                        if(imagestream==null)
+                            System.out.println("the imagefile is null");
+                        else
+                        {
+                            System.out.println(imagestream.length);
+                            if(kind.equals("MUSEUM"))
+                                HttpRequestPost(NetworkUtils.ResultType.MUSEUM_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                            else if(kind.equals("EXHIBITION"))
+                                HttpRequestPost(NetworkUtils.ResultType.EXHI_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                            else if(kind.equals("COLLECTION"))
+                                HttpRequestPost(NetworkUtils.ResultType.OBJECT_PIC_POST,postid.toString(),imagePost,"image",null,imagestream,imageType);
+                            imagestream=null;
+
+                        }
+
+
+
+                        Handler voicePost=new Handler(Looper.myLooper()){
+                            @Override
+                            public void handleMessage(@NonNull Message msg) {
+                                super.handleMessage(msg);
+                                if(msg.what==1){
+                                    showToastSync("上传音频成功");
+                                }
+                                else {
+                                    showToastSync("提交音频失败");
+                                }
+                            }
+                        };
+                        if(voicestream==null)
+                            System.out.println("the voicefile is null");
+                        else
+                        {
+                            System.out.println(voicestream.length);
+                            if(kind.equals("MUSEUM"))
+                                HttpRequestPost(NetworkUtils.ResultType.MUSEUM_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                            else if(kind.equals("EXHIBITION"))
+                                HttpRequestPost(NetworkUtils.ResultType.EXHI_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                            else if(kind.equals("COLLECTION"))
+                                HttpRequestPost(NetworkUtils.ResultType.OBJECT_VOI_POST,postid.toString(),voicePost,"voice",null,voicestream,voiceType);
+                            voicestream=null;
+                        }
                     }
 
                     // showToast("postid:" +postid);
@@ -362,7 +364,7 @@ public class UserexplainActivity extends BaseActivity{
                         officaltext.setText("官方讲解");
                         ImageView Image=officaView.findViewById(R.id.menu_add5);
 
-                        showToast(Oexplain.getId()+"");
+                        showToast(Oexplain.getId()+"讲解id");
                         if(kind.equals("MUSEUM"))
                             Glide.with(officaView).load(ImageUtils.genExplainURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
                         else if(kind.equals("EXHIBITION"))

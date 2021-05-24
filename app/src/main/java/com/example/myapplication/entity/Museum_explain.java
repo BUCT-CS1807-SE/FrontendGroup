@@ -1,9 +1,12 @@
 package com.example.myapplication.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class Museum_explain {
     private Integer Id;
     private Integer Createid;
     private Integer Type;
+    @JSONField(alternateNames = {"collectionid","exhibitid"})
     private Integer Museumid;
     private String Text;
     private Integer Sponsor;
