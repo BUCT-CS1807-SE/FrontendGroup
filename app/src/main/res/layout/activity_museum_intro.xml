@@ -46,7 +46,7 @@
                 android:background="#00FFFFFF"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingTop="300dp"
+                android:paddingTop="315dp"
                 android:paddingBottom="300dp">
 
                 <com.example.myapplication.view.InfoContainerView

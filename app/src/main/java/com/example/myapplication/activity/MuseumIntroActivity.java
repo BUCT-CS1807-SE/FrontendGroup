@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.util.TouchEventUtil;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.MuseumExhibitionAdapter;
@@ -128,24 +130,11 @@ public class MuseumIntroActivity extends BaseActivity {
         museum = (Museum) bundle.getSerializable("museum");
         String museum_name = museum.getName();
 
-//        TextView name = findViewById(R.id.museum_title);
-//        name.setText(museum_name);
-
-        //---------滑动组件---------
-        scroller = findViewById(R.id.scroller);
-        content_linearlayout = findViewById(R.id.content_linearLayout);
-        scroller.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            int paddingTop = content_linearlayout.getPaddingTop();
-            int scrollY2 = Math.min(scrollY, paddingTop);
-            float transparent = (paddingTop - scrollY2) * 1.0f / paddingTop;
-            banner.setTransitionAlpha(transparent);
-        });
-
         //---------轮播图----------
         banner = findViewById(R.id.mBanner);
         list_path = new ArrayList<>();
         list_path.add(ImageUtils.genURL(museum.getName()));
-
+        banner.setViewPagerIsScroll(true);
         Handler getAddress = new Handler(Looper.myLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -170,6 +159,24 @@ public class MuseumIntroActivity extends BaseActivity {
             }
         };
         HttpRequestGet(NetworkUtils.ResultType.INTERIOR,getAddress,museum.getId());
+
+//        TextView name = findViewById(R.id.museum_title);
+//        name.setText(museum_name);
+
+        //---------滑动组件---------
+        scroller = findViewById(R.id.scroller);
+        content_linearlayout = findViewById(R.id.content_linearLayout);
+        scroller.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int paddingTop = content_linearlayout.getPaddingTop();
+            int scrollY2 = Math.min(scrollY, paddingTop);
+            float transparent = (paddingTop - scrollY2) * 1.0f / paddingTop;
+            banner.setTransitionAlpha(transparent);
+        });
+        scroller.setOnTouchListener((v, event) -> {
+            banner.dispatchTouchEvent(event);
+            return false;
+        });
+
 
         //----------简介----------
         briefIntro = findViewById(R.id.briefIntro);
@@ -214,7 +221,7 @@ public class MuseumIntroActivity extends BaseActivity {
         grade_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //@TODO 提交评分
             }
         });
 
