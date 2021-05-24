@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
+import com.example.myapplication.entity.CommentLikedSingleInfo;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Museum;
@@ -54,6 +55,7 @@ public class NetworkUtils {
         COMMENT,    //评论查询
         COMMENT_POST, //提交评论
         COMMENT_LIKE, //评论点赞数
+        COMMENT_LIKE_GET, //评论点赞
         COMMENT_LIKE_POST, //评论点赞提交
         COMMENT_LIKE_CANCEL_POST, //取消评论
         COLLECT_POST, //收藏提交
@@ -91,6 +93,7 @@ public class NetworkUtils {
         put(ResultType.COMMENT, "http://8.140.136.108/prod-api/system/comments/select/all/%s");
         put(ResultType.COMMENT_POST,"http://8.140.136.108/prod-api/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108/prod-api/system/commentlike/select/all/%s");
+        put(ResultType.COMMENT_LIKE_GET,"http://8.140.136.108/prod-api/system/commentlike/list?commentid=%s&userid=%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
         put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/commentlike/%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
@@ -345,6 +348,11 @@ public class NetworkUtils {
                         case NEW:{
                             JSONArray data = outcome.getJSONArray("rows");
                             send = JSON.parseArray(data.toJSONString(), MuseumNew.class);
+                            break;
+                        }
+                        case COMMENT_LIKE_GET:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), CommentLikedSingleInfo.class);
                             break;
                         }
                         case MUSEUM_EXPLAIN:

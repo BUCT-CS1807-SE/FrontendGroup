@@ -30,6 +30,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.util.TouchEventUtil;
 import com.example.myapplication.MainActivity;
@@ -39,6 +40,7 @@ import com.example.myapplication.adapter.MuseumItemAdapter;
 import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
+import com.example.myapplication.entity.CommentLikedSingleInfo;
 import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Museum;
@@ -100,6 +102,7 @@ public class MuseumIntroActivity extends BaseActivity {
     private ArrayList<String> list_path;
 
     private List<Comment> comments;
+
     private List<MuseumNew> museumNews;
     private List<Item> items;
     private List<Exhibition> exhibitions;
@@ -269,11 +272,31 @@ public class MuseumIntroActivity extends BaseActivity {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     comments = (List<Comment>) msg.obj;
-                    initComments();
+                    for (Comment comment1 : comments) {
+                        Handler commentLikedSingleGet = new Handler(Looper.myLooper()) {
+                            private Comment c = comment1;
+                            @Override
+                            public void handleMessage(@NonNull Message msg) {
+                                super.handleMessage(msg);
+                                if (msg.what == 1) {
+                                    List<CommentLikedSingleInfo> comment_like_info= (List<CommentLikedSingleInfo>) msg.obj;
+                                    if(comment_like_info.size()==0){
+                                        addComment(c,false,false);
+                                    }else{
+                                        addComment(c,false,true);
+                                    }
+                                }
+                            }
+                        };
+                        HttpRequestGet(NetworkUtils.ResultType.COMMENT_LIKE_GET,commentLikedSingleGet,comment1.getId(),MainActivity.person.getId());
+                    }
                 }
             }
         };
         HttpRequestGet(NetworkUtils.ResultType.COMMENT, commentGet, museum.getId().toString());
+
+
+
         //----------藏品----------
         item = findViewById(R.id.items);
         RecyclerView itemContainer = new RecyclerView(item.getContainer().getContext());
@@ -444,7 +467,9 @@ public class MuseumIntroActivity extends BaseActivity {
                     like.setImageResource(R.mipmap.like);
                     like.setTag(COMMENT_UNLIKED);
                     //已经点过赞了，取消点赞，下一步向后台提供数据
-                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,comment.getId());
+                    TextView view = commentView.findViewById(R.id.liked_number);
+                    view.setText(String.valueOf(Integer.valueOf(view.getText().toString())-1));
+//                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,comment.getId());
                 } else {
                     like.setImageResource(R.mipmap.like_active);
                     like.setTag(COMMENT_LIKED);
@@ -467,11 +492,6 @@ public class MuseumIntroActivity extends BaseActivity {
                     if (msg.what == 1) {
                         int liked_number = (int) msg.obj;
                         Context ctx = MuseumIntroActivity.this;
-                        if (liked_number > 0) {
-                            like.setImageResource(R.mipmap.like);
-                            like.setTag(COMMENT_UNLIKED);
-                        }
-
                         TextView view = commentView.findViewById(R.id.liked_number);
                         view.setText(String.valueOf(liked_number));
                     }
