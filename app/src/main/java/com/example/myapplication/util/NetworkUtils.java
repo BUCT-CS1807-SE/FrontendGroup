@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
+import com.example.myapplication.entity.CommentLikedSingleInfo;
 import com.example.myapplication.entity.Item;
 import com.example.myapplication.entity.Exhibition;
 import com.example.myapplication.entity.Museum;
@@ -20,8 +21,10 @@ import com.example.myapplication.entity.Museum_explain;
 import com.example.myapplication.entity.Rating;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -52,6 +55,7 @@ public class NetworkUtils {
         COMMENT,    //评论查询
         COMMENT_POST, //提交评论
         COMMENT_LIKE, //评论点赞数
+        COMMENT_LIKE_GET, //评论点赞
         COMMENT_LIKE_POST, //评论点赞提交
         COMMENT_LIKE_CANCEL_POST, //取消评论
         COLLECT_POST, //收藏提交
@@ -66,6 +70,7 @@ public class NetworkUtils {
         OBJECT_EXPLAIN,//藏品的讲解
         TEST,       //测试
         NEW,        //新闻
+        INTERIOR, //内景图
         EXHI_EXPLAIN_POST,
         OBJECT_EXPLAIN_POST,// TODO 添加展览的接口*2
         MUSEUM_HELP,
@@ -88,6 +93,7 @@ public class NetworkUtils {
         put(ResultType.COMMENT, "http://8.140.136.108/prod-api/system/comments/select/all/%s");
         put(ResultType.COMMENT_POST,"http://8.140.136.108/prod-api/system/comments");
         put(ResultType.COMMENT_LIKE,"http://8.140.136.108/prod-api/system/commentlike/select/all/%s");
+        put(ResultType.COMMENT_LIKE_GET,"http://8.140.136.108/prod-api/system/commentlike/list?commentid=%s&userid=%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
         put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/commentlike/%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
@@ -107,6 +113,7 @@ public class NetworkUtils {
         put(ResultType.MUSEUM_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/museumexplain");
         put(ResultType.EXHI_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/exhibitexplain");
         put(ResultType.OBJECT_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/collectionexplain");
+        put(ResultType.INTERIOR,"http://8.140.136.108/prod-api/system/interiorview/select/all/%s");
 
 
         put(ResultType.MUSEUM_HELP,"http://8.140.136.108/prod-api/system/museumexplain/select/id/%s");
@@ -343,6 +350,11 @@ public class NetworkUtils {
                             send = JSON.parseArray(data.toJSONString(), MuseumNew.class);
                             break;
                         }
+                        case COMMENT_LIKE_GET:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            send = JSON.parseArray(data.toJSONString(), CommentLikedSingleInfo.class);
+                            break;
+                        }
                         case MUSEUM_EXPLAIN:
                         case EXHI_EXPLAIN:
                         case OBJECT_EXPLAIN:
@@ -375,6 +387,16 @@ public class NetworkUtils {
                             break;
                         }
 
+                        case INTERIOR:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            List<String> arr = new ArrayList<>();
+                            for (Object datum : data) {
+                                JSONObject obj = (JSONObject) datum;
+                                arr.add(obj.getString("address"));
+                            }
+                            send = arr;
+                            break;
+                        }
                         case TEST: {
 
                             break;

@@ -11,80 +11,97 @@
         android:id="@+id/mBanner"
         android:layout_width="match_parent"
         android:layout_height="330dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </com.youth.banner.Banner>
 
-    <ScrollView
-        android:id="@+id/scroller"
-        android:layout_width="wrap_content"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/museumRefresh"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/content_linearLayout"
+        <com.scwang.smart.refresh.header.MaterialHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:id="@+id/scroller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="300dp"
-            android:paddingBottom="300dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/briefIntro"
+            <LinearLayout
+                android:id="@+id/content_linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="博物馆简介">
+                android:background="#00FFFFFF"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="315dp"
+                android:paddingBottom="300dp">
 
-            </com.example.myapplication.view.InfoContainerView>
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/briefIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="博物馆简介">
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/arrive"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="到达方式" />
+                </com.example.myapplication.view.InfoContainerView>
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/news"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="新闻">
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/arrive"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="到达方式" />
 
-            </com.example.myapplication.view.InfoContainerView>
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/news"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="新闻">
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/items"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="展品" />
+                </com.example.myapplication.view.InfoContainerView>
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/exhibition"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="展览">
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="展品" />
 
-            </com.example.myapplication.view.InfoContainerView>
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/exhibition"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="展览">
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/grade"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="评分" />
+                </com.example.myapplication.view.InfoContainerView>
 
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/comment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:title="评论" />
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="评分" />
 
-        </LinearLayout>
-    </ScrollView>
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:title="评论" />
+
+            </LinearLayout>
+        </ScrollView>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/more"

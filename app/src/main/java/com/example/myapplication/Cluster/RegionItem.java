@@ -21,7 +21,6 @@ public class RegionItem implements com.example.myapplication.Cluster.ClusterItem
 
     @Override
     public LatLng getPosition() {
-        // TODO Auto-generated method stub
         return mLatLng;
     }
     public String getTitle(){

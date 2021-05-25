@@ -58,9 +58,9 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_weight="1">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -85,7 +85,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/skin_topbar_bg_color"
+        android:background="#BA2B00"
         android:elevation="2dp"
         android:gravity="center"
         android:layoutDirection="ltr"
@@ -136,16 +136,32 @@
         </LinearLayout>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchResult"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/searchRefresh"
+        android:layout_width="414dp"
+        android:layout_height="577dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3">
+        app:layout_constraintTop_toBottomOf="@+id/searchHistory">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <com.scwang.smart.refresh.header.MaterialHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
