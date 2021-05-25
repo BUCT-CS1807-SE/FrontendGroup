@@ -39,10 +39,12 @@ import com.example.myapplication.Cluster.RegionItem;
 import com.example.myapplication.R;
 
 import com.example.myapplication.activity.MuseumIntroActivity;
+import com.example.myapplication.activity.UserexplainActivity;
 import com.example.myapplication.api.Api;
 import com.example.myapplication.api.ApiConfig;
 import com.example.myapplication.api.TtitCallback;
 import com.example.myapplication.entity.MapListResponse;
+import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.RowsDTO;
 import com.example.myapplication.entity.exhibitionItem;
 import com.example.myapplication.entity.exhibitionResponse;
@@ -86,11 +88,13 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     private ClusterRender clusterRender;
     private ClusterClickListener clusterClickListener;
     private TextView Libname;
+    private TextView TurnToUserexplain;
     private Boolean FirstLoaded;
     private FloatingActionButton nearButton;
     private MapBottom mapBottom =null;
     private boolean flag = false;
     private Integer readyNum = 0;
+    private Integer curpos = 0;
     public MapFragment() {
     }
 
@@ -114,6 +118,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
         museumInfo=(CardView) view.findViewById(R.id.component1);
         Libname=(TextView)view.findViewById(R.id.textView2);
         nearButton=view.findViewById(R.id.fab_poi);
+        TurnToUserexplain=view.findViewById(R.id.textView3);
         museumLevel=view.findViewById(R.id.textView4);
         museumInfo.setVisibility(View.GONE);
         FirstLoaded=false;
@@ -139,7 +144,21 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MuseumIntroActivity.class);
-                intent.putExtra("museum_data",Libname.getText());
+                Bundle bundle = new Bundle();
+                Museum museum = turnRowDtotoMuseum(datas.get(curpos));
+                bundle.putSerializable("museum",museum);
+                intent.putExtra("museum_data",bundle);
+                startActivity(intent);
+            }
+        });
+        TurnToUserexplain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.putExtra("id",datas.get(curpos).getId().toString());
+                intent.putExtra("ShowName",datas.get(curpos).getName());
+                intent.putExtra("kind","MUSEUM");
+                intent.setClass(getActivity(), UserexplainActivity.class);
                 startActivity(intent);
             }
         });
@@ -324,7 +343,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                                 neardatas.add(datas.get(i));
                             }
                             RegionItem regionItem = new RegionItem(latLng,
-                                    datas.get(i).getName(),datas.get(i).getMuseumlevel());
+                                    datas.get(i).getName(),datas.get(i).getMuseumlevel(),i);
                             items.add(regionItem);
                         }
 
@@ -353,6 +372,7 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
         if(clusterItems.size()==1)
         {
+            curpos=clusterItems.get(0).getpos();
             Libname.setText(clusterItems.get(0).getTitle());
             museumLevel.setText(clusterItems.get(0).getLevel());
             museumInfo.setVisibility(View.VISIBLE);
@@ -430,6 +450,28 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 }
             });
         }
+    }
+    private Museum turnRowDtotoMuseum(RowsDTO t)
+    {
+        Museum ans=new Museum();
+        ans.setId(t.getId());
+        ans.setName(t.getName());
+        ans.setType(t.getType());
+        ans.setAddress(t.getAddress());
+        ans.setTicketPrice(t.getTicketprice().toString());
+        ans.setOpeningHours(t.getOpeninghours());
+        ans.setSuggestedtraveltime(t.getSuggestedtraveltime());
+        ans.setMuseumlevel(t.getMuseumlevel());
+        ans.setUnits(t.getUnits());
+        ans.setAttractionlevel(t.getAttractionlevel());
+        ans.setNumber(t.getNumber());
+        ans.setIntroduction(t.getIntroduction());
+        //ans.setScenery(t.getScenery().toString());
+        ans.setHowtogo(t.getHowtogo());
+        ans.setScenicspotsaround(t.getScenicspotsaround());
+        ans.setCover(t.getCover());
+        //ans.setNote(t.getNote().toString());
+        return ans;
     }
 
 

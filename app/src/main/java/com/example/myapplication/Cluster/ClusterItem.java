@@ -17,4 +17,6 @@ public interface ClusterItem {
     String getTitle();
 
     String getLevel();
+
+    int getpos();
 }

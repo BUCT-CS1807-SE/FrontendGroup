@@ -11,11 +11,12 @@ public class RegionItem implements com.example.myapplication.Cluster.ClusterItem
     private LatLng mLatLng;
     private String mTitle;
     private String museumlevel;
-
-    public RegionItem(LatLng latLng, String title,String level) {
+    private int curpos;
+    public RegionItem(LatLng latLng, String title,String level,int t) {
         mLatLng=latLng;
         mTitle=title;
         museumlevel=level;
+        curpos=t;
     }
 
     @Override
@@ -30,6 +31,11 @@ public class RegionItem implements com.example.myapplication.Cluster.ClusterItem
     @Override
     public String getLevel() {
         return museumlevel;
+    }
+
+    @Override
+    public int getpos() {
+        return curpos;
     }
 
 }
