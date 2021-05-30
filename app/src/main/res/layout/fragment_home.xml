@@ -89,29 +89,27 @@
                     android:layout_height="230dp" />
 
                 <View
-                    android:layout_width="360dp"
+                    android:layout_width="350dp"
                     android:layout_height="2dp"
-                    android:layout_marginLeft="21dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="1dp"
                     android:background="#AAAAAA" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="60dp"
                     android:orientation="horizontal"
                     android:gravity="center"
                     >
 
                     <ImageView
-                        android:id="@+id/menu_add5"
+                        android:id="@+id/pic5"
                         android:layout_width="40dp"
                         android:layout_height="38dp"
-
-                        android:background="#AAAAAA"
-                        android:src="@drawable/u18" />
+                        android:src="@drawable/xx" />
 
                     <TextView
-                        android:id="@+id/title_14"
+                        android:id="@+id/t_114"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -128,11 +126,13 @@
                     android:id="@+id/title_13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="0dp"
                     android:color="#7F7F7F"
+                    android:textStyle="bold"
                     android:text="人类文明的集中体现"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textColor="#FFC94A03"
+                    android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,23 +140,41 @@
                     android:orientation="vertical"
                     android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/title_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
-                        android:color="#7F7F7F"
-                        android:text="习近平参观庆祝改革开放40周年大型展览"
-                        android:textColor="#000000"
-                        android:textSize="15sp" />
+                    <LinearLayout
+                        android:layout_width="350dp"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/p10"
+                            android:layout_width="30dp"
+                            android:layout_height="28dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:src="@drawable/u14"
+                             />
+
+                        <TextView
+                            android:id="@+id/title_3"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="5dp"
+                            android:color="#7F7F7F"
+                            android:text="习近平参观庆祝改革开放40周年大型展览"
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/title_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_width="350dp"
+                        android:layout_height="43dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:color="#7F7F7F"
                         android:text="习近平：用好红色资源，传承好红色基因 把红色江山世世代代传下去"
                         android:textColor="#000000"
@@ -164,9 +182,9 @@
 
                     <TextView
                         android:id="@+id/title_5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_width="350dp"
+                        android:layout_height="43dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="3dp"
                         android:color="#7F7F7F"
                         android:text="习近平：把握新发展阶段，贯彻新发展理念，构建新发展格局"
@@ -177,25 +195,23 @@
 
 
                 <View
-                    android:layout_width="360dp"
+                    android:layout_width="350dp"
                     android:layout_height="2dp"
-                    android:layout_marginLeft="21dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="10dp"
                     android:background="#AAAAAA" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_width="350dp"
+                    android:layout_height="60dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/menu_add2"
+                        android:id="@+id/pic6"
                         android:layout_width="40dp"
                         android:layout_height="38dp"
-
-                        android:background="#AAAAAA"
-                        android:src="@drawable/u18" />
+                        android:src="@drawable/xx" />
 
                     <TextView
                         android:id="@+id/title_7"
@@ -210,66 +226,136 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/title_2"
+                    android:id="@+id/t_184"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="0dp"
+                    android:textStyle="bold"
                     android:color="#7F7F7F"
                     android:text="高品质旅行怎么能是走马观花"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textColor="#FFC94A03"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/menu_add5"
+                        android:layout_width="35dp"
+                        android:layout_height="38dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/qa" />
 
 
-                <TextView
-                    android:id="@+id/title_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
-                    android:color="#7F7F7F"
-                    android:text="中国国家博物馆"
-                    android:textColor="#000000"
-                    android:textSize="25sp" />
+
+
+                    <Button
+                        android:id="@+id/ti_8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/white"
+                        android:color="#7F7F7F"
+                        android:text="沈阳故宫博物馆"
+                        android:background="@null"
+                        android:textSize="25sp" />
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/title_107"
-                    android:layout_width="359dp"
+                    android:layout_width="345dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:color="#19FFFFFF"
-                    android:text="中国国家博物馆是代表国家收藏、研究、展示、阐释能够充分反映中华优秀传统文化、革命文化和社会主义先进文化代表性物证的最高机构，是国家最高历史文化艺术殿堂和文化客厅。2012年11月29日，习近平总书记率领十八届中央政治局常委来到中国国家博物馆参观“复兴之路”基本陈列，发出实现中华民族伟大复兴中国梦的伟大号召，中国特色社会主义新时代在这里扬帆启程。"
+                    android:text="沈阳故宫博物院，位于辽宁省沈阳市沈河区沈阳路171号，原是清代初期营建和使用的皇家宫苑，始建于1625年（明天启五年，后金天命十年）。沈阳故宫占地面积六万多平方米，有古建筑114座，500多间，至今保存完好。在宫廷遗址上建立的沈阳故宫博物院是著名的古代宫廷艺术博物馆，藏品中包含十分丰富的宫廷艺术品。"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/title_15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
-                    android:color="#7F7F7F"
-                    android:text="中国国家博物馆"
-                    android:textColor="#000000"
-                    android:textSize="25sp" />
+
+
+                <Button
+                    android:id="@+id/btn123"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="3dp"
+                    android:backgroundTint="@color/white"
+                    android:text="更多讲解"
+                    android:textColor="#A55528"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="345dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/p125"
+                        android:layout_width="35dp"
+                        android:layout_height="38dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/qa" />
+
+                    <Button
+                        android:id="@+id/ti_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="0dp"
+                        android:backgroundTint="@color/white"
+                        android:color="#7F7F7F"
+                        android:text="故宫博物馆"
+                        android:background="@null"
+                        android:textSize="25sp" />
+                    />
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/title_9"
-                    android:layout_width="359dp"
+                    android:layout_width="345dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:color="#19FFFFFF"
                     android:text="北京故宫博物院建立于1925年，是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆，也是中国最大的古代文化艺术博物馆，其文物收藏主要来源于清代宫中旧藏。"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
+                <Button
+                    android:id="@+id/bt12"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="3dp"
+                    android:backgroundTint="@color/white"
+                    android:text="更多讲解"
+                    android:textColor="#A55528"
+                    android:textSize="15sp"
+                    />
+
                 <View
                     android:layout_width="360dp"
                     android:layout_height="2dp"
-                    android:layout_marginLeft="21dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="13dp"
                     android:background="#AAAAAA" />
+
+
 
             </LinearLayout>
             <com.example.myapplication.view.InfoContainerView
