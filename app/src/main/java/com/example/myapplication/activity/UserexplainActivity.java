@@ -88,6 +88,7 @@ public class UserexplainActivity extends BaseActivity{
 
     private ArrayList<Museum_explain> Mexplain;
     private ArrayList<Museum_explain> PostidTemp;
+    private ArrayList<Museum_explain> OfficalTemp;
     private Museum_explain Oexplain;
     private CardView uploadItem;
 
@@ -353,118 +354,122 @@ public class UserexplainActivity extends BaseActivity{
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if(msg.what==1){
-                    Oexplain = ((ArrayList<Museum_explain>) msg.obj).get(0);
-                    if(Oexplain.getType()==1&&Oexplain.getState()==1)
+                    OfficalTemp=(ArrayList<Museum_explain>) msg.obj;
+                    if(OfficalTemp.size()>0)
                     {
-                        int index=0;
-                        offical=findViewById(R.id.offical);
-                        View officaView = LayoutInflater.from(offical.getContext()).inflate(R.layout.userexplain_part,offical,true);
-
-                        TextView officaltext=officaView.findViewById(R.id.title_1);
-                        officaltext.setText("官方讲解");
-                        ImageView Image=officaView.findViewById(R.id.menu_add5);
-
-                        showToast(Oexplain.getId()+"讲解id");
-                        if(kind.equals("MUSEUM"))
-                            Glide.with(officaView).load(ImageUtils.genExplainURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
-                        else if(kind.equals("EXHIBITION"))
-                            Glide.with(officaView).load(ImageUtils.genEXHIBITIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
-                        else if(kind.equals("COLLECTION"))
-                            Glide.with(officaView).load(ImageUtils.genCOLLECTIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
-
-                        StringBuffer Voiceuri;
-                        if(kind.equals("MUSEUM"))
-                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
-                        else if(kind.equals("EXHIBITION"))
-                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/exhibitexplain/select/voice/");
-                        else if(kind.equals("COLLECTION"))
-                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/collectionexplain/select/voice/");
-                        else
-                            Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
-
-                        Voiceuri.append(Oexplain.getId());
-                        if((Amp[index] =MediaPlayer.create(officaView.getContext(), Uri.parse(Voiceuri.toString())))!=null)
+                        Oexplain =OfficalTemp.get(0);
+                        if(Oexplain.getType()==1&&Oexplain.getState()==1)
                         {
-                            int Duration;
-                            Button play,pause;
-                            play=(Button)officaView.findViewById(R.id.play);
-                            pause=(Button)officaView.findViewById(R.id.pause);
-                            Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
+                            int index=0;
+                            offical=findViewById(R.id.offical);
+                            View officaView = LayoutInflater.from(offical.getContext()).inflate(R.layout.userexplain_part,offical,true);
+
+                            TextView officaltext=officaView.findViewById(R.id.title_1);
+                            officaltext.setText("官方讲解");
+                            ImageView Image=officaView.findViewById(R.id.menu_add5);
+
+                            showToast(Oexplain.getId()+"讲解id");
+                            if(kind.equals("MUSEUM"))
+                                Glide.with(officaView).load(ImageUtils.genExplainURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+                            else if(kind.equals("EXHIBITION"))
+                                Glide.with(officaView).load(ImageUtils.genEXHIBITIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+                            else if(kind.equals("COLLECTION"))
+                                Glide.with(officaView).load(ImageUtils.genCOLLECTIONURL(Oexplain.getId().toString())).centerCrop().placeholder(R.drawable.ic_museum_explain).into(Image);
+
+                            StringBuffer Voiceuri;
+                            if(kind.equals("MUSEUM"))
+                                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+                            else if(kind.equals("EXHIBITION"))
+                                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/exhibitexplain/select/voice/");
+                            else if(kind.equals("COLLECTION"))
+                                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/collectionexplain/select/voice/");
+                            else
+                                Voiceuri=new StringBuffer("http://8.140.136.108/prod-api/system/museumexplain/select/voice/");
+
+                            Voiceuri.append(Oexplain.getId());
+                            if((Amp[index] =MediaPlayer.create(officaView.getContext(), Uri.parse(Voiceuri.toString())))!=null)
+                            {
+                                int Duration;
+                                Button play,pause;
+                                play=(Button)officaView.findViewById(R.id.play);
+                                pause=(Button)officaView.findViewById(R.id.pause);
+                                Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
 
 
-                            Ahandler[index]=new Handler();
+                                Ahandler[index]=new Handler();
 
-                            Astart[index]=new Start(index);
-                            Aupdatasb[index]=new Updatasb(index);
-                            View.OnClickListener playlis=new View.OnClickListener(){
+                                Astart[index]=new Start(index);
+                                Aupdatasb[index]=new Updatasb(index);
+                                View.OnClickListener playlis=new View.OnClickListener(){
 
-                                @Override
-                                public void onClick(View v) {
-                                    Ahandler[index].post(Astart[index]);
-                                    //调用handler播放
+                                    @Override
+                                    public void onClick(View v) {
+                                        Ahandler[index].post(Astart[index]);
+                                        //调用handler播放
 
-                                }
+                                    }
 
-                            };
-                            View.OnClickListener pauselis=new View.OnClickListener(){
+                                };
+                                View.OnClickListener pauselis=new View.OnClickListener(){
 
-                                @Override
-                                public void onClick(View v) {
-                                    Amp[index].pause();
-                                    //暂停
-                                }
+                                    @Override
+                                    public void onClick(View v) {
+                                        Amp[index].pause();
+                                        //暂停
+                                    }
 
-                            };
-                            SeekBar.OnSeekBarChangeListener sbLis=new SeekBar.OnSeekBarChangeListener(){
+                                };
+                                SeekBar.OnSeekBarChangeListener sbLis=new SeekBar.OnSeekBarChangeListener(){
 
-                                @Override
-                                public void onProgressChanged(SeekBar seekBar, int progress,
-                                                              boolean fromUser) {
+                                    @Override
+                                    public void onProgressChanged(SeekBar seekBar, int progress,
+                                                                  boolean fromUser) {
 
-                                }
+                                    }
 
-                                @Override
-                                public void onStartTrackingTouch(SeekBar seekBar) {
+                                    @Override
+                                    public void onStartTrackingTouch(SeekBar seekBar) {
 
 
-                                }
+                                    }
 
-                                @Override
-                                public void onStopTrackingTouch(SeekBar seekBar) {
-                                    Amp[index].seekTo(Asb[index].getProgress());
+                                    @Override
+                                    public void onStopTrackingTouch(SeekBar seekBar) {
+                                        Amp[index].seekTo(Asb[index].getProgress());
 
-                                }
+                                    }
 
-                            };
-                            play.setOnClickListener(playlis);
-                            pause.setOnClickListener(pauselis);
-                            Asb[index].setOnSeekBarChangeListener(sbLis);
-                            Duration=Amp[index].getDuration();Asb[index].setMax(Duration);
+                                };
+                                play.setOnClickListener(playlis);
+                                pause.setOnClickListener(pauselis);
+                                Asb[index].setOnSeekBarChangeListener(sbLis);
+                                Duration=Amp[index].getDuration();Asb[index].setMax(Duration);
+                            }
+                            else
+                            {
+                                //showToast("not a audio");
+                                Button play,pause;
+                                play=(Button)officaView.findViewById(R.id.play);
+                                pause=(Button)officaView.findViewById(R.id.pause);
+                                Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
+                                TextView text=officaView.findViewById(R.id.title_6);
+                                text.setText("暂无音频");
+                                play.setVisibility(View.INVISIBLE);
+                                pause.setVisibility(View.INVISIBLE);
+                                Asb[index].setVisibility(View.INVISIBLE);
+                            }
+
+
+
+                            TextView text=officaView.findViewById(R.id.title_8);
+                            text.setText(Oexplain.getText());
+                            //offical.addView(officaView);
+
+
                         }
-                        else
-                        {
-                            //showToast("not a audio");
-                            Button play,pause;
-                            play=(Button)officaView.findViewById(R.id.play);
-                            pause=(Button)officaView.findViewById(R.id.pause);
-                            Asb[index]=(SeekBar)officaView.findViewById(R.id.seekbar_id);
-                            TextView text=officaView.findViewById(R.id.title_6);
-                            text.setText("暂无音频");
-                            play.setVisibility(View.INVISIBLE);
-                            pause.setVisibility(View.INVISIBLE);
-                            Asb[index].setVisibility(View.INVISIBLE);
-                        }
-
-
-
-                        TextView text=officaView.findViewById(R.id.title_8);
-                        text.setText(Oexplain.getText());
-                        //offical.addView(officaView);
 
 
                     }
-
-
                 }
             }
         };
