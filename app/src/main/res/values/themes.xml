@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.MyApplication" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/teal_200</item>
+        <item name="colorPrimary">#FFC107</item>
         <item name="colorPrimaryVariant">@color/divider</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">#FF9800</item>
         <item name="colorSecondaryVariant">@color/light_blue_600</item>
         <item name="colorOnSecondary">@color/divider</item>
         <!-- Status bar color. -->

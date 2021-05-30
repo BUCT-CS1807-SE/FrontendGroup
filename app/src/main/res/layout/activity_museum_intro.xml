@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F8F8F8">
+    android:layout_height="match_parent">
 
     <com.youth.banner.Banner
         android:id="@+id/mBanner"
@@ -53,7 +52,7 @@
                     android:id="@+id/briefIntro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="博物馆简介">
+                    app:title="简介">
 
                 </com.example.myapplication.view.InfoContainerView>
 
@@ -61,7 +60,7 @@
                     android:id="@+id/arrive"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:title="到达方式" />
+                    app:title="路线" />
 
                 <com.example.myapplication.view.InfoContainerView
                     android:id="@+id/news"
@@ -102,7 +101,6 @@
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 
-
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/more"
         android:layout_width="wrap_content"
@@ -112,8 +110,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scroller"
-        app:layout_constraintVertical_bias="0.95"
-        app:sdMainFabClosedSrc="@mipmap/more" />
+        app:sdMainFabAnimationRotateAngle="270"
+        app:sdMainFabClosedBackgroundColor="#FDAC6D00"
+        app:sdMainFabClosedSrc="@mipmap/more"
+        app:sdMainFabOpenedBackgroundColor="#D10000"
+        tools:fadeScrollbars="true"
+        tools:sdMainFabOpenedIconColor="#03A9F4"
+        tools:sdUseReverseAnimationOnClose="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

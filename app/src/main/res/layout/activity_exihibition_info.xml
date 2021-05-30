@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/teal_700"
+            android:background="#FF9800"
             app:popupTheme="@style/Theme.MyApplication.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -69,7 +69,7 @@
                     android:id="@+id/exhibition_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="藏品信息" />
+                    app:title="展览藏品" />
 
             </LinearLayout>
         </ScrollView>
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_explain_item"
-            app:backgroundTint="@color/teal_700"
+            app:backgroundTint="#673AB7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"

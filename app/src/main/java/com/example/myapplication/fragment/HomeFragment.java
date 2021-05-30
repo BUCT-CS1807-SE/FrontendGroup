@@ -73,8 +73,6 @@ import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 
 public class HomeFragment extends BaseFragment implements OnBannerListener, View.OnClickListener {
     private InfoContainerView environmentRank;
-    private InfoContainerView exhibitionRank;
-    private InfoContainerView serviceRank;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private String[] mTitles;
     private ViewPager viewPager;
@@ -125,8 +123,6 @@ public class HomeFragment extends BaseFragment implements OnBannerListener, View
         viewPager = mRootView.findViewById(R.id.viewpager);
         slidingTabLayout = mRootView.findViewById(R.id.slidingTabLayout);
         environmentRank = mRootView.findViewById(R.id.environment_rank);
-        exhibitionRank = mRootView.findViewById(R.id.exhibition_rank);
-        serviceRank = mRootView.findViewById(R.id.service_rank);
 
         // super.onCreate(savedInstanceState);
         btn1= mRootView.findViewById(R.id.bt12);

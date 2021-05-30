@@ -4,10 +4,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/museum_newborder2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/back" />
+
     <TextView
         android:id="@+id/new_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:padding="5dp"
         android:text="TextView"
         android:textSize="16sp" />
@@ -51,6 +61,10 @@
     <View
         android:id="@+id/museum_newborder"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="5dp"
         android:background="@color/back" />
+
 </LinearLayout>

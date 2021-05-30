@@ -382,8 +382,7 @@ public class MuseumIntroActivity extends BaseActivity {
                     MuseumCollectUtil.Build();
                     runOnUiThread(() -> {
                         FabWithLabelView byId = findViewById(R.id.museum_menu_collect);
-                        byId.getFab().setBackgroundResource(R.drawable.ic_collected_museum);
-                        byId.refreshDrawableState();
+                        byId.getFab().setImageResource(R.drawable.ic_collected_museum);
                     });
                     showToastSync("收藏成功");
                 } else {
@@ -401,8 +400,7 @@ public class MuseumIntroActivity extends BaseActivity {
                     //取消收藏
                     runOnUiThread(() -> {
                         FabWithLabelView byId = findViewById(R.id.museum_menu_collect);
-                        byId.getFab().setBackgroundResource(R.drawable.ic_collect_museum);
-                        byId.getFab().refreshDrawableState();
+                        byId.getFab().setImageResource(R.drawable.ic_collect_museum);
                     });
                     showToastSync("取消收藏成功");
                 } else {

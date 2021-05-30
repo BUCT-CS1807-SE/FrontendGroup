@@ -70,11 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +88,7 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="13dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="#AAAAAA" />
 
                 <LinearLayout
@@ -224,146 +219,137 @@
                     android:textSize="13sp" />
 
                 <LinearLayout
-                    android:layout_width="350dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/menu_add5"
-                        android:layout_width="35dp"
-                        android:layout_height="38dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
-                        android:src="@drawable/qa" />
-
-
-
-
-                    <Button
-                        android:id="@+id/ti_8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:backgroundTint="@color/white"
-                        android:color="#7F7F7F"
-                        android:text="沈阳故宫博物馆"
-                        android:background="@null"
-                        android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/title_107"
-                    android:layout_width="345dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="20dp"
-                    android:color="#19FFFFFF"
-                    android:text="沈阳故宫博物院，位于辽宁省沈阳市沈河区沈阳路171号，原是清代初期营建和使用的皇家宫苑，始建于1625年（明天启五年，后金天命十年）。沈阳故宫占地面积六万多平方米，有古建筑114座，500多间，至今保存完好。在宫廷遗址上建立的沈阳故宫博物院是著名的古代宫廷艺术博物馆，藏品中包含十分丰富的宫廷艺术品。"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
-
-
-
-                <Button
-                    android:id="@+id/btn123"
-                    android:layout_width="90dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="140dp"
-                    android:layout_marginTop="3dp"
-                    android:backgroundTint="@color/white"
-                    android:text="更多讲解"
-                    android:textColor="#A55528"
-                    android:textSize="15sp" />
-
-                <LinearLayout
-                    android:layout_width="345dp"
-                    android:layout_height="30dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/p125"
-                        android:layout_width="35dp"
-                        android:layout_height="38dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="0dp"
-                        android:src="@drawable/qa" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/ti_18"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/menu_add5"
+                            android:layout_width="35dp"
+                            android:layout_height="38dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="20dp"
+                            android:src="@drawable/qa" />
+
+                        <Button
+                            android:id="@+id/ti_8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@null"
+                            android:backgroundTint="@color/white"
+                            android:color="#7F7F7F"
+                            android:text="沈阳故宫博物馆"
+                            android:textSize="25sp" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/title_107"
+                        android:layout_width="345dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="0dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="20dp"
+                        android:color="#19FFFFFF"
+                        android:text="沈阳故宫博物院，位于辽宁省沈阳市沈河区沈阳路171号，原是清代初期营建和使用的皇家宫苑，始建于1625年（明天启五年，后金天命十年）。沈阳故宫占地面积六万多平方米，有古建筑114座，500多间，至今保存完好。在宫廷遗址上建立的沈阳故宫博物院是著名的古代宫廷艺术博物馆，藏品中包含十分丰富的宫廷艺术品。"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+
+                    <Button
+                        android:id="@+id/btn123"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="140dp"
+                        android:layout_marginTop="3dp"
                         android:backgroundTint="@color/white"
-                        android:color="#7F7F7F"
-                        android:text="故宫博物馆"
-                        android:background="@null"
-                        android:textSize="25sp" />
-                    />
+                        android:text="更多讲解"
+                        android:textColor="#A55528"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/p125"
+                            android:layout_width="35dp"
+                            android:layout_height="38dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="0dp"
+                            android:src="@drawable/qa" />
+
+                        <Button
+                            android:id="@+id/ti_18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="0dp"
+                            android:background="@null"
+                            android:backgroundTint="@color/white"
+                            android:color="#7F7F7F"
+                            android:text="故宫博物馆"
+                            android:textSize="25sp" />
+                        />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/title_9"
+                        android:layout_width="345dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:color="#19FFFFFF"
+                        android:text="北京故宫博物院建立于1925年，是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆，也是中国最大的古代文化艺术博物馆，其文物收藏主要来源于清代宫中旧藏。"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/bt12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="140dp"
+                        android:layout_marginTop="3dp"
+                        android:backgroundTint="@color/white"
+                        android:text="更多讲解"
+                        android:textColor="#A55528"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="360dp"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#AAAAAA" />
+
 
                 </LinearLayout>
 
-
-
-                <TextView
-                    android:id="@+id/title_9"
-                    android:layout_width="345dp"
+                <com.example.myapplication.view.InfoContainerView
+                    android:id="@+id/environment_rank"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:color="#19FFFFFF"
-                    android:text="北京故宫博物院建立于1925年，是在明朝、清朝两代皇宫及其收藏的基础上建立起来的中国综合性博物馆，也是中国最大的古代文化艺术博物馆，其文物收藏主要来源于清代宫中旧藏。"
-                    android:textColor="#000000"
-                    android:textSize="15sp" />
+                    tl:title="热门">
 
-                <Button
-                    android:id="@+id/bt12"
-                    android:layout_width="90dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="140dp"
-                    android:layout_marginTop="3dp"
-                    android:backgroundTint="@color/white"
-                    android:text="更多讲解"
-                    android:textColor="#A55528"
-                    android:textSize="15sp"
-                    />
+                </com.example.myapplication.view.InfoContainerView>
 
-                <View
-                    android:layout_width="360dp"
-                    android:layout_height="2dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#AAAAAA" />
-
-
-
-            </LinearLayout>
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/environment_rank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tl:title="博物馆排名">
-
-            </com.example.myapplication.view.InfoContainerView>
-
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/exhibition_rank"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                tl:title="博物馆展览排名" />
-
-            <com.example.myapplication.view.InfoContainerView
-                android:id="@+id/service_rank"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                tl:title="博物馆服务排名" />
         </LinearLayout>
     </ScrollView>
 

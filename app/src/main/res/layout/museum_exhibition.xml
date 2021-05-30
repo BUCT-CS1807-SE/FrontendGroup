@@ -10,6 +10,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/divider" />
+
         <TextView
             android:id="@+id/exhibition_name"
             android:layout_width="match_parent"
@@ -38,8 +47,12 @@
         <View
             android:id="@+id/view5"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dp"
             android:background="@color/divider" />
+
     </LinearLayout>
 
 </FrameLayout>

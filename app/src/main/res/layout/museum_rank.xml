@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <View
+        android:id="@+id/view8"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginLeft="33dp"
+        android:background="@color/divider" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -30,8 +37,8 @@
                     android:layout_width="33dp"
                     android:layout_height="match_parent"
                     android:background="@color/divider"
-                    android:tint="#E89C62"
-                    tools:srcCompat="@mipmap/rank" />
+                    tools:srcCompat="@mipmap/rank"
+                    app:tint="#E89C62" />
 
                 <ImageView
                     android:id="@+id/museumRankImage"
@@ -108,7 +115,8 @@
     <View
         android:id="@+id/view6"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
+        android:layout_marginLeft="33dp"
         android:background="@color/divider" />
 
 </LinearLayout>

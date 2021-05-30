@@ -92,7 +92,7 @@
         android:layout_marginRight="100dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn1_bg"
-        android:backgroundTint="@color/teal_700"
+        android:backgroundTint="#FFC107"
         android:backgroundTintMode="src_over"
         android:text="提    交"
         android:textColor="@color/colorWhite" />
