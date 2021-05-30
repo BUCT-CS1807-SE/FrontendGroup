@@ -6,8 +6,9 @@ import java.io.Serializable;
 
 public class Exhibition implements Serializable {
 
-    private Integer id;
-    private Integer museumId;
+    private int id;
+    @JSONField(alternateNames = "museumid")
+    private int museumId;
     @JSONField(alternateNames = "exhibitname")
     private String exhibitionName;
     @JSONField(alternateNames = "exhibitsummary")
@@ -17,26 +18,26 @@ public class Exhibition implements Serializable {
     public Exhibition() {
     }
 
-    public Exhibition(Integer id, Integer museumId, String exhibitionName, String exhibitionDescribe) {
+    public Exhibition(int id, int museumId, String exhibitionName, String exhibitionDescribe) {
         this.id = id;
         this.museumId = museumId;
         this.exhibitionName = exhibitionName;
         this.exhibitionDescribe = exhibitionDescribe;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getMuseumId() {
+    public int getMuseumId() {
         return museumId;
     }
 
-    public void setMuseumId(Integer museumId) {
+    public void setMuseumId(int museumId) {
         this.museumId = museumId;
     }
 

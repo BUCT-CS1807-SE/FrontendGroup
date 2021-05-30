@@ -25,7 +25,6 @@ public class MuseumExhibitionAdapter extends RecyclerView.Adapter<MuseumExhibiti
 
     public MuseumExhibitionAdapter(List<Exhibition> localDataSet) {
         this.localDataSet = localDataSet;
-
     }
 
     @NonNull

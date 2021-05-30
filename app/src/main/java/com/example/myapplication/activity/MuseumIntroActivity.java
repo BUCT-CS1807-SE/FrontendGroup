@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,8 +49,10 @@ import com.example.myapplication.entity.MuseumNew;
 import com.example.myapplication.entity.Rating;
 import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.ImageUtils;
+import com.example.myapplication.util.MuseumCollectUtil;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.InfoContainerView;
+import com.leinardi.android.speeddial.FabWithLabelView;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.scwang.smart.refresh.header.MaterialHeader;
@@ -68,7 +71,10 @@ import java.util.List;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestDelete;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestGetComment;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestGetGrade;
 import static com.example.myapplication.util.NetworkUtils.HttpRequestPost;
+import static com.example.myapplication.util.NetworkUtils.HttpRequestPut;
 
 /**
  * 博物馆详情页
@@ -96,6 +102,7 @@ public class MuseumIntroActivity extends BaseActivity {
     private LinearLayout content_linearlayout;
 
     private SpeedDialView more;
+    private SpeedDialActionItem collectMuseum;
 
     private Banner banner;
     private ArrayList<String> list_path;
@@ -212,28 +219,6 @@ public class MuseumIntroActivity extends BaseActivity {
         View grade_view = LayoutInflater.from(grade.getContainer().getContext()).inflate(R.layout.museum_grade, grade.getContainer(), false);
         addGrade(grade_view);
         grade.addElement(grade_view);
-        RatingBar show_rating = findViewById(R.id.ratingBar_show);
-        RatingBar service_rating=findViewById(R.id.ratingBar_service);
-        RatingBar environment_rating=findViewById(R.id.ratingBar_environment);
-        Button grade_commit=findViewById(R.id.grade_commit);
-        Handler ratingPost=new Handler(Looper.myLooper()){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                if(msg.what==1){
-                    showToastSync("评分成功！");
-                }
-                else showToastSync("评分失败！");
-            }
-        };
-        grade_commit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //@TODO 提交评分
-                Rating rating=new Rating(MainActivity.person.getId(),museum.getId(),(int)show_rating.getRating(),(int)service_rating.getRating(),(int)environment_rating.getRating());
-                HttpRequestPost(ratingPost,rating);
-            }
-        });
 
         //----------评论----------
         //获取评论
@@ -348,6 +333,10 @@ public class MuseumIntroActivity extends BaseActivity {
                         }
                     }
 
+                    //未知原因的museumId被消除
+                    for (Exhibition exhibition1 : exhibitions) {
+                        exhibition1.setMuseumId(museum.getId());
+                    }
                     runOnUiThread(() -> {
                         exhibitionContainer.setAdapter(new MuseumExhibitionAdapter(exhibitions));
                         exhibition.addElement(exhibitionContainer);
@@ -368,20 +357,57 @@ public class MuseumIntroActivity extends BaseActivity {
                 .setLabelBackgroundColor(Color.parseColor("#efb336"))
                 .setLabelColor(Color.WHITE)
                 .create());
-        more.addActionItem(new SpeedDialActionItem.Builder(R.id.museum_menu_collect, R.drawable.ic_collected_museum)
-                .setFabBackgroundColor(Color.parseColor("#7cba59"))
-                .setLabel("收藏博物馆")
-                .setLabelBackgroundColor(Color.parseColor("#efb336"))
-                .setLabelColor(Color.WHITE)
-                .create());
+        if (MuseumCollectUtil.JudgeMuseumCollected(museum.getId())) {
+            collectMuseum = new SpeedDialActionItem.Builder(R.id.museum_menu_collect, R.drawable.ic_collected_museum)
+                    .setFabBackgroundColor(Color.parseColor("#7cba59"))
+                    .setLabel("博物馆收藏")
+                    .setLabelBackgroundColor(Color.parseColor("#efb336"))
+                    .setLabelColor(Color.WHITE)
+                    .create();
+        } else {
+            collectMuseum = new SpeedDialActionItem.Builder(R.id.museum_menu_collect, R.drawable.ic_collect_museum)
+                    .setFabBackgroundColor(Color.parseColor("#7cba59"))
+                    .setLabel("博物馆收藏")
+                    .setLabelBackgroundColor(Color.parseColor("#efb336"))
+                    .setLabelColor(Color.WHITE)
+                    .create();
+        }
+        more.addActionItem(collectMuseum);
 
         Handler collectedPost = new Handler(Looper.myLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
+                    MuseumCollectUtil.Build();
+                    runOnUiThread(() -> {
+                        FabWithLabelView byId = findViewById(R.id.museum_menu_collect);
+                        byId.getFab().setBackgroundResource(R.drawable.ic_collected_museum);
+                        byId.refreshDrawableState();
+                    });
                     showToastSync("收藏成功");
-                } else showToastSync("已收藏");
+                } else {
+                    showToastSync("收藏失败");
+                }
+            }
+        };
+
+        Handler collectHandler = new Handler(Looper.myLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    MuseumCollectUtil.Build();
+                    //取消收藏
+                    runOnUiThread(() -> {
+                        FabWithLabelView byId = findViewById(R.id.museum_menu_collect);
+                        byId.getFab().setBackgroundResource(R.drawable.ic_collect_museum);
+                        byId.getFab().refreshDrawableState();
+                    });
+                    showToastSync("取消收藏成功");
+                } else {
+                    showToastSync("取消收藏失败");
+                }
             }
         };
         MuseumCollectedPost museumCollectedPost = new MuseumCollectedPost();
@@ -390,11 +416,17 @@ public class MuseumIntroActivity extends BaseActivity {
             switch (id) {
                 case R.id.museum_menu_collect: {
                     //收藏
-
-                    museumCollectedPost.setId(1);
-                    museumCollectedPost.setMumid(museum.getId());
-                    museumCollectedPost.setUserid(MainActivity.person.getId());
-                    HttpRequestPost(collectedPost, museumCollectedPost);
+                    if (MuseumCollectUtil.JudgeMuseumCollected(museum.getId())) {
+                        //取消收藏
+                        int collectId = MuseumCollectUtil.getCollectInfo(museum.getId()).getId();
+                        HttpRequestDelete(NetworkUtils.ResultType.MUSEUM_COLLECTION_POST,collectHandler,collectId);
+                    } else {
+                        //收藏
+                        museumCollectedPost.setId(1);
+                        museumCollectedPost.setMumid(museum.getId());
+                        museumCollectedPost.setUserid(MainActivity.person.getId());
+                        HttpRequestPost(collectedPost, museumCollectedPost);
+                    }
                     return true;
                 }
                 case R.id.museum_menu_explain: {
@@ -444,50 +476,65 @@ public class MuseumIntroActivity extends BaseActivity {
 
         CommentIsLiked commentIsLiked = new CommentIsLiked();
         like.setOnClickListener(v -> {
-            if (comment.getUserid() != MainActivity.person.getId()) {
-                Integer state = (Integer) like.getTag();
-                Handler commentLikePost = new Handler(Looper.myLooper()) {
-                    @Override
-                    public void handleMessage(@NonNull Message msg) {
-                        super.handleMessage(msg);
-                        if (msg.what == 1) {
-                            runOnUiThread(()->{
-                                TextView view = commentView.findViewById(R.id.liked_number);
-                                view.setText(String.valueOf(Integer.valueOf(view.getText().toString())+1));
-                            });
-                        }
+            Integer state = (Integer) like.getTag();
+            Handler commentLikePost = new Handler(Looper.myLooper()) {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if (msg.what == 1) {
+                        runOnUiThread(()->{
+                            TextView view = commentView.findViewById(R.id.liked_number);
+                            view.setText(String.valueOf(Integer.parseInt(view.getText().toString())+1));
+                        });
                     }
-                };
-                Handler commentLikeCancel = new Handler(Looper.myLooper()) {
-                    @Override
-                    public void handleMessage(@NonNull Message msg) {
-                        super.handleMessage(msg);
-                        if (msg.what == 1) {
-                            runOnUiThread(()->{
-                                TextView view = commentView.findViewById(R.id.liked_number);
-                                view.setText(String.valueOf(Integer.valueOf(view.getText().toString())-1));
-                            });
-                        }
-                    }
-                };
-                if (state == COMMENT_LIKED) {
-                    like.setImageResource(R.mipmap.like);
-                    like.setTag(COMMENT_UNLIKED);
-                    //已经点过赞了，取消点赞，下一步向后台提供数据
-                    TextView view = commentView.findViewById(R.id.liked_number);
-                    view.setText(String.valueOf(Integer.valueOf(view.getText().toString())-1));
-//                    HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,comment.getId());
-                } else {
-                    like.setImageResource(R.mipmap.like_active);
-                    like.setTag(COMMENT_LIKED);
-                    //点赞成功，向后台提供数据
-                    commentIsLiked.setUserid(MainActivity.person.getId());
-                    commentIsLiked.setCommentid(comment.getId());
-                    commentIsLiked.setIslike(1);
-                    HttpRequestPost(commentLikePost, commentIsLiked);
                 }
-            }
+            };
+            Handler commentLikeCancel = new Handler(Looper.myLooper()) {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    if (msg.what == 1) {
+                        runOnUiThread(()->{
+                            TextView view = commentView.findViewById(R.id.liked_number);
+                            view.setText(String.valueOf(Integer.parseInt(view.getText().toString())-1));
+                        });
+                    }
+                }
+            };
+            if (state == COMMENT_LIKED) {
 
+                //已经点过赞了，取消点赞，下一步向后台提供数据
+                Handler getDetailInfo = new Handler(Looper.myLooper()) {
+                    @Override
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if (msg.what == 1) {
+                            String ids = "";
+                            List<Integer> list = (List<Integer>) msg.obj;
+                            for (Integer integer : list) {
+                                ids += integer;
+                                if (!list.get(list.size()-1).equals(integer)) {
+                                    ids += ",";
+                                }
+                            }
+                            like.setImageResource(R.mipmap.like);
+                            like.setTag(COMMENT_UNLIKED);
+                            HttpRequestDelete(NetworkUtils.ResultType.COMMENT_LIKE_CANCEL_POST,commentLikeCancel,ids);
+                        } else {
+                            showToastSync("取消点赞失败");
+                        }
+                    }
+                };
+                HttpRequestGetComment(getDetailInfo, comment.getId());
+            } else {
+                like.setImageResource(R.mipmap.like_active);
+                like.setTag(COMMENT_LIKED);
+                //点赞成功，向后台提供数据
+                commentIsLiked.setUserid(MainActivity.person.getId());
+                commentIsLiked.setCommentid(comment.getId());
+                commentIsLiked.setIslike(1);
+                HttpRequestPost(commentLikePost, commentIsLiked);
+            }
         });
 
         if (!isEnd) {
@@ -515,45 +562,69 @@ public class MuseumIntroActivity extends BaseActivity {
      */
     public void addGrade(View grade_view) {
 
-        RatingBar grade_environment = grade_view.findViewById(R.id.ratingBar_environment);
         RatingBar grade_service = grade_view.findViewById(R.id.ratingBar_service);
-        grade_service.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                score_service = rating;
-                Log.d("Score_Service", "onRatingChanged: " + String.valueOf(rating));
+        grade_service.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            score_service = rating;
+            Log.d("Score_Service", "onRatingChanged: " + String.valueOf(rating));
 
-            }
         });
 
         RatingBar grade_show = grade_view.findViewById(R.id.ratingBar_show);
-        grade_show.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                score_show = rating;
-                Log.d("Score_Show", "onRatingChanged: " + String.valueOf(rating));
-            }
+        grade_show.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            score_show = rating;
+            Log.d("Score_Show", "onRatingChanged: " + String.valueOf(rating));
         });
+
+        RatingBar grade_environment = grade_view.findViewById(R.id.ratingBar_environment);
+        grade_environment.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            score_environment = rating;
+            Log.d("Score_Show", "onRatingChanged: " + String.valueOf(rating));
+        });
+
+        Handler getRating = new Handler(Looper.myLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    List<Rating> list = (List<Rating>) msg.obj;
+                    Rating rating = list.get(0);
+                    score_environment = rating.getScoreone();
+                    score_service = rating.getScoretwo();
+                    score_show = rating.getScorethree();
+
+                    grade_service.setRating(score_service);
+                    grade_show.setRating(score_show);
+                    grade_environment.setRating(score_environment);
+                }
+            }
+        };
+        HttpRequestGetGrade(getRating,museum.getId());
 
         Button button = grade_view.findViewById(R.id.grade_commit);
         Handler ratingPost = new Handler(Looper.myLooper()) {
+            private boolean isAsked = false;
+
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     showToastSync("评分提交成功");
-                } else showToastSync("评分提交失败");
+                } else {
+                    if (isAsked) {
+                        showToastSync("评分修改成功");
+                        return;
+                    }
+
+                    Rating rating = new Rating(MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
+                    isAsked = true;
+                    HttpRequestPut(this, rating);
+                };
             }
         };
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MuseumIntroActivity.this, "score_environment:" + String.valueOf(score_environment) + " score_service:" + String.valueOf(score_service) + " score_show:" + String.valueOf(score_show), Toast.LENGTH_SHORT).show();
-                Rating rating = new Rating(MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
-                HttpRequestPost(ratingPost, rating);
-            }
+        button.setOnClickListener(v -> {
+            Rating rating = new Rating(MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
+            HttpRequestPost(ratingPost, rating);
         });
-
 
     }
 

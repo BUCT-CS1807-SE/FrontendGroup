@@ -3,6 +3,7 @@ package com.example.myapplication.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -328,8 +329,14 @@ public class MapFragment extends BaseFragment implements AMapLocationListener,Lo
                 new Thread() {
                     public void run() {
                         List<ClusterItem> items = new ArrayList<ClusterItem>();
-                        double curlat=aMap.getMyLocation().getLatitude();
-                        double curlon=aMap.getMyLocation().getLongitude();
+                        if (aMap == null)
+                            return;
+                        Location myLocation = aMap.getMyLocation();
+                        if (myLocation == null)
+                            return;
+                        Double curlat= myLocation.getLatitude();
+                        Double curlon= myLocation.getLongitude();
+
                         LatLng curlatLng=new LatLng(curlat,curlon,false);
                         for (int i = 0; i < datas.size()-5; i++) {
 

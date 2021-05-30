@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.entity.Comment;
 import com.example.myapplication.entity.CommentIsLiked;
 import com.example.myapplication.entity.CommentLikedSingleInfo;
@@ -24,7 +25,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,6 +63,7 @@ public class NetworkUtils {
         COMMENT_LIKE_CANCEL_POST, //取消评论
         COLLECT_POST, //收藏提交
         GRADE_POST, //博物馆评分
+        GRADE_GET, //获取博物馆评分
         MUSEUM_COLLECTION_POST, //博物馆收藏发送
         MUSEUM_COLLECTION_GET, //博物馆收藏获取
         USER_COMMENT,//用户评论查询
@@ -71,6 +75,7 @@ public class NetworkUtils {
         TEST,       //测试
         NEW,        //新闻
         INTERIOR, //内景图
+        COMMENT_LIKE_INFO, //点赞内容
         EXHI_EXPLAIN_POST,
         OBJECT_EXPLAIN_POST,// TODO 添加展览的接口*2
         MUSEUM_HELP,
@@ -96,10 +101,12 @@ public class NetworkUtils {
         put(ResultType.COMMENT_LIKE_GET,"http://8.140.136.108/prod-api/system/commentlike/list?commentid=%s&userid=%s");
         put(ResultType.COMMENT_LIKE_POST,"http://8.140.136.108/prod-api/system/commentlike");
         put(ResultType.COMMENT_LIKE_CANCEL_POST,"http://8.140.136.108/prod-api/system/commentlike/%s");
+        put(ResultType.COMMENT_LIKE_INFO,"http://8.140.136.108/prod-api/system/commentlike/list?userid=%s&commentid=%s");
         put(ResultType.COLLECT_POST,"http://8.140.136.108/prod-api/system/museumcollection");
         put(ResultType.MUSEUM_COLLECTION_POST,"http://8.140.136.108/prod-api/system/museumcollection/%s");
         put(ResultType.MUSEUM_COLLECTION_GET,"http://8.140.136.108/prod-api/system/museumcollection/select/all/%s");
         put(ResultType.GRADE_POST,"http://8.140.136.108/prod-api/system/museumrating");
+        put(ResultType.GRADE_GET,"http://8.140.136.108/prod-api/system/museumrating/list?usersid=%s&museumid=%s");
         put(ResultType.GRADES,"http://8.140.136.108/prod-api/system/museumrating/sortid");
         put(ResultType.NEW,"http://8.140.136.108/prod-api/system/news/select/all/%s");
         put(ResultType.ITEMS,"http://8.140.136.108/prod-api/system/exhibitcollection/list?museumid=%s&exhibitname=%s");
@@ -130,6 +137,8 @@ public class NetworkUtils {
     }};
     private static final OkHttpClient client = new OkHttpClient.Builder().build();
 
+    //Post重载
+    //---------------------------------------------------------------------------------------------------------
     public static void HttpRequestPost(Handler handler, Rating rating){
         String data=JSON.toJSONString(rating);
         HttpRequestPost(ResultType.GRADE_POST,handler,data.getBytes(),TYPE_JSON,null);
@@ -155,6 +164,7 @@ public class NetworkUtils {
         else if(kind.equals("COLLECTION"))
             HttpRequestPost(ResultType.OBJECT_EXPLAIN_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
+    //---------------------------------------------------------------------------------------------------------
 
     public static void HttpRequestPost(ResultType resultType,String id,Handler handler,String arg,String name, byte[] data,MediaType type)
     {
@@ -298,6 +308,20 @@ public class NetworkUtils {
         });
     }
 
+    public static void HttpRequestGetGrade(Handler handler,int museumId) {
+        HttpRequestGet(ResultType.GRADE_GET,handler, MainActivity.person.getId(),museumId);
+    }
+
+    public static void HttpRequestGetComment(Handler handler,int commentId) {
+        HttpRequestGet(ResultType.COMMENT_LIKE_INFO,handler, MainActivity.person.getId(),commentId);
+    }
+
+    /**
+     * MUSEUM_COLLECTION_GET 类型返回一个ConcurrentHashMap,其余均返回List
+     * @param resultType 请求类型
+     * @param handler 回调函数
+     * @param args 参数表
+     */
     public static void HttpRequestGet(ResultType resultType, Handler handler, Object... args) {
         String url = m.get(resultType);
         if (args != null) {
@@ -370,7 +394,8 @@ public class NetworkUtils {
                             send = JSON.parseArray(data.toJSONString(), Item.class);
                             break;
                         }
-                        case GRADES:{
+                        case GRADES:
+                        case GRADE_GET: {
                             JSONArray data = outcome.getJSONArray("rows");
                             send = JSON.parseArray(data.toJSONString(), Rating.class);
                             break;
@@ -378,6 +403,16 @@ public class NetworkUtils {
                         case MUSEUM_ID:{
                             JSONObject data = outcome.getJSONObject("data");
                             send = JSON.parseObject(data.toJSONString(), Museum.class);
+                            break;
+                        }
+                        case COMMENT_LIKE_INFO:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            List<Integer> list = new ArrayList<>();
+                            for (Object datum : data) {
+                                JSONObject obj = (JSONObject) datum;
+                                list.add(obj.getIntValue("id"));
+                            }
+                            send = list;
                             break;
                         }
 
@@ -395,6 +430,18 @@ public class NetworkUtils {
                                 arr.add(obj.getString("address"));
                             }
                             send = arr;
+                            break;
+                        }
+                        case MUSEUM_COLLECTION_GET:{
+                            JSONArray data = outcome.getJSONArray("rows");
+                            ConcurrentHashMap<Integer,MuseumCollectedPost> collectedMuseumId = new ConcurrentHashMap<>();
+                            for (Object datum : data) {
+                                JSONObject obj = (JSONObject) datum;
+                                Integer id = obj.getInteger("mumid");
+                                MuseumCollectedPost ooo = JSON.parseObject(obj.toJSONString(),MuseumCollectedPost.class);
+                                collectedMuseumId.put(id,ooo);
+                            }
+                            send = collectedMuseumId;
                             break;
                         }
                         case TEST: {
@@ -465,6 +512,11 @@ public class NetworkUtils {
                 handler.handleMessage(message);
             }
         });
+    }
+
+    public static void HttpRequestPut(Handler handler, Rating rating){
+        String data=JSON.toJSONString(rating);
+        HttpRequestPut(ResultType.GRADE_POST,handler,data.getBytes(),TYPE_JSON,null);
     }
 
     public static void HttpRequestPut(ResultType resultType,Handler handler,byte[] data,MediaType type,RequestBody requestBody) {

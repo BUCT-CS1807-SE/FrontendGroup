@@ -24,6 +24,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
 import com.bumptech.glide.util.ViewPreloadSizeProvider;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.dao.SearchHistoryDao;
@@ -31,6 +32,7 @@ import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.Museum;
 import com.example.myapplication.entity.SearchHistory;
 import com.example.myapplication.util.ImageUtils;
+import com.example.myapplication.util.MuseumCollectUtil;
 import com.example.myapplication.util.NetworkUtils;
 import com.example.myapplication.view.FlowLayout;
 import com.scwang.smart.refresh.header.MaterialHeader;
@@ -43,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.crypto.spec.DHGenParameterSpec;
@@ -61,6 +64,7 @@ public class SearchFragment extends BaseFragment {
     private List<String> list=new ArrayList<>();
     private List<SearchHistory> HistoryList=new ArrayList<>();
     private View DeleteHistory;
+
 
     private class SearchResultPreloadModelProvider<U> implements ListPreloader.PreloadModelProvider {
 
@@ -206,6 +210,7 @@ public class SearchFragment extends BaseFragment {
             }
         });
 
+        MuseumCollectUtil.Build();
     }
 
     private void GetHistory()
