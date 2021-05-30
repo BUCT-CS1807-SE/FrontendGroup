@@ -9,10 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.entity.MuseumCollectedPost;
-import com.example.myapplication.fragment.SearchFragment;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
