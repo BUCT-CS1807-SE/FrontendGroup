@@ -114,6 +114,7 @@ public class MuseumIntroActivity extends BaseActivity {
     private float score_environment = 2;
     private float score_service = 2;
     private float score_show = 2;
+    private Rating rating = null;
 
     private Museum museum;
 
@@ -223,46 +224,46 @@ public class MuseumIntroActivity extends BaseActivity {
         //----------评论----------
         //获取评论
         comment = findViewById(R.id.comment);
-        //添加评论框
-        View commentView = LayoutInflater.from(comment.getContainer().getContext()).inflate(R.layout.museum_comment_input, grade.getContainer(), false);
-        comment.addElement(commentView);
-        commentContent = commentView.findViewById(R.id.comment_content_input);
-        submitComment = commentView.findViewById(R.id.comment_send);
-        submitComment.setOnClickListener(v -> {
-            String content = commentContent.getText().toString(); //评论字符串
-            if (content.isEmpty()) {
-                showToast("请输入评论");
-                return;
-            }
-
-            Comment comment = new Comment(1, MainActivity.person.getId(), museum.getId(), MainActivity.person.getName(), "2020-2-2", content);
-            Handler commentPost = new Handler(Looper.myLooper()) {
-                private final Comment c = comment;
-
-                @Override
-                public void handleMessage(@NonNull Message msg) {
-                    super.handleMessage(msg);
-                    if (msg.what == 1) {
-                        runOnUiThread(()->{
-                            addComment(c,true,false);
-                            commentContent.setText("");
-                        });
-                        showToastSync("评论成功");
-                    } else {
-                        showToastSync("提交评论失败");
-                    }
-                }
-            };
-            HttpRequestPost(commentPost, comment);
-
-        });
-
         comments = null;//网络接口完成后，初始化方式放入handler中
         Handler commentGet = new Handler(Looper.myLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
+                    comment.getContainer().removeAllViewsInLayout();
+                    //添加评论框
+                    View commentView = LayoutInflater.from(comment.getContainer().getContext()).inflate(R.layout.museum_comment_input, grade.getContainer(), false);
+                    comment.addElement(commentView);
+                    commentContent = commentView.findViewById(R.id.comment_content_input);
+                    submitComment = commentView.findViewById(R.id.comment_send);
+                    submitComment.setOnClickListener(v -> {
+                        String content = commentContent.getText().toString(); //评论字符串
+                        if (content.isEmpty()) {
+                            showToast("请输入评论");
+                            return;
+                        }
+
+                        Comment comment = new Comment(1, MainActivity.person.getId(), museum.getId(), MainActivity.person.getName(), "2020-2-2", content);
+                        Handler commentPost = new Handler(Looper.myLooper()) {
+                            private final Comment c = comment;
+
+                            @Override
+                            public void handleMessage(@NonNull Message msg) {
+                                super.handleMessage(msg);
+                                if (msg.what == 1) {
+                                    runOnUiThread(()->{
+                                        addComment(c,true,false);
+                                        commentContent.setText("");
+                                    });
+                                    showToastSync("评论成功");
+                                } else {
+                                    showToastSync("提交评论失败");
+                                }
+                            }
+                        };
+                        HttpRequestPost(commentPost, comment);
+
+                    });
                     comments = (List<Comment>) msg.obj;
                     for (Comment comment1 : comments) {
                         Handler commentLikedSingleGet = new Handler(Looper.myLooper()) {
@@ -585,7 +586,10 @@ public class MuseumIntroActivity extends BaseActivity {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     List<Rating> list = (List<Rating>) msg.obj;
-                    Rating rating = list.get(0);
+                    if(list.size() <= 0) {
+                        return;
+                    }
+                    rating = list.get(0);
                     score_environment = rating.getScoreone();
                     score_service = rating.getScoretwo();
                     score_show = rating.getScorethree();
@@ -600,28 +604,39 @@ public class MuseumIntroActivity extends BaseActivity {
 
         Button button = grade_view.findViewById(R.id.grade_commit);
         Handler ratingPost = new Handler(Looper.myLooper()) {
-            private boolean isAsked = false;
-
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
                     showToastSync("评分提交成功");
                 } else {
-                    if (isAsked) {
-                        showToastSync("评分修改成功");
-                        return;
-                    }
-
-                    Rating rating = new Rating(MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
-                    isAsked = true;
-                    HttpRequestPut(this, rating);
+                    showToastSync("评分提交失败");
+                };
+            }
+        };
+        Handler ratingPut = new Handler(Looper.myLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 1) {
+                    showToastSync("评分修改成功");
+                } else {
+                    showToastSync("评分修改失败");
                 };
             }
         };
         button.setOnClickListener(v -> {
-            Rating rating = new Rating(MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
-            HttpRequestPost(ratingPost, rating);
+            if (this.rating == null) {
+                Rating rating = new Rating(null,MainActivity.person.getId(), museum.getId(), (int)score_environment, (int)score_service, (int)score_show);
+                HttpRequestPost(ratingPost, rating);
+            } else {
+                assert rating != null;
+                rating.setScoreone((int)score_environment);
+                rating.setScoretwo((int)score_service);
+                rating.setScorethree((int)score_show);
+                HttpRequestPut(ratingPut, rating);
+            }
+
         });
 
     }

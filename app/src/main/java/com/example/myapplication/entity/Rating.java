@@ -1,6 +1,9 @@
 package com.example.myapplication.entity;
 
-public class Rating {
+import java.io.Serializable;
+
+public class Rating implements Serializable {
+    Integer id;
     Integer usersid;
     Integer museumid;
     Integer scoreone;
@@ -10,12 +13,21 @@ public class Rating {
     public Rating() {
     }
 
-    public Rating(Integer usersid, Integer museumid, Integer scoreone, Integer scoretwo, Integer scorethree) {
+    public Rating(Integer id, Integer usersid, Integer museumid, Integer scoreone, Integer scoretwo, Integer scorethree) {
+        this.id = id;
         this.usersid = usersid;
         this.museumid = museumid;
         this.scoreone = scoreone;
         this.scoretwo = scoretwo;
         this.scorethree = scorethree;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getUsersid() {
