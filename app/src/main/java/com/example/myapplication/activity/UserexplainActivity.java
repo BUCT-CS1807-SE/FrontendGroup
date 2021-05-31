@@ -120,7 +120,7 @@ public class UserexplainActivity extends BaseActivity{
         //setContentView(R.layout.user_explain);
         Intent intent=getIntent();
         kind=intent.getStringExtra("kind");
-        id=intent.getIntExtra("id",0);
+        id=Integer.parseInt(intent.getStringExtra("id"));
         ShowName=intent.getStringExtra("ShowName");
         createid=person.getId();
         requestPermission();

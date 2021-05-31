@@ -77,7 +77,7 @@ public class ExhibitionInfoActivity extends AppCompatActivity {
             Toast.makeText(this,"展览讲解页面",Toast.LENGTH_SHORT).show();
             //
             Intent intent=new Intent();
-            intent.putExtra("id",exhibition.getExhibitionName().hashCode());
+            intent.putExtra("id",String.valueOf(exhibition.getExhibitionName().hashCode()));
             intent.putExtra("ShowName",exhibition.getExhibitionName());
             intent.putExtra("kind","EXHIBITION");
             intent.setClass(this,UserexplainActivity.class);
