@@ -114,7 +114,7 @@ public class NetworkUtils {
         put(ResultType.SHOWS,"http://8.140.136.108/prod-api/system/exhibitcollection/select/all/%s");
 
         put(ResultType.MUSEUM_EXPLAIN,"http://8.140.136.108/prod-api/system/museumexplain/select/museumid/%s");
-        put(ResultType.EXHI_EXPLAIN,"http://8.140.136.108/prod-api/system/exhibitexplain/select/museumid/%s");
+        put(ResultType.EXHI_EXPLAIN,"http://8.140.136.108/prod-api/system/exhibitexplain/select/exhibitid/%s");
         put(ResultType.OBJECT_EXPLAIN,"http://8.140.136.108/prod-api/system/collectionexplain/select/collectionid/%s");
 
         put(ResultType.MUSEUM_EXPLAIN_POST,"http://8.140.136.108/prod-api/system/museumexplain");
