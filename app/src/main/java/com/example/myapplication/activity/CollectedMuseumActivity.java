@@ -15,15 +15,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.SearchResultAdapter;
 import com.example.myapplication.databinding.ActivityCollectInfoBinding;
 import com.example.myapplication.databinding.ActivityExihibitionInfoBinding;
 import com.example.myapplication.entity.Museum;
+import com.example.myapplication.fragment.SearchFragment;
 import com.example.myapplication.util.ImageUtils;
 import com.example.myapplication.util.MuseumCollectUtil;
 import com.example.myapplication.util.NetworkUtils;
+import com.scwang.smart.refresh.header.MaterialHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,6 +41,8 @@ import static com.example.myapplication.util.NetworkUtils.HttpRequestGet;
 public class CollectedMuseumActivity extends AppCompatActivity {
     private ActivityCollectInfoBinding binding;
     private LinearLayout container;
+    private RefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +72,7 @@ public class CollectedMuseumActivity extends AppCompatActivity {
                     if (msg1.what == 1) {
                         Museum museum = (Museum) msg1.obj;
                         addMuseum(museum);
+
                         return true;
                     }
 
@@ -72,6 +84,15 @@ public class CollectedMuseumActivity extends AppCompatActivity {
             }
         };
         MuseumCollectUtil.Build(handler);
+
+        refreshLayout = findViewById(R.id.collectRefresh);
+        refreshLayout.setRefreshHeader(new MaterialHeader(this));
+        refreshLayout.setOnRefreshListener(refreshlayout -> {
+            container.removeAllViewsInLayout();
+            MuseumCollectUtil.Build(handler);
+            refreshlayout.finishRefresh(500/*,false*/);//传入false表示刷新失败
+        });
+
     }
 
     private void addMuseum(Museum museum) {
