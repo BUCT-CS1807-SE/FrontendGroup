@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.myapplication.Edit_message;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.activity.CollectedMuseumActivity;
 //import com.example.myapplication.activity.LoginActivity;
 //import com.example.myapplication.activity.MyCollectActivity;
 
@@ -22,7 +23,7 @@ public class MyFragment extends BaseFragment {
 
 //    @BindView(R.id.img_header)
 //    ImageView imgHeader;
-private ImageButton btncollection,btnhistory,btnexplain,btnaccord,btnabout;
+private ImageButton btncollection,btnhistory,btnexplain,btnaccord,btnabout,collection_button;
     private Button btnchangeInf,btnreturnmain;
     private TextView tvnickname;
     String nickname = MainActivity.person.getName();
@@ -62,6 +63,13 @@ private ImageButton btncollection,btnhistory,btnexplain,btnaccord,btnabout;
 
         tvnickname = mRootView.findViewById(R.id.tv_1);
         tvnickname.setText(nickname);
+
+        collection_button = mRootView.findViewById(R.id.btn_collection);
+        collection_button.setOnClickListener(v -> {
+            Intent i = new Intent();
+            i.setClass(mRootView.getContext(), CollectedMuseumActivity.class);
+            startActivity(i);
+        });
     }
 
     @Override

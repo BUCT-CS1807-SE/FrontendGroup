@@ -31,6 +31,11 @@
             android:theme="@style/Theme.MyApplication.NoActionBar">
         </activity>
         <activity
+            android:name=".activity.CollectedMuseumActivity"
+            android:label="@string/title_activity_collect_info"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+        <activity
             android:name=".activity.ExhibitionInfoActivity"
             android:label="@string/title_activity_item_info"
             android:theme="@style/Theme.MyApplication.NoActionBar">
