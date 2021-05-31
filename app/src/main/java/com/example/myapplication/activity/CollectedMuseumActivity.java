@@ -88,6 +88,14 @@ public class CollectedMuseumActivity extends AppCompatActivity {
                 .centerCrop()
                 .placeholder(R.drawable.ic_museum_explain)
                 .into(museumBriefIcon);
+
+        v.setOnClickListener(v1 -> {
+            Intent intent = new Intent(this, MuseumIntroActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("museum",museum);
+            intent.putExtra("museum_data",bundle);
+            startActivity(intent);
+        });
         container.addView(v);
     }
 
